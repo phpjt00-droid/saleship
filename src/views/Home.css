@@ -4,9 +4,10 @@
   min-height: 50vh;
   display: flex;
   align-items: center;
-  padding: 80px 0 40px; /* 원래 여백으로 복구 */
+  padding: 100px 0 40px; /* Navbar 2단/3단 대응을 위한 기본 패딩 상향 */
   background: var(--bg-primary);
   overflow: hidden;
+  margin-top: 0; /* body padding-top으로 대체 */
 }
 
 .hero-hot__bg {

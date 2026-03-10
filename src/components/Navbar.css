@@ -6,14 +6,14 @@
   z-index: 1000;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-color);
-  transition: transform var(--transition-base);
+  transition: all var(--transition-base);
 }
 
 .navbar--scrolled {
   box-shadow: var(--shadow-md);
 }
 
-/* Top Section */
+/* 1단: Top (로고, 검색) */
 .navbar__top {
   height: 64px;
   display: flex;
@@ -26,42 +26,101 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  gap: 20px;
 }
 
 .navbar__logo {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   text-decoration: none;
-  flex-shrink: 0;
 }
 
 .navbar__logo-text {
   font-size: 1.6rem;
   font-weight: 900;
-  color: #1e293b;
-  letter-spacing: -1.5px;
+  letter-spacing: -1px;
 }
 
-[data-theme='dark'] .navbar__logo-text {
-  color: #f8fafc;
+/* 2단: Main (게시판 메뉴) */
+.navbar__main {
+  height: 52px;
+  background: var(--bg-secondary);
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.navbar__logo-text .text-kr {
+.navbar__main-nav {
+  display: flex;
+  gap: 32px;
+}
+
+.navbar__main-link {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 12px 0;
+  position: relative;
+  transition: all var(--transition-fast);
+}
+
+.navbar__main-link:hover, .navbar__main-link.active {
   color: var(--accent-primary);
 }
 
-/* Center Links (Removed for integration) */
-.navbar__main-links {
+.navbar__main-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-primary);
+  border-radius: var(--radius-full);
+}
+
+/* 3단: Sub (카테고리) */
+.navbar__sub {
+  height: 48px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+[data-theme='dark'] .navbar__sub {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.navbar__sub-nav {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+}
+
+.navbar__sub-nav::-webkit-scrollbar {
   display: none;
 }
 
-/* Right Search & Actions */
+.navbar__sub-link {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding: 6px 0;
+  transition: all var(--transition-fast);
+}
+
+.navbar__sub-link:hover, .navbar__sub-link.active {
+  color: var(--accent-primary);
+}
+
+/* Right Actions */
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 20px;
   flex: 1;
   justify-content: flex-end;
 }
@@ -73,177 +132,130 @@
   background: #f1f5f9;
   padding: 8px 16px;
   border-radius: var(--radius-full);
-  width: 100%;
   max-width: 320px;
-  transition: all var(--transition-fast);
+  width: 100%;
 }
 
 [data-theme='dark'] .navbar__search-wrap {
   background: rgba(255, 255, 255, 0.05);
 }
 
-.navbar__search-wrap:focus-within {
-  background: var(--bg-secondary);
-  box-shadow: 0 0 0 2px var(--border-accent);
-}
-
-.navbar__search-icon {
-  color: var(--text-muted);
-}
-
 .navbar__search-input {
   background: transparent;
   border: none;
+  outline: none;
   font-size: 0.9rem;
   width: 100%;
   color: var(--text-primary);
 }
 
-.navbar__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 .navbar__write-btn-hot {
   background: var(--accent-primary);
   color: #fff;
-  padding: 8px 20px;
+  padding: 8px 18px;
   border-radius: var(--radius-full);
   font-weight: 700;
   font-size: 0.9rem;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: var(--shadow-sm);
-  transition: all var(--transition-base);
-}
-
-.navbar__write-btn-hot:hover {
-  background: #1976d2;
-  transform: translateY(-1px);
-  box-shadow: var(--accent-glow);
+  text-decoration: none;
 }
 
 .navbar__icon-btn {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
-  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: none;
+  border: none;
 }
 
 .navbar__icon-btn:hover {
-  background: var(--bg-tertiary);
   color: var(--accent-primary);
 }
 
-/* Bottom Section (Filter Bar - Integrated Tabs) */
-.navbar__bottom {
-  height: 52px;
-  background: var(--bg-secondary);
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.navbar__sub-links {
-  display: flex;
-  gap: 28px;
-  overflow-x: auto;
-  padding: 4px 0;
-}
-
-.navbar__sub-links::-webkit-scrollbar {
-  display: none;
-}
-
-.navbar__sub-link {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--text-muted);
-  white-space: nowrap;
-  padding: 8px 0;
-  position: relative;
-  transition: all var(--transition-fast);
-}
-
-.navbar__sub-link:hover, .navbar__sub-link.active {
-  color: var(--accent-primary);
-}
-
-.navbar__sub-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: var(--accent-primary);
-  border-radius: var(--radius-full);
-}
-
-/* Mobile Toggle */
+/* Mobile & Fixed Offset */
 .navbar__mobile-toggle {
   display: none;
-  width: 40px;
-  height: 40px;
-  align-items: center;
-  justify-content: center;
-  color: var(--text-primary);
 }
 
-/* Mobile Menu */
-.navbar__mobile-menu {
-  position: fixed;
-  top: 112px;
-  right: 0;
-  width: 280px;
-  height: calc(100vh - 112px);
-  background: var(--bg-secondary);
-  border-left: 1px solid var(--border-color);
-  padding: 24px;
-  transform: translateX(100%);
-  transition: transform var(--transition-slow);
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Content padding offset */
+body {
+  padding-top: 116px; /* 64 + 52 */
 }
 
-.navbar__mobile-menu--open {
-  transform: translateX(0);
+.navbar--has-sub + main,
+.navbar--has-sub ~ div:not(.navbar) {
+  /* 서브 메뉴 있을 때 추가 패딩은 JS나 CSS 변수로 제어하거나, body 패딩을 유동적으로 관리 */
 }
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .navbar__main-links {
-    display: none;
-  }
-}
+/* navbar의 height가 가변적이므로 body 패딩을 고정하기보다 absolute/fixed 요소를 체크해야 함 */
+/* 간단하게 navbar 바로 다음에 오는 요소에 마진을 주는 방식으로 처리 */
 
 @media (max-width: 768px) {
-  .navbar__container {
-    padding: 0 16px;
-  }
-  
   .navbar__search-wrap {
     display: none;
   }
-  
   .navbar__mobile-toggle {
     display: flex;
   }
-  
-  .navbar__write-btn-hot span {
+  .navbar__main-nav {
     display: none;
   }
+}
 
-  .navbar__write-btn-hot {
-    padding: 8px 12px;
-  }
+.navbar__mobile-menu {
+  position: fixed;
+  top: 64px;
+  right: -100%;
+  width: 80%;
+  height: calc(100vh - 64px);
+  background: var(--bg-secondary);
+  z-index: 1001;
+  transition: 0.3s;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.navbar__mobile-menu--open {
+  right: 0;
+}
+
+.navbar__mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.navbar__mobile-link--main {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  padding: 10px 0;
+  border-bottom: 2px solid transparent;
+}
+
+.navbar__mobile-link--main.active {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.navbar__mobile-sub {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 10px 0 20px 20px;
+}
+
+.navbar__mobile-link--sub {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.navbar__mobile-link--sub.active {
+  color: var(--accent-primary);
+}
+
+.navbar__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
 }
