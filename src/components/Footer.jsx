@@ -35,10 +35,10 @@ function Footer() {
           <div className="footer__links-group">
             <h3 className="footer__title">지원</h3>
             <ul className="footer__list">
-              <li><Link href="/guide">이용 가이드</Link></li>
-              <li><Link href="/faq">자주 묻는 질문</Link></li>
+              <li><Link href="/about">사이트 소개</Link></li>
               <li><Link href="/terms">이용약관</Link></li>
               <li><Link href="/privacy">개인정보처리방침</Link></li>
+              <li><Link href="/contact">문의하기</Link></li>
             </ul>
           </div>
 
