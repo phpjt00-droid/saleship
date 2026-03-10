@@ -182,7 +182,7 @@ body {
 
 .navbar--has-sub + main,
 .navbar--has-sub ~ div:not(.navbar) {
-  /* 서브 메뉴 있을 때 추가 패딩은 JS나 CSS 변수로 제어하거나, body 패딩을 유동적으로 관리 */
+  padding-top: 164px; /* 서브 메뉴 노출 시 패딩 추가 (116 + 48) */
 }
 
 /* navbar의 height가 가변적이므로 body 패딩을 고정하기보다 absolute/fixed 요소를 체크해야 함 */

@@ -128,26 +128,30 @@ function BoardContent() {
         {/* 헤더 */}
         <div className="board__header animate-fadeInUp">
           <h1 className="board__title">
-            세일쉽 핫딜 게시판
-            <span className="board__count">{sortedAndFilteredPosts.length}개의 딜 발견</span>
+            {pathname.includes('/free') ? '자유게시판' : pathname.includes('/review') ? '리뷰게시판' : '세일쉽 핫딜 게시판'}
+            <span className="board__count">{sortedAndFilteredPosts.length}개의 글 발견</span>
           </h1>
         </div>
 
-        {/* 필터 바 */}
-        <div className="board__filter-bar animate-fadeInUp delay-1">
-          <div className="board__categories">
-            {categoryTabs.map(tab => (
-              <button
-                key={tab.key}
-                className={`board__cat-btn ${activeCategory === tab.key ? 'board__cat-btn--active' : ''}`}
-                onClick={() => setActiveCategory(tab.key)}
-              >
-                <tab.icon size={15} />
-                {tab.label}
-              </button>
-            ))}
+        {/* 필터 바 - 핫딜게시판일 때만 노출 (또는 공통 필터로 사용) */}
+        {!pathname.includes('/free') && !pathname.includes('/review') && (
+          <div className="board__filter-bar animate-fadeInUp delay-1">
+            <div className="board__categories">
+              {categoryTabs.map(tab => (
+                <button
+                  key={tab.key}
+                  className={`board__cat-btn ${activeCategory === tab.key ? 'board__cat-btn--active' : ''}`}
+                  onClick={() => setActiveCategory(tab.key)}
+                >
+                  <tab.icon size={15} />
+                  {tab.label}
+                </button>
+              ))}
+            </div>
           </div>
+        )}
 
+        <div className="board__filter-bar animate-fadeInUp delay-1">
           <div className="board__tools">
             <div className="board__search">
               <Search size={16} />
