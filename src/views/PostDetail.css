@@ -351,6 +351,45 @@
   color: var(--text-primary);
 }
 
+.post-detail__comment-more-container {
+  position: relative;
+}
+
+.post-detail__comment-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 4px;
+  z-index: 10;
+  display: none;
+  min-width: 100px;
+}
+
+.post-detail__comment-more-container:hover .post-detail__comment-dropdown {
+  display: block;
+}
+
+.post-detail__comment-delete-btn {
+  width: 100%;
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: #ef4444;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.post-detail__comment-delete-btn:hover {
+  background: #fef2f2;
+}
+
 .post-detail__comment-text {
   font-size: 0.9rem;
   color: var(--text-secondary);

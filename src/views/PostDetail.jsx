@@ -126,6 +126,8 @@ function PostDetailContent() {
     } catch (error) {
       console.error('Error liking comment:', error)
     }
+  }
+
   // 댓글 삭제
   const handleCommentDelete = async (commentId) => {
     if (!window.confirm('댓글을 정말 삭제하시겠습니까?')) return
