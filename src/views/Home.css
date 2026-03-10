@@ -1,10 +1,10 @@
 /* ===== Hero Hot Section ===== */
 .hero-hot {
   position: relative;
-  min-height: 70vh; /* 높이를 좀 더 확보하여 개방감 부여 */
+  min-height: 50vh;
   display: flex;
   align-items: center;
-  padding: 120px 0; /* 상하 여백 확대 (80px/40px -> 120px) */
+  padding: 80px 0 40px; /* 원래 여백으로 복구 */
   background: var(--bg-primary);
   overflow: hidden;
 }
@@ -43,11 +43,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 100px; /* 요소 간 간격 확대 (60px -> 100px) */
+  gap: 60px; /* 원래 간격으로 복구 */
   position: relative;
   z-index: 1;
-  max-width: 1300px; /* 최대 너비 제한으로 안정감 부여 */
-  margin: 0 auto;
 }
 
 .hero-hot__content {
@@ -91,8 +89,8 @@
 .hero-hot__mascot-wrap {
   position: relative;
   flex-shrink: 0;
-  width: 560px; /* 280px에서 2배 확대 */
-  height: 560px; /* 280px에서 2배 확대 */
+  width: 280px; /* 원래 사이즈로 복구 */
+  height: 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -424,8 +422,8 @@
   }
   
   .hero-hot__mascot-wrap {
-    width: 360px; /* 모바일에서도 존재감 있게 확대 */
-    height: 360px;
+    width: 200px; /* 원래 모바일 사이즈로 복구 */
+    height: 200px;
   }
 }
 
