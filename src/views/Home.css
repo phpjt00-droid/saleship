@@ -101,6 +101,15 @@
   height: auto;
   z-index: 1;
   animation: float 6s ease-in-out infinite;
+  mix-blend-mode: multiply; /* 하얀 배경 제거용 */
+  filter: drop-shadow(0 10px 30px rgba(30, 136, 229, 0.2));
+}
+
+[data-theme='dark'] .hero-hot__mascot {
+  mix-blend-mode: normal;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  padding: 10px;
 }
 
 .hero-hot__mascot-glow {
