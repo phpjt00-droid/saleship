@@ -2,6 +2,7 @@
 import { useState, Suspense } from 'react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
+import { supabase } from '@/lib/supabase'
 import { ArrowLeft, Clock, Eye, Heart, MessageSquare, Bookmark, Share2, ThumbsUp, MoreHorizontal, Send, ExternalLink, ShoppingCart } from 'lucide-react'
 import './PostDetail.css'
 
@@ -58,6 +59,74 @@ function PostDetailContent() {
   const [liked, setLiked] = useState(false)
   const [bookmarked, setBookmarked] = useState(false)
   const [commentText, setCommentText] = useState('')
+  const [comments, setComments] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  // 댓글 불러오기
+  const fetchComments = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .eq('post_id', id)
+        .order('created_at', { ascending: true })
+
+      if (error) throw error
+      setComments(data || [])
+    } catch (error) {
+      console.error('Error fetching comments:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // 초기 로드 시 댓글 가져오기
+  useState(() => {
+    fetchComments()
+  }, [id])
+
+  // 댓글 작성
+  const handleCommentSubmit = async (e) => {
+    e.preventDefault()
+    if (!commentText.trim()) return
+
+    try {
+      const newComment = {
+        post_id: id,
+        author: '사용자', // 나중에 회원가입 기능 추가 시 실제 이름으로 변경
+        avatar: '👤',
+        content: commentText,
+        likes: 0
+      }
+
+      const { error } = await supabase
+        .from('comments')
+        .insert([newComment])
+
+      if (error) throw error
+      
+      setCommentText('')
+      fetchComments() // 목록 새로고침
+    } catch (error) {
+      alert('댓글 작성 중 오류가 발생했습니다.')
+      console.error('Error adding comment:', error)
+    }
+  }
+
+  // 댓글 좋아요
+  const handleCommentLike = async (commentId, currentLikes) => {
+    try {
+      const { error } = await supabase
+        .from('comments')
+        .update({ likes: currentLikes + 1 })
+        .eq('id', commentId)
+
+      if (error) throw error
+      fetchComments()
+    } catch (error) {
+      console.error('Error liking comment:', error)
+    }
+  }
 
   return (
     <div className="post-detail">
@@ -153,43 +222,58 @@ function PostDetailContent() {
               </h3>
 
               {/* 댓글 입력 */}
-              <div className="post-detail__comment-input">
+              <form className="post-detail__comment-input" onSubmit={handleCommentSubmit}>
                 <input
                   type="text"
                   placeholder="댓글로 의견을 나눠보세요..."
                   value={commentText}
                   onChange={(e) => setCommentText(e.target.value)}
                 />
-                <button className="post-detail__comment-submit">
+                <button type="submit" className="post-detail__comment-submit">
                   <Send size={16} />
                 </button>
-              </div>
+              </form>
 
               {/* 댓글 목록 */}
               <div className="post-detail__comment-list">
-                {commentsData.map((comment, i) => (
-                  <div
-                    key={comment.id}
-                    className="post-detail__comment animate-fadeInUp"
-                    style={{ animationDelay: `${i * 0.1}s` }}
-                  >
-                    <div className="post-detail__comment-header">
-                      <div className="post-detail__comment-author">
-                        <span className="post-detail__comment-avatar">{comment.avatar}</span>
-                        <span className="post-detail__comment-name">{comment.author}</span>
-                        <span className="post-detail__comment-date">{comment.date}</span>
+                {loading ? (
+                  <div style={{ textAlign: 'center', padding: '20px', color: '#6b7280' }}>댓글을 불러오는 중입니다...</div>
+                ) : comments.length === 0 ? (
+                  <div style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>첫 댓글을 남겨보세요! 🐧✨</div>
+                ) : (
+                  comments.map((comment, i) => (
+                    <div
+                      key={comment.id}
+                      className="post-detail__comment animate-fadeInUp"
+                      style={{ animationDelay: `${i * 0.1}s` }}
+                    >
+                      <div className="post-detail__comment-header">
+                        <div className="post-detail__comment-author">
+                          <span className="post-detail__comment-avatar">{comment.avatar}</span>
+                          <span className="post-detail__comment-name">{comment.author}</span>
+                          <span className="post-detail__comment-date">
+                            {new Date(comment.created_at).toLocaleDateString('ko-KR', {
+                              year: 'numeric',
+                              month: '2-digit',
+                              day: '2-digit'
+                            }).replace(/\. /g, '.').replace(/\.$/, '')}
+                          </span>
+                        </div>
+                        <button className="post-detail__comment-more">
+                          <MoreHorizontal size={16} />
+                        </button>
                       </div>
-                      <button className="post-detail__comment-more">
-                        <MoreHorizontal size={16} />
+                      <p className="post-detail__comment-text">{comment.content}</p>
+                      <button 
+                        className="post-detail__comment-like"
+                        onClick={() => handleCommentLike(comment.id, comment.likes)}
+                      >
+                        <ThumbsUp size={13} />
+                        {comment.likes}
                       </button>
                     </div>
-                    <p className="post-detail__comment-text">{comment.content}</p>
-                    <button className="post-detail__comment-like">
-                      <ThumbsUp size={13} />
-                      {comment.likes}
-                    </button>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </article>
