@@ -1,9 +1,9 @@
 import { Suspense } from 'react'
-import Contact from '../../views/Contact'
+import Board from '../../views/Board'
 
 export const metadata = {
-  title: '문의하기 | 세일쉽 고객센터',
-  description: '세일쉽 서비스 이용 관련 문의나 제휴 제안을 보내주세요.',
+  title: '핫딜 게시판 | 세일쉽 - 놓치면 아까운 세일즈 정보',
+  description: '세일쉽 커뮤니티의 엄선된 최신 핫딜과 영업 노하우를 확인해 보세요.',
 }
 
 export default function Page() {
