@@ -1,7 +1,7 @@
 'use client'
 import { useState, useMemo, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams, usePathname } from 'next/navigation'
 import { Search, Filter, Grid, List, Clock, Eye, Heart, MessageSquare, ChevronLeft, ChevronRight, TrendingUp, Users, Flame, ShoppingBag, Coffee, Home as HomeIcon, Cloud, Sparkles, Smartphone, Shirt, Utensils, Anchor, Gamepad2, Ticket, MapPin } from 'lucide-react'
 import './Board.css'
 
@@ -92,6 +92,7 @@ const categoryTabs = [
 ]
 
 function BoardContent() {
+  const pathname = usePathname()
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('cat') || ''
   const sortParam = searchParams.get('sort') || ''
@@ -128,7 +129,7 @@ function BoardContent() {
         {/* 헤더 */}
         <div className="board__header animate-fadeInUp">
           <h1 className="board__title">
-            {pathname.includes('/free') ? '자유게시판' : pathname.includes('/review') ? '리뷰게시판' : '세일쉽 핫딜 게시판'}
+            {pathname?.includes('/free') ? '자유게시판' : pathname?.includes('/review') ? '리뷰게시판' : '세일쉽 핫딜 게시판'}
             <span className="board__count">{sortedAndFilteredPosts.length}개의 글 발견</span>
           </h1>
         </div>
