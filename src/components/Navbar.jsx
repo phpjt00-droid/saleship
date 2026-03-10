@@ -32,6 +32,7 @@ function NavbarContent() {
     { name: '핫딜게시판', path: '/board', active: pathname.startsWith('/board') && !pathname.includes('/free') && !pathname.includes('/review') },
     { name: '자유게시판', path: '/board/free', active: pathname.includes('/free') },
     { name: '리뷰게시판', path: '/board/review', active: pathname.includes('/review') },
+    { name: '문의하기', path: '/contact', active: pathname.includes('/contact') },
   ]
 
   // 핫딜 하위 카터고리 정의
