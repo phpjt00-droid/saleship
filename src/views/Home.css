@@ -1,10 +1,10 @@
 /* ===== Hero Hot Section ===== */
 .hero-hot {
   position: relative;
-  min-height: 50vh;
+  min-height: 70vh; /* 높이를 좀 더 확보하여 개방감 부여 */
   display: flex;
   align-items: center;
-  padding: 80px 0 40px;
+  padding: 120px 0; /* 상하 여백 확대 (80px/40px -> 120px) */
   background: var(--bg-primary);
   overflow: hidden;
 }
@@ -43,9 +43,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 60px;
+  gap: 100px; /* 요소 간 간격 확대 (60px -> 100px) */
   position: relative;
   z-index: 1;
+  max-width: 1300px; /* 최대 너비 제한으로 안정감 부여 */
+  margin: 0 auto;
 }
 
 .hero-hot__content {
@@ -114,10 +116,10 @@
 
 .hero-hot__mascot-glow {
   position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 70%);
-  opacity: 0.3;
-  filter: blur(40px);
+  inset: -10%; /* 범위를 살짝 넓혀서 부드럽게 */
+  background: radial-gradient(circle, var(--accent-primary) 0%, transparent 75%);
+  opacity: 0.25;
+  filter: blur(60px);
 }
 
 /* ===== Deals Section & Grid ===== */
