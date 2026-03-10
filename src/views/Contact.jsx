@@ -13,7 +13,7 @@ export default function Contact() {
     const formData = new FormData(e.target)
     
     try {
-      const response = await fetch('https://formspree.io/f/mnpelenr', { // 임시 또는 사용자 ID 필요 시 교체 가능
+      const response = await fetch('https://formspree.io/f/xnjgpgwp', { // 사용자님의 고유 ID 반영
         method: 'POST',
         body: formData,
         headers: {
