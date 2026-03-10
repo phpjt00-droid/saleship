@@ -1,0 +1,30 @@
+import React from 'react'
+import '../privacy/policy.css'
+
+export const metadata = {
+  title: '자주 묻는 질문 | 세일쉽 고객센터',
+  description: '세일쉽 이용에 대해 자주 묻는 질문들을 모았습니다.',
+}
+
+export default function FaqPage() {
+  return (
+    <div className="policy-container">
+      <h1>⚓ 자주 묻는 질문 (FAQ)</h1>
+      
+      <section>
+        <h2>Q. 세일쉽은 어떤 사이트인가요?</h2>
+        <p>A. 영업인과 합리적인 소비자들을 위한 세일즈 정보 공유 커뮤니티입니다.</p>
+      </section>
+
+      <section>
+        <h2>Q. 회원가입은 유료인가요?</h2>
+        <p>A. 아닙니다. 세일쉽의 모든 기본 서비스와 커뮤니티 참여는 무료입니다.</p>
+      </section>
+
+      <section>
+        <h2>Q. 광고를 게재하고 싶습니다.</h2>
+        <p>A. 문의하기 페이지를 통해 제휴 제안을 보내주시면 담당자가 확인 후 연락드리겠습니다.</p>
+      </section>
+    </div>
+  )
+}

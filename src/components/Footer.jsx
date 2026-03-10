@@ -25,10 +25,10 @@ function Footer() {
           <div className="footer__links-group">
             <h3 className="footer__title">커뮤니티</h3>
             <ul className="footer__list">
-              <li><Link href="/board">전체 게시판</Link></li>
+              <li><Link href="/board">핫딜 게시판</Link></li>
+              <li><Link href="/free">자유 게시판</Link></li>
+              <li><Link href="/review">리뷰 게시판</Link></li>
               <li><Link href="/board/trend">최신 트렌드</Link></li>
-              <li><Link href="/board/tips">영업 노하우</Link></li>
-              <li><Link href="/board/qna">Q&A</Link></li>
             </ul>
           </div>
 
@@ -36,8 +36,8 @@ function Footer() {
             <h3 className="footer__title">지원</h3>
             <ul className="footer__list">
               <li><Link href="/about">사이트 소개</Link></li>
-              <li><Link href="/terms">이용약관</Link></li>
-              <li><Link href="/privacy">개인정보처리방침</Link></li>
+              <li><Link href="/guide">이용 가이드</Link></li>
+              <li><Link href="/faq">자주 묻는 질문</Link></li>
               <li><Link href="/contact">문의하기</Link></li>
             </ul>
           </div>

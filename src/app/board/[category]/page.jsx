@@ -11,6 +11,9 @@ export function generateStaticParams() {
     { category: 'game' },
     { category: 'ticket' },
     { category: 'offline' },
+    { category: 'trend' },
+    { category: 'tips' },
+    { category: 'qna' },
   ]
 }
 
