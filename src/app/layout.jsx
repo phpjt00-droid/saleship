@@ -31,7 +31,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        <GoogleAnalytics gaId="G-G00CNYVM0H" />
         <ThemeProvider>
           <div className="app-layout">
             <Navbar />
