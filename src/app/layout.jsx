@@ -32,6 +32,12 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3229803978163372"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
         <GoogleAnalytics gaId="G-G00CNYVM0H" />
         <Script id="microsoft-clarity" strategy="afterInteractive">
           {`
