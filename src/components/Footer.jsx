@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { Zap, ExternalLink, Github, Mail } from 'lucide-react'
+import { Anchor, ExternalLink, Github, Mail } from 'lucide-react'
 import './Footer.css'
 
 function Footer() {
@@ -11,13 +11,11 @@ function Footer() {
           {/* Brand & Intro */}
           <div className="footer__brand">
             <Link href="/" className="footer__logo">
-              <Zap className="footer__logo-icon" size={24} />
-              <span>SALESHIP</span>
+              <Anchor className="footer__logo-icon" size={24} />
+              <span>세일쉽</span>
             </Link>
             <p className="footer__desc">
-              영업인들을 위한 최고의 커뮤니티.<br />
-              지식을 공유하고, 네트워크를 확장하며,<br />
-              함께 성장의 한계를 넘어섭니다.
+              양질의 핫딜을 큐레이션해서 공유합니다.
             </p>
           </div>
 
