@@ -89,8 +89,8 @@
 .hero-hot__mascot-wrap {
   position: relative;
   flex-shrink: 0;
-  width: 280px;
-  height: 280px;
+  width: 560px; /* 280px에서 2배 확대 */
+  height: 560px; /* 280px에서 2배 확대 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -422,8 +422,8 @@
   }
   
   .hero-hot__mascot-wrap {
-    width: 200px;
-    height: 200px;
+    width: 360px; /* 모바일에서도 존재감 있게 확대 */
+    height: 360px;
   }
 }
 
