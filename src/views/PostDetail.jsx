@@ -126,6 +126,22 @@ function PostDetailContent() {
     } catch (error) {
       console.error('Error liking comment:', error)
     }
+  // 댓글 삭제
+  const handleCommentDelete = async (commentId) => {
+    if (!window.confirm('댓글을 정말 삭제하시겠습니까?')) return
+
+    try {
+      const { error } = await supabase
+        .from('comments')
+        .delete()
+        .eq('id', commentId)
+
+      if (error) throw error
+      fetchComments()
+    } catch (error) {
+      alert('댓글 삭제 중 오류가 발생했습니다.')
+      console.error('Error deleting comment:', error)
+    }
   }
 
   return (
@@ -259,9 +275,19 @@ function PostDetailContent() {
                             }).replace(/\. /g, '.').replace(/\.$/, '')}
                           </span>
                         </div>
-                        <button className="post-detail__comment-more">
-                          <MoreHorizontal size={16} />
-                        </button>
+                        <div className="post-detail__comment-more-container">
+                          <button className="post-detail__comment-more">
+                            <MoreHorizontal size={16} />
+                          </button>
+                          <div className="post-detail__comment-dropdown">
+                            <button 
+                              className="post-detail__comment-delete-btn"
+                              onClick={() => handleCommentDelete(comment.id)}
+                            >
+                              삭제하기
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       <p className="post-detail__comment-text">{comment.content}</p>
                       <button 
