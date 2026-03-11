@@ -1,0 +1,78 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 2.5s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+node.exe : Error: expo
+rt const dynamic = "fo
+rce-static"/export con
+st revalidate not conf
+igured on route "/robo
+ts.txt" with "output: 
+export". See more info
+ here: https://nextjs.
+org/docs/advanced-feat
+ures/static-html-expor
+t
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Error: exp   
+ ort c...tic-html-    
+export:String) []    ,
+ RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+    at 50787 (C:\Users
+\源?명삎\Desktop\create_
+community\.next\server
+\app\robots.txt\route.
+js:1:1355)
+    at c (C:\Users\源?
+명삎\Desktop\create_comm
+unity\.next\server\web
+pack-runtime.js:1:128)
+    at <unknown> (C:\U
+sers\源?명삎\Desktop\cre
+ate_community\.next\se
+rver\app\robots.txt\ro
+ute.js:1:6962)
+    at c.X (C:\Users\源
+?명삎\Desktop\create_co
+mmunity\.next\server\w
+ebpack-runtime.js:1:12
+06)
+    at <unknown> (C:\U
+sers\源?명삎\Desktop\cre
+ate_community\.next\se
+rver\app\robots.txt\ro
+ute.js:1:6944)
+    at Object.<anonymo
+us> (C:\Users\源?명삎\De
+sktop\create_community
+\.next\server\app\robo
+ts.txt\route.js:1:6994
+)
+
+> Build error occurred
+[Error: Failed to coll
+ect page data for /rob
+ots.txt] { type: 'Erro
+r' }

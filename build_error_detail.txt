@@ -1,0 +1,21 @@
+   ▲ Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 1771ms
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/33) ...
+   Generating static pages (8/33) 
+
+---STDERR---
+Error occurred prerendering page "/". Read more: https://nextjs.org/docs/messages/prerender-error
+ReferenceError: ShoppingBag is not defined
+    at <unknown> (C:\Users\김세형\Desktop\create_community\.next\server\app\page.js:2:3094)
+    at Array.map (<anonymous>)
+    at q (C:\Users\김세형\Desktop\create_community\.next\server\app\page.js:2:2083) {
+  digest: '30861392'
+}
+Export encountered an error on /page: /, exiting the build.
+ ⨯ Next.js build worker exited with code: 1 and signal: null

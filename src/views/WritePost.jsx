@@ -1,16 +1,31 @@
-'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, Type, AlignLeft, Tag, Image, Send, Eye } from 'lucide-react'
+import { ArrowLeft, Type, AlignLeft, Tag, Image, Send, Eye, ShoppingCart } from 'lucide-react'
+import { extractDealInfo } from '../lib/dealUtils'
 import './WritePost.css'
 
-const categories = ['자유', 'Q&A', '팁 & 노하우', '트렌드']
+const categories = ['핫딜', '자유', 'Q&A', '팁 & 노하우', '트렌드']
 
 function WritePost() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('핫딜')
   const [preview, setPreview] = useState(false)
+  
+  const [extractedDeal, setExtractedDeal] = useState(null)
+
+  useEffect(() => {
+    if (category === '핫딜' && title.length > 5) {
+      const deal = extractDealInfo(title)
+      if (deal.price > 0 || deal.store !== '기타') {
+        setExtractedDeal(deal)
+      } else {
+        setExtractedDeal(null)
+      }
+    } else {
+      setExtractedDeal(null)
+    }
+  }, [title, category])
 
   return (
     <div className="write-post">
@@ -52,10 +67,24 @@ function WritePost() {
             <input
               type="text"
               className="write-post__input"
-              placeholder="게시글 제목을 입력하세요"
+              placeholder={category === '핫딜' ? '[쇼핑몰] 상품명 가격 (예: [쿠팡] 990 PRO 2TB 79,000원)' : '게시글 제목을 입력하세요'}
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
+            
+            {extractedDeal && category === '핫딜' && (
+              <div className="mt-3 p-4 bg-blue-50/50 border border-blue-100 rounded-2xl flex flex-wrap gap-4 items-center animate-fadeInUp">
+                <div className="flex items-center gap-2 text-blue-700 text-sm font-bold">
+                  <ShoppingCart size={16} />
+                  <span>자동 추출 정보</span>
+                </div>
+                <div className="flex flex-wrap gap-2 text-sm">
+                  <span className="px-2 py-1 bg-white rounded-lg border border-slate-200 text-slate-600 font-medium">쇼핑몰: {extractedDeal.store}</span>
+                  <span className="px-2 py-1 bg-white rounded-lg border border-slate-200 text-slate-800 font-bold max-w-[200px] truncate" title={extractedDeal.name}>상품: {extractedDeal.name}</span>
+                  <span className="px-2 py-1 bg-rose-50 rounded-lg border border-rose-100 text-rose-600 font-bold">가격: {extractedDeal.price > 0 ? extractedDeal.price.toLocaleString() + '원' : '미정'}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* 내용 입력 */}

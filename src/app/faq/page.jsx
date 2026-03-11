@@ -13,7 +13,7 @@ export default function FaqPage() {
       
       <section>
         <h2>Q. 세일쉽은 어떤 사이트인가요?</h2>
-        <p>A. 영업인과 합리적인 소비자들을 위한 세일즈 정보 공유 커뮤니티입니다.</p>
+        <p>A. 무분별한 정보 속에서 양질의 핫딜만을 큐레이션하여 공유하는 스마트 소비자를 위한 커뮤니티입니다.</p>
       </section>
 
       <section>

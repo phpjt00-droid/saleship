@@ -2,18 +2,52 @@
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import { Search, Menu, X, User, Bell, Anchor, Laptop, Shirt, Utensils, Home as HomeIcon, Smartphone, Sun, Moon, Sparkles, Gamepad2, Ticket, MapPin } from 'lucide-react'
+import { supabase } from '../lib/supabase'
+import { Search, Menu, X, User, Bell, Anchor, Laptop, Shirt, Utensils, Home as HomeIcon, Smartphone, Sun, Moon, Sparkles, Gamepad2, Ticket, MapPin, LogOut } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
 import './Navbar.css'
 
 function NavbarContent() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [user, setUser] = useState(null)
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { theme, toggleTheme } = useTheme()
 
   const catParam = searchParams.get('cat') || ''
+
+  useEffect(() => {
+    const fetchProfile = async (sessionUser) => {
+      if (!sessionUser) {
+        setUser(null)
+        return
+      }
+      
+      const { data } = await supabase
+        .from('profiles')
+        .select('nickname')
+        .eq('id', sessionUser.id)
+        .single()
+      
+      setUser({ ...sessionUser, nickname: data?.nickname || sessionUser.email.split('@')[0] })
+    }
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      fetchProfile(session?.user ?? null)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      fetchProfile(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,7 +106,17 @@ function NavbarContent() {
               <button className="navbar__icon-btn" onClick={toggleTheme}>
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
-              <Link href="/login" className="navbar__icon-btn"><User size={22} /></Link>
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <span className="hidden md:block text-sm font-bold text-slate-600">
+                    <span className="text-blue-600">@{user.nickname}</span> 펭귄님
+                  </span>
+                  <Link href="/profile" className="navbar__icon-btn" title="프로필"><User size={22} /></Link>
+                  <button className="navbar__icon-btn" onClick={handleLogout} title="로그아웃"><LogOut size={20} /></button>
+                </div>
+              ) : (
+                <Link href="/login" className="navbar__icon-btn" title="로그인"><User size={22} /></Link>
+              )}
               <button className="navbar__mobile-toggle" onClick={() => setMobileOpen(!mobileOpen)}>
                 {mobileOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -140,7 +184,11 @@ function NavbarContent() {
           <button className="navbar__mobile-link" onClick={toggleTheme}>
             {theme === 'dark' ? '라이트 모드' : '다크 모드'}
           </button>
-          <Link href="/login" className="navbar__mobile-link">프로필 / 로그인</Link>
+          {user ? (
+            <button className="navbar__mobile-link" onClick={handleLogout}>로그아웃</button>
+          ) : (
+            <Link href="/login" className="navbar__mobile-link">로그인</Link>
+          )}
         </div>
       </div>
       

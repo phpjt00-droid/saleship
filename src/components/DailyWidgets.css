@@ -1,0 +1,159 @@
+
+.daily-widgets {
+  padding: 4rem 0;
+  background: white;
+}
+
+.widgets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.widget-card {
+  background: #f8fafc;
+  border-radius: 2rem;
+  padding: 2rem;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #f1f5f9;
+}
+
+.widget-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+  border-color: #3b82f6;
+}
+
+.widget-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Today Date */
+#today-date {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #3b82f6;
+  letter-spacing: -1px;
+}
+
+#today-day {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Weather */
+#weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: white;
+  border-radius: 1.5rem;
+}
+
+#weather-icon {
+  width: 80px;
+  height: 80px;
+}
+
+#temperature {
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #1e293b;
+}
+
+#city {
+  font-size: 1.1rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+
+.widget-card--large {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .widget-card--large {
+    grid-column: span 1;
+  }
+}
+
+/* FullCalendar Overrides */
+#deal-calendar-fc {
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+
+.fc .fc-daygrid-day-top {
+  flex-direction: row;
+}
+
+.fc .fc-daygrid-day-number {
+  padding: 4px 8px;
+  font-weight: 700;
+  color: #64748b;
+  text-decoration: none !important;
+}
+
+.fc .fc-day-today {
+  background: rgba(59, 130, 246, 0.05) !important;
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+  background: #3b82f6;
+  color: white;
+  border-radius: 4px;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+  border-color: #f1f5f9;
+}
+
+.fc-event {
+  border-radius: 4px;
+  padding: 2px 4px;
+  font-size: 0.7rem;
+  font-weight: 1000;
+  border: none !important;
+  cursor: pointer;
+}
+
+.fc-scrollgrid {
+  border: none !important;
+}
+
+.fc-col-header-cell {
+  background: #f8fafc;
+  padding: 8px 0 !important;
+  border: none !important;
+}
+
+.fc-col-header-cell-cushion {
+  color: #94a3b8;
+  font-weight: 800;
+  text-decoration: none !important;
+  font-size: 0.75rem;
+}
+
+.fc-daygrid-event-harness {
+  margin-top: 2px !important;
+}
+
+/* Price Chart */
+.chart-container {
+  position: relative;
+  height: 200px;
+  width: 100%;
+}

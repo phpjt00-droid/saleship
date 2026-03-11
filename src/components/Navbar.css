@@ -1,5 +1,5 @@
 .navbar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -10,7 +10,7 @@
 }
 
 .navbar--scrolled {
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
 /* 1단: Top (로고, 검색) */
@@ -120,7 +120,7 @@
 .navbar__right {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 16px; /* gap-4 */
   flex: 1;
   justify-content: flex-end;
 }
@@ -157,6 +157,19 @@
   font-weight: 700;
   font-size: 0.9rem;
   text-decoration: none;
+  white-space: nowrap;
+  transition: all var(--transition-base);
+}
+
+.navbar__write-btn-hot:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* gap-4 */
 }
 
 .navbar__icon-btn {
@@ -164,6 +177,11 @@
   cursor: pointer;
   background: none;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: all var(--transition-fast);
 }
 
 .navbar__icon-btn:hover {
@@ -175,28 +193,72 @@
   display: none;
 }
 
-/* Content padding offset */
-body {
-  padding-top: 116px; /* 64 + 52 */
-}
-
-.navbar--has-sub + main,
-.navbar--has-sub ~ div:not(.navbar) {
-  padding-top: 164px; /* 서브 메뉴 노출 시 패딩 추가 (116 + 48) */
-}
-
-/* navbar의 height가 가변적이므로 body 패딩을 고정하기보다 absolute/fixed 요소를 체크해야 함 */
-/* 간단하게 navbar 바로 다음에 오는 요소에 마진을 주는 방식으로 처리 */
+/* Content padding offset removed as using position: sticky */
 
 @media (max-width: 768px) {
+  .navbar__top {
+    height: 60px; /* 약간 높여서 터치 영역 확보 */
+  }
   .navbar__search-wrap {
     display: none;
   }
-  .navbar__mobile-toggle {
-    display: flex;
+  .navbar__right {
+    gap: 12px;
   }
-  .navbar__main-nav {
-    display: none;
+  .navbar__actions {
+    gap: 10px;
+  }
+  .navbar__write-btn-hot {
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  .navbar__logo-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .navbar__logo-text {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .navbar__logo-text {
+    font-size: 1.2rem;
+  }
+  .navbar__right {
+    gap: 8px;
+  }
+  .navbar__actions {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 400px) {
+  .navbar__logo-text {
+    display: none; /* 초소형 기기에서는 아이콘만 표시 */
+  }
+  .navbar__right {
+    gap: 4px;
+  }
+  .navbar__actions {
+    gap: 4px;
+  }
+  .navbar__write-btn-hot {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar__logo-text {
+    display: none; /* 로고 아이콘만 표시하여 공간 확보 */
+  }
+  .navbar__actions {
+    gap: 4px;
+  }
+  .navbar__write-btn-hot {
+    padding: 6px 10px;
   }
 }
 

@@ -1,0 +1,354 @@
+﻿   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/index.css.webpac
+k[javascript/auto]!=!.
+/node_modules/next/dis
+t/build/webpack/loader
+s/css-loader/src/index
+.js??ruleSet[1].rules[
+14].oneOf[10].use[2]!.
+/node_modules/next/dis
+t/build/webpack/loader
+s/postcss-loader/src/i
+ndex.js??ruleSet[1].ru
+les[14].oneOf[10].use[
+3]!./src/index.css
+Error: It looks like y
+ou're trying to use `t
+ailwindcss` directly a
+s a PostCSS plugin. Th
+e PostCSS plugin has m
+oved to a separate pac
+kage, so to continue u
+sing Tailwind CSS with
+ PostCSS you'll need t
+o install `@tailwindcs
+s/postcss` and update 
+your PostCSS configura
+tion.
+    at at (C:\Users\源
+?명삎\Desktop\create_com
+munity\node_modules\ta
+ilwindcss\dist\lib.js:
+38:1643)
+    at LazyResult.runO
+nRoot (C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\n
+ode_modules\postcss\li
+b\lazy-result.js:329:1
+6)
+    at LazyResult.runA
+sync (C:\Users\源?명삎\D
+esktop\create_communit
+y\node_modules\next\no
+de_modules\postcss\lib
+\lazy-result.js:258:26
+)
+    at LazyResult.asyn
+c (C:\Users\源?명삎\Desk
+top\create_community\n
+ode_modules\next\node_
+modules\postcss\lib\la
+zy-result.js:160:30)
+    at LazyResult.then
+ (C:\Users\源?명삎\Deskt
+op\create_community\no
+de_modules\next\node_m
+odules\postcss\lib\laz
+y-result.js:404:17)
+
+Import trace for reque
+sted module:
+./src/index.css.webpac
+k[javascript/auto]!=!.
+/node_modules/next/dis
+t/build/webpack/loader
+s/css-loader/src/index
+.js??ruleSet[1].rules[
+14].oneOf[10].use[2]!.
+/node_modules/next/dis
+t/build/webpack/loader
+s/postcss-loader/src/i
+ndex.js??ruleSet[1].ru
+les[14].oneOf[10].use[
+3]!./src/index.css
+./src/index.css
+
+./src/index.css
+Error: It looks like y
+ou're trying to use `t
+ailwindcss` directly a
+s a PostCSS plugin. Th
+e PostCSS plugin has m
+oved to a separate pac
+kage, so to continue u
+sing Tailwind CSS with
+ PostCSS you'll need t
+o install `@tailwindcs
+s/postcss` and update 
+your PostCSS configura
+tion.
+    at at (C:\Users\源
+?명삎\Desktop\create_com
+munity\node_modules\ta
+ilwindcss\dist\lib.js:
+38:1643)
+    at LazyResult.runO
+nRoot (C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\n
+ode_modules\postcss\li
+b\lazy-result.js:329:1
+6)
+    at LazyResult.runA
+sync (C:\Users\源?명삎\D
+esktop\create_communit
+y\node_modules\next\no
+de_modules\postcss\lib
+\lazy-result.js:258:26
+)
+    at LazyResult.asyn
+c (C:\Users\源?명삎\Desk
+top\create_community\n
+ode_modules\next\node_
+modules\postcss\lib\la
+zy-result.js:160:30)
+    at LazyResult.then
+ (C:\Users\源?명삎\Deskt
+op\create_community\no
+de_modules\next\node_m
+odules\postcss\lib\laz
+y-result.js:404:17)
+    at tryRunOrWebpack
+Error (C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:316119)
+    at __webpack_requi
+re_module__ (C:\Users\
+源?명삎\Desktop\create_c
+ommunity\node_modules\
+next\dist\compiled\web
+pack\bundle5.js:29:131
+532)
+    at __nested_webpac
+k_require_161494__ (C:
+\Users\源?명삎\Desktop\c
+reate_community\node_m
+odules\next\dist\compi
+led\webpack\bundle5.js
+:29:130967)
+    at C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:131824
+    at symbolIterator 
+(C:\Users\源?명삎\Deskto
+p\create_community\nod
+e_modules\next\dist\co
+mpiled\neo-async\async
+.js:1:14444)
+    at done (C:\Users\
+源?명삎\Desktop\create_c
+ommunity\node_modules\
+next\dist\compiled\neo
+-async\async.js:1:1482
+4)
+    at Hook.eval [as c
+allAsync] (eval at cre
+ate (C:\Users\源?명삎\De
+sktop\create_community
+\node_modules\next\dis
+t\compiled\webpack\bun
+dle5.js:14:9224), <ano
+nymous>:15:1)
+    at Hook.CALL_ASYNC
+_DELEGATE [as _callAsy
+nc] (C:\Users\源?명삎\De
+sktop\create_community
+\node_modules\next\dis
+t\compiled\webpack\bun
+dle5.js:14:6378)
+    at C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:130687
+    at symbolIterator 
+(C:\Users\源?명삎\Deskto
+p\create_community\nod
+e_modules\next\dist\co
+mpiled\neo-async\async
+.js:1:14402)
+-- inner error --
+Error: It looks like y
+ou're trying to use `t
+ailwindcss` directly a
+s a PostCSS plugin. Th
+e PostCSS plugin has m
+oved to a separate pac
+kage, so to continue u
+sing Tailwind CSS with
+ PostCSS you'll need t
+o install `@tailwindcs
+s/postcss` and update 
+your PostCSS configura
+tion.
+    at at (C:\Users\源
+?명삎\Desktop\create_com
+munity\node_modules\ta
+ilwindcss\dist\lib.js:
+38:1643)
+    at LazyResult.runO
+nRoot (C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\n
+ode_modules\postcss\li
+b\lazy-result.js:329:1
+6)
+    at LazyResult.runA
+sync (C:\Users\源?명삎\D
+esktop\create_communit
+y\node_modules\next\no
+de_modules\postcss\lib
+\lazy-result.js:258:26
+)
+    at LazyResult.asyn
+c (C:\Users\源?명삎\Desk
+top\create_community\n
+ode_modules\next\node_
+modules\postcss\lib\la
+zy-result.js:160:30)
+    at LazyResult.then
+ (C:\Users\源?명삎\Deskt
+op\create_community\no
+de_modules\next\node_m
+odules\postcss\lib\laz
+y-result.js:404:17)
+    at Object.<anonymo
+us> (C:\Users\源?명삎\De
+sktop\create_community
+\node_modules\next\dis
+t\build\webpack\loader
+s\css-loader\src\index
+.js??ruleSet[1].rules[
+14].oneOf[10].use[2]!C
+:\Users\源?명삎\Desktop\
+create_community\node_
+modules\next\dist\buil
+d\webpack\loaders\post
+css-loader\src\index.j
+s??ruleSet[1].rules[14
+].oneOf[10].use[3]!C:\
+Users\源?명삎\Desktop\cr
+eate_community\src\ind
+ex.css:1:7)
+    at C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:962717
+    at Hook.eval [as c
+all] (eval at create (
+C:\Users\源?명삎\Desktop
+\create_community\node
+_modules\next\dist\com
+piled\webpack\bundle5.
+js:14:9002), <anonymou
+s>:7:1)
+    at Hook.CALL_DELEG
+ATE [as _call] (C:\Use
+rs\源?명삎\Desktop\creat
+e_community\node_modul
+es\next\dist\compiled\
+webpack\bundle5.js:14:
+6272)
+    at C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:131565
+    at tryRunOrWebpack
+Error (C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:316073)
+    at __webpack_requi
+re_module__ (C:\Users\
+源?명삎\Desktop\create_c
+ommunity\node_modules\
+next\dist\compiled\web
+pack\bundle5.js:29:131
+532)
+    at __nested_webpac
+k_require_161494__ (C:
+\Users\源?명삎\Desktop\c
+reate_community\node_m
+odules\next\dist\compi
+led\webpack\bundle5.js
+:29:130967)
+    at C:\Users\源?명삎\
+Desktop\create_communi
+ty\node_modules\next\d
+ist\compiled\webpack\b
+undle5.js:29:131824
+    at symbolIterator 
+(C:\Users\源?명삎\Deskto
+p\create_community\nod
+e_modules\next\dist\co
+mpiled\neo-async\async
+.js:1:14444)
+
+Generated code for C:\
+Users\源?명삎\Desktop\cr
+eate_community\node_mo
+dules\next\dist\build\
+webpack\loaders\css-lo
+ader\src\index.js??rul
+eSet[1].rules[14].oneO
+f[10].use[2]!C:\Users\
+源?명삎\Desktop\create_c
+ommunity\node_modules\
+next\dist\build\webpac
+k\loaders\postcss-load
+er\src\index.js??ruleS
+et[1].rules[14].oneOf[
+10].use[3]!C:\Users\源
+?명삎\Desktop\create_com
+munity\src\index.css
+
+Import trace for reque
+sted module:
+./src/index.css
+
+
+> Build failed because
+ of webpack errors

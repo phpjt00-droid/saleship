@@ -6,8 +6,38 @@ import Script from 'next/script'
 import '../index.css'
 
 export const metadata = {
-  title: '세일쉽 - 세일즈 커뮤니티',
-  description: '함께 성장하는 세일즈 전문 커뮤니티',
+  title: {
+    default: '세일쉽 - 핫딜 큐레이션 커뮤니티',
+    template: '%s | 세일쉽'
+  },
+  description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티, 세일쉽입니다.',
+  keywords: ['핫딜', '세일', '쇼핑', '할인정보', '특가'],
+  authors: [{ name: '세일쉽 팀' }],
+  openGraph: {
+    title: '세일쉽 - 핫딜 큐레이션 커뮤티기',
+    description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티',
+    url: 'https://saleship-web.pages.dev',
+    siteName: '세일쉽',
+    images: [
+      {
+        url: 'https://saleship-web.pages.dev/og-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'ko_KR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '세일쉽 - 핫딜 큐레이션 커뮤니티',
+    description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티',
+    images: ['https://saleship-web.pages.dev/og-image.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  }
 }
 
 export default function RootLayout({ children }) {

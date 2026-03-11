@@ -1,9 +1,11 @@
 'use client'
-import { useState, Suspense } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { supabase } from '../lib/supabase'
-import { ArrowLeft, Clock, Eye, Heart, MessageSquare, Bookmark, Share2, ThumbsUp, MoreHorizontal, Send, ExternalLink, ShoppingCart } from 'lucide-react'
+import { ArrowLeft, Clock, Eye, Heart, MessageSquare, Bookmark, Share2, ThumbsUp, MoreHorizontal, Send, ExternalLink, TrendingDown, Info } from 'lucide-react'
+import { calculatePriceMetrics, calculateLowestPrice } from '../lib/dealUtils'
 import './PostDetail.css'
 
 const postData = {
@@ -47,6 +49,14 @@ US 라인, 재팬 라인, 국내 라인 등 제품군이 다양하게 섞여 있
   `,
 }
 
+// 가상의 가격 변동 데이터 (제품 ID: 1)
+const priceHistoryMock = [
+  { product_id: 1, price: 59000, date: "2026-03-01" },
+  { product_id: 1, price: 49000, date: "2026-03-05" },
+  { product_id: 1, price: 45000, date: "2026-03-08" },
+  { product_id: 1, price: 39000, date: "2026-03-10" }
+]
+
 const commentsData = [
   { id: 1, author: '얼리어답터', avatar: '🎧', date: '2026.03.09', content: '방금 지르고 왔습니다! 오랫동안 기다린 보람이 있네요. 좋은 정보 감사합니다.', likes: 12 },
   { id: 2, author: '가성비최고', avatar: '💰', date: '2026.03.09', content: '와우 회원 전용인가요? 전 일반 회원이라 그런지 16만원으로 나오네요ㅠㅠ', likes: 8 },
@@ -57,10 +67,140 @@ const commentsData = [
 function PostDetailContent() {
   const { id } = useParams() || {}
   const [liked, setLiked] = useState(false)
+  const [likesCount, setLikesCount] = useState(postData.likes)
   const [bookmarked, setBookmarked] = useState(false)
   const [commentText, setCommentText] = useState('')
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
+  
+  const chartRef = useRef(null)
+  const chartInstance = useRef(null)
+
+  // 사용자 인증 정보 가져오기
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  // 가격 데이터 계산
+  const priceMetrics = calculatePriceMetrics(priceHistoryMock)
+  const lowestPrice = calculateLowestPrice(priceHistoryMock, 1)
+
+  // 좋아요 & 북마크 정보 가져오기 (게시글 ID 기반)
+  const fetchInteractionStatus = async () => {
+    if (!id) return
+
+    try {
+      // 1. 전체 좋아요 수 조회
+      const { count, error: countError } = await supabase
+        .from('post_likes')
+        .select('*', { count: 'exact', head: true })
+        .eq('post_id', id)
+
+      if (countError) throw countError
+      setLikesCount(count || 0)
+
+      // 2. 현재 사용자의 상태 확인 (좋아요 & 북마크)
+      if (user) {
+        // 좋아요 확인
+        const { data: likeData } = await supabase
+          .from('post_likes')
+          .select('id')
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+          .single()
+
+        setLiked(!!likeData)
+
+        // 북마크 확인
+        const { data: bookmarkData } = await supabase
+          .from('post_bookmarks')
+          .select('id')
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+          .single()
+
+        setBookmarked(!!bookmarkData)
+      }
+    } catch (error) {
+      console.error('Error fetching interactions:', error)
+    }
+  }
+
+  useEffect(() => {
+    fetchInteractionStatus()
+  }, [id, user])
+
+  // Chart.js 초기화
+  useEffect(() => {
+    const initChart = () => {
+      if (!chartRef.current) return
+
+      const ctx = chartRef.current.getContext('2d')
+      
+      if (chartInstance.current) {
+        chartInstance.current.destroy()
+      }
+
+      // 날짜 오름차순으로 데이터 정렬 (오래된 순 -> 최신 순)
+      const sortedHistory = [...priceHistoryMock].sort((a, b) => new Date(a.date) - new Date(b.date))
+
+      chartInstance.current = new window.Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: sortedHistory.map(h => h.date.substring(5)), // MM-DD
+          datasets: [{
+            label: '가격 추이',
+            data: sortedHistory.map(h => h.price),
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointBackgroundColor: '#fff',
+            pointBorderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: {
+              beginAtZero: false,
+              ticks: {
+                callback: value => value.toLocaleString(),
+                font: { size: 10 }
+              }
+            },
+            x: {
+              ticks: { font: { size: 10 } },
+              grid: { display: false }
+            }
+          }
+        }
+      })
+    }
+
+    if (!window.Chart) {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/chart.js'
+      script.onload = initChart
+      document.head.appendChild(script)
+    } else {
+      initChart()
+    }
+  }, [])
 
   // 댓글 불러오기
   const fetchComments = async () => {
@@ -81,7 +221,7 @@ function PostDetailContent() {
   }
 
   // 초기 로드 시 댓글 가져오기
-  useState(() => {
+  useEffect(() => {
     fetchComments()
   }, [id])
 
@@ -93,10 +233,11 @@ function PostDetailContent() {
     try {
       const newComment = {
         post_id: id,
-        author: '사용자', // 나중에 회원가입 기능 추가 시 실제 이름으로 변경
-        avatar: '👤',
+        author: user.user_metadata?.full_name || user.email.split('@')[0],
+        avatar: user.user_metadata?.avatar_url || '👤',
         content: commentText,
-        likes: 0
+        likes: 0,
+        user_id: user.id // Supabase Auth UID 저장
       }
 
       const { error } = await supabase
@@ -125,6 +266,76 @@ function PostDetailContent() {
       fetchComments()
     } catch (error) {
       console.error('Error liking comment:', error)
+    }
+  }
+
+  // 북마크 처리
+  const handleBookmarkToggle = async () => {
+    if (!user) {
+      alert('로그인 후 북마크 기능을 사용할 수 있습니다.')
+      return
+    }
+
+    const prevBookmarked = bookmarked
+    setBookmarked(!prevBookmarked)
+
+    try {
+      if (prevBookmarked) {
+        const { error } = await supabase
+          .from('post_bookmarks')
+          .delete()
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+        if (error) throw error
+      } else {
+        const { error } = await supabase
+          .from('post_bookmarks')
+          .insert({ post_id: id, user_id: user.id })
+        if (error) throw error
+      }
+    } catch (error) {
+      console.error('Error toggling bookmark:', error)
+      setBookmarked(prevBookmarked)
+      alert('북마크 처리 중 오류가 발생했습니다.')
+    }
+  }
+  const handleLikeToggle = async () => {
+    if (!user) {
+      alert('로그인 후 좋아요를 누를 수 있습니다.')
+      return
+    }
+
+    const prevLiked = liked
+    const prevCount = likesCount
+
+    // Optimistic UI Update
+    setLiked(!prevLiked)
+    setLikesCount(prevLiked ? prevCount - 1 : prevCount + 1)
+
+    try {
+      if (prevLiked) {
+        // Unlike
+        const { error } = await supabase
+          .from('post_likes')
+          .delete()
+          .eq('post_id', id)
+          .eq('user_id', user.id)
+
+        if (error) throw error
+      } else {
+        // Like
+        const { error } = await supabase
+          .from('post_likes')
+          .insert({ post_id: id, user_id: user.id })
+
+        if (error) throw error
+      }
+    } catch (error) {
+      console.error('Error toggling like:', error)
+      // Rollback on error
+      setLiked(prevLiked)
+      setLikesCount(prevCount)
+      alert('좋아요 처리 중 오류가 발생했습니다.')
     }
   }
 
@@ -168,8 +379,14 @@ function PostDetailContent() {
             <h1 className="post-detail__title">{postData.title}</h1>
 
             {/* 대표 이미지 */}
-            <div className="post-detail__featured-image">
-              <img src={postData.image} alt={postData.title} />
+            <div className="post-detail__featured-image relative h-[300px] md:h-[450px] overflow-hidden rounded-3xl mb-8">
+              <Image 
+                src={postData.image} 
+                alt={postData.title} 
+                fill
+                priority
+                className="object-cover"
+              />
             </div>
 
             {/* 가격 정보 박스 */}
@@ -184,6 +401,49 @@ function PostDetailContent() {
               </a>
             </div>
 
+            {/* 가격 인사이트 및 차트 */}
+            <div className="mt-8 p-6 bg-slate-50 border border-slate-100 rounded-3xl animate-fadeInUp delay-1">
+              <div className="flex items-center gap-2 mb-6 text-slate-800 font-bold text-lg">
+                <div className="p-2 bg-blue-100 text-blue-600 rounded-xl">
+                  <TrendingDown size={20} />
+                </div>
+                가격 변동 인사이트
+              </div>
+              
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-center">
+                <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <p className="text-xs text-slate-500 font-medium mb-1">현재가</p>
+                  <p className="text-lg font-bold text-slate-800">{priceMetrics?.current.toLocaleString() || '-'}원</p>
+                </div>
+                <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <p className="text-xs text-slate-500 font-medium mb-1">역대 최저가</p>
+                  <p className="text-lg font-bold text-blue-600">{lowestPrice?.lowest.toLocaleString() || '-'}원</p>
+                  <p className="text-[10px] text-slate-400 mt-1">({lowestPrice?.diffText || '-'} 차이)</p>
+                </div>
+                <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <p className="text-xs text-slate-500 font-medium mb-1">직전가 대비</p>
+                  <p className={`text-lg font-bold ${priceMetrics?.diff < 0 ? 'text-blue-600' : 'text-rose-500'}`}>
+                    {priceMetrics?.diffText || '-'}
+                  </p>
+                </div>
+                <div className="p-4 bg-white rounded-2xl border border-slate-100 shadow-sm">
+                  <p className="text-xs text-slate-500 font-medium mb-1">단기 할인율</p>
+                  <p className={`text-lg font-bold ${priceMetrics?.rate < 0 ? 'text-blue-600' : 'text-rose-500'}`}>
+                    {priceMetrics?.rateText || '-'}
+                  </p>
+                </div>
+              </div>
+
+              <div className="relative h-[200px] w-full bg-white rounded-2xl p-4 border border-slate-100 shadow-sm">
+                <canvas id="priceChart" ref={chartRef}></canvas>
+              </div>
+              
+              <p className="text-xs text-slate-400 mt-4 flex items-center gap-1 justify-center">
+                <Info size={12} />
+                위 차트 및 지표는 사용자들이 공유한 가격 정보를 기반으로 제공되며, 실제 쇼핑몰 가격과 다를 수 있습니다.
+              </p>
+            </div>
+
             {/* 작성자 */}
             <div className="post-detail__author-bar">
               <div className="post-detail__author">
@@ -195,7 +455,7 @@ function PostDetailContent() {
               </div>
               <div className="post-detail__stats">
                 <span><Eye size={14} /> {postData.views}</span>
-                <span><Heart size={14} /> {postData.likes}</span>
+                <span><Heart size={14} /> {likesCount}</span>
                 <span><MessageSquare size={14} /> {postData.comments}</span>
               </div>
             </div>
@@ -211,20 +471,19 @@ function PostDetailContent() {
                 .replace(/\n\n/g, '<br /><br />')
             }} />
 
-            {/* 액션 바 */}
             <div className="post-detail__actions">
               <button
                 className={`post-detail__action-btn ${liked ? 'post-detail__action-btn--active' : ''}`}
-                onClick={() => setLiked(!liked)}
+                onClick={handleLikeToggle}
               >
                 <ThumbsUp size={18} />
-                <span>좋아요 {liked ? postData.likes + 1 : postData.likes}</span>
+                <span>좋아요 {likesCount}</span>
               </button>
               <button
                 className={`post-detail__action-btn ${bookmarked ? 'post-detail__action-btn--active' : ''}`}
-                onClick={() => setBookmarked(!bookmarked)}
+                onClick={handleBookmarkToggle}
               >
-                <Bookmark size={18} />
+                <Bookmark size={18} fill={bookmarked ? "currentColor" : "none"} />
                 <span>관심 핫딜</span>
               </button>
               <button className="post-detail__action-btn">
@@ -240,17 +499,33 @@ function PostDetailContent() {
               </h3>
 
               {/* 댓글 입력 */}
-              <form className="post-detail__comment-input" onSubmit={handleCommentSubmit}>
-                <input
-                  type="text"
-                  placeholder="댓글로 의견을 나눠보세요..."
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                />
-                <button type="submit" className="post-detail__comment-submit">
-                  <Send size={16} />
-                </button>
-              </form>
+              {user ? (
+                <form className="post-detail__comment-input" onSubmit={handleCommentSubmit}>
+                  <input
+                    type="text"
+                    placeholder="댓글로 의견을 나눠보세요..."
+                    value={commentText}
+                    onChange={(e) => setCommentText(e.target.value)}
+                  />
+                  <button type="submit" className="post-detail__comment-submit">
+                    <Send size={16} />
+                  </button>
+                </form>
+              ) : (
+                <div className="post-detail__login-prompt" style={{ 
+                  padding: '20px', 
+                  background: 'var(--bg-secondary)', 
+                  borderRadius: '12px', 
+                  textAlign: 'center',
+                  marginBottom: '20px',
+                  border: '1px dashed var(--border-color)'
+                }}>
+                  <p style={{ marginBottom: '10px', color: '#6b7280' }}>로그인 후 댓글을 남길 수 있습니다.</p>
+                  <Link href="/login" className="btn-primary" style={{ display: 'inline-flex', padding: '8px 20px', fontSize: '14px' }}>
+                    로그인하러 가기
+                  </Link>
+                </div>
+              )}
 
               {/* 댓글 목록 */}
               <div className="post-detail__comment-list">

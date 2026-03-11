@@ -78,6 +78,7 @@
   line-height: 1.1;
   letter-spacing: -2.5px;
   margin-bottom: 24px;
+  word-break: keep-all; /* 단어 단위로 줄바꿈하여 가독성 향상 */
 }
 
 .hero-hot__subtitle {
@@ -142,6 +143,7 @@
   font-size: 2rem;
   font-weight: 900;
   letter-spacing: -1.5px;
+  word-break: keep-all;
 }
 
 .deals-tabs {
@@ -185,24 +187,21 @@
 
 /* ===== Premium Card Style (부동산 매물 스타일) ===== */
 .hot-card {
-  background: #fff;
-  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid #f0f0f0;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.hot-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  border-color: var(--accent-primary);
 }
 
 [data-theme='dark'] .hot-card {
   background: var(--bg-secondary);
   border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-}
-
-.hot-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(30, 136, 229, 0.12);
-  border-color: var(--accent-primary);
 }
 
 /* Card Image Area */
@@ -212,89 +211,7 @@
   height: 240px;
   overflow: hidden;
 }
-
-.hot-card__image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s ease;
-}
-
-.hot-card:hover .hot-card__image {
-  transform: scale(1.1);
-}
-
-/* Image Overlays */
-.hot-card__overlay-top {
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  right: 16px;
-  display: flex;
-  justify-content: space-between;
-  pointer-events: none;
-}
-
-.hot-card__badge {
-  padding: 6px 14px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 850;
-  backdrop-filter: blur(8px);
-}
-
-.hot-card__badge--discount {
-  background: #ff5252;
-  color: #fff;
-}
-
-.hot-card__badge--category {
-  background: rgba(30, 41, 59, 0.8);
-  color: #fff;
-}
-
-.hot-card__overlay-bottom {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 16px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-}
-
-.hot-card__price-badge {
-  background: var(--accent-primary);
-  color: #fff;
-  padding: 6px 14px;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: 900;
-  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.4);
-}
-
-.hot-card__wish-btn {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: #fff;
-  color: #64748b;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.hot-card__wish-btn:hover {
-  background: #ff5252;
-  color: #fff;
-  transform: scale(1.1);
-}
-
-/* Card Content Area */
+/* 아래는 기존 카드 정보 관련 여백 및 텍스트 설정 기본값 (Tailwind와 병행) */
 .hot-card__content {
   padding: 24px;
 }
@@ -413,19 +330,74 @@
 }
 
 @media (max-width: 900px) {
+  .hero-hot {
+    padding: 60px 0 40px;
+  }
+  
   .hero-hot__container {
     flex-direction: column;
     text-align: center;
-    gap: 40px;
+    gap: 32px;
   }
   
   .hero-hot__title {
-    font-size: 2.75rem;
+    font-size: 2.5rem;
+    letter-spacing: -1.5px;
+  }
+  
+  .hero-hot__subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 24px;
   }
   
   .hero-hot__mascot-wrap {
-    width: 200px; /* 원래 모바일 사이즈로 복구 */
-    height: 200px;
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 500px) {
+  .hero-hot__title {
+    font-size: 1.8rem; /* 더 작게 조정하여 줄바꿈 안정성 확보 */
+    line-height: 1.2;
+  }
+  .hero-hot__subtitle {
+    font-size: 1rem;
+  }
+  .hero-hot__badge {
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  .deals-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  
+  .deals-title {
+    font-size: 1.5rem;
+  }
+  
+  .hero-hot__title {
+    font-size: 2rem;
+  }
+  
+  .hero-hot__badge {
+    padding: 4px 12px;
+    font-size: 0.75rem;
+  }
+
+  .deals-tabs {
+    width: 100%;
+  }
+
+  .deals-tab {
+    flex: 1;
+    padding: 8px 0;
+    text-align: center;
   }
 }
 

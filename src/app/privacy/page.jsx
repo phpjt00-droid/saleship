@@ -2,7 +2,7 @@ import React from 'react'
 import './policy.css'
 
 export const metadata = {
-  title: '개인정보처리방침 | 세일쉽 - 세일즈 커뮤니티',
+  title: '개인정보처리방침 | 세일쉽 - 핫딜 큐레이션 커뮤니티',
   description: '세일쉽의 개인정보 처리 방침을 안내해 드립니다.',
 }
 
