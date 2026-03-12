@@ -1,0 +1,238 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe :  ??Compiled 
+with warnings in 1551ms
+위치 줄:1 문자:1
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: ( ??Compiled w   
+ ith warnings in 15    
+51ms:String) [], R    e
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Attempted import error:
+ 'calculatePriceMetrics
+' is not exported from 
+'@/lib/utils' (imported
+ as 'calculatePriceMetr
+ics').
+
+Import trace for reques
+ted module:
+./src/components/Commen
+tSection/CommentSection
+.tsx
+
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Attempted import error:
+ 'calculateLowestPrice'
+ is not exported from '
+@/lib/utils' (imported 
+as 'calculateLowestPric
+e').
+
+Import trace for reques
+ted module:
+./src/components/Commen
+tSection/CommentSection
+.tsx
+
+./src/components/DealLi
+st/DealList.tsx
+Attempted import error:
+ 'filterDeals' is not e
+xported from '@/lib/uti
+ls' (imported as 'filte
+rDeals').
+
+Import trace for reques
+ted module:
+./src/components/DealLi
+st/DealList.tsx
+
+./src/components/DealLi
+st/DealList.tsx
+Attempted import error:
+ 'sortDeals' is not exp
+orted from '@/lib/utils
+' (imported as 'sortDea
+ls').
+
+Import trace for reques
+ted module:
+./src/components/DealLi
+st/DealList.tsx
+
+./src/components/WriteP
+ost/WritePost.tsx
+Attempted import error:
+ 'extractDealInfo' is n
+ot exported from '@/lib
+/utils' (imported as 'e
+xtractDealInfo').
+
+Import trace for reques
+ted module:
+./src/components/WriteP
+ost/WritePost.tsx
+./src/app/submit/page.t
+sx
+
+ ??Compiled with warnin
+gs in 790ms
+
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Attempted import error:
+ 'calculatePriceMetrics
+' is not exported from 
+'@/lib/utils' (imported
+ as 'calculatePriceMetr
+ics').
+
+Import trace for reques
+ted module:
+./src/components/Commen
+tSection/CommentSection
+.tsx
+
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Attempted import error:
+ 'calculateLowestPrice'
+ is not exported from '
+@/lib/utils' (imported 
+as 'calculateLowestPric
+e').
+
+Import trace for reques
+ted module:
+./src/components/Commen
+tSection/CommentSection
+.tsx
+
+./src/components/DealLi
+st/DealList.tsx
+Attempted import error:
+ 'filterDeals' is not e
+xported from '@/lib/uti
+ls' (imported as 'filte
+rDeals').
+
+Import trace for reques
+ted module:
+./src/components/DealLi
+st/DealList.tsx
+
+./src/components/DealLi
+st/DealList.tsx
+Attempted import error:
+ 'sortDeals' is not exp
+orted from '@/lib/utils
+' (imported as 'sortDea
+ls').
+
+Import trace for reques
+ted module:
+./src/components/DealLi
+st/DealList.tsx
+
+./src/components/WriteP
+ost/WritePost.tsx
+Attempted import error:
+ 'extractDealInfo' is n
+ot exported from '@/lib
+/utils' (imported as 'e
+xtractDealInfo').
+
+Import trace for reques
+ted module:
+./src/components/WriteP
+ost/WritePost.tsx
+./src/app/submit/page.t
+sx
+
+ ??Compiled successfully in 2.5s
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+
+./src/components/Commen
+tSection/CommentSection
+.tsx:124:66
+Type error: The left-ha
+nd side of an arithmeti
+c operation must be of 
+type 'any', 'number', '
+bigint' or an enum type
+.
+
+[0m [90m 122 |[39m  
+     [36mconst[39m ct
+x [33m=[39m chartRef
+[33m.[39mcurrent[33m.
+[39mgetContext([32m'2
+d'[39m)
+ [90m 123 |[39m      
+ [36mif[39m (chartIns
+tance[33m.[39mcurrent
+) chartInstance[33m.[
+39mcurrent[33m.[39mde
+stroy()
+[31m[1m>[22m[39m[9
+0m 124 |[39m       [3
+6mconst[39m sortedHist
+ory [33m=[39m [[33m.
+..[39mpriceHistoryMock
+][33m.[39msort((a[33
+m,[39m b) [33m=>[39m
+ [36mnew[39m [33mDat
+e[39m(a[33m.[39mdate
+) [33m-[39m [36mnew
+[39m [33mDate[39m(b[
+33m.[39mdate))
+ [90m     |[39m      
+                       
+                       
+              [31m[1m
+^[22m[39m
+ [90m 125 |[39m      
+ chartInstance[33m.[3
+9mcurrent [33m=[39m 
+[36mnew[39m window[33
+m.[39m[33mChart[39m(
+ctx[33m,[39m {
+ [90m 126 |[39m      
+   type[33m:[39m [32
+m'line'[39m[33m,[39m
+ [90m 127 |[39m      
+   data[33m:[39m {[0
+m
+Next.js build worker ex
+ited with code: 1 and s
+ignal: null

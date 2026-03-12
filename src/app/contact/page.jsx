@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import Contact from '../../views/Contact'
+import Contact from '@/components/views/Contact'
 
 export const metadata = {
   title: '문의하기 | 세일쉽 고객센터',

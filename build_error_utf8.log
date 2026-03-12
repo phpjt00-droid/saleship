@@ -1,56 +1,111 @@
-﻿
-> saleship-community@1.0.0 build
-> next build
-
-   ??Next.js 15.5.12
+﻿   ??Next.js 15.5.12
    - Environments: .env.local
 
    Creating an optimized production build ...
-node.exe : Failed to c
-ompile.
+node.exe : Failed to co
+mpile.
 위치 줄:1 문자:1
-+ & "C:\Program Files\
-nodejs/node.exe" "C:\P
-rogram Files\nodejs/no
-de_mo ...
-+ ~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~
-~~~~~~~~~~~~~~~~~~~~~~
-~~~~~
-    + CategoryInfo    
-          : NotSpeci  
-  fied: (Failed to    
- compile.:String)     
-[], RemoteExcepti    o
-n
-    + FullyQualifiedE 
-   rrorId : NativeCo  
-  mmandError
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to com   
+ pile.:String) [],     
+RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
  
 
-./node_modules\next\di
-st\compiled\client-onl
-y\error.js
-'client-only' cannot b
-e imported from a Serv
-er Component module. I
-t should only be used 
-from a Client Componen
-t.
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Module not found: Can't
+ resolve './PostDetail.
+css'
 
-Import trace for reque
-sted module:
-  ./node_modules\next\
-dist\compiled\client-o
-nly\error.js
-  ./node_modules\style
-d-jsx\dist\index\index
-.js
-  ./node_modules\style
-d-jsx\style.js
-  ./src\app\loading.js
-x
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/components/DealLi
+st/DealList.tsx
+Module not found: Can't
+ resolve './Board.css'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+Import trace for reques
+ted module:
+./src/app/page.tsx
+
+./src/components/Footer
+/Footer.tsx
+Module parse failed: Du
+plicate export 'default
+' (209:7)
+File was processed with
+ these loaders:
+ * ./node_modules/next/
+dist/build/webpack/load
+ers/next-flight-client-
+module-loader.js
+ * ./node_modules/next/
+dist/build/webpack/load
+ers/next-swc-loader.js
+You may need an additio
+nal loader to handle th
+e result of these loade
+rs.
+|     });
+| }
+> export default Footer
+;
+| 
+
+Import trace for reques
+ted module:
+./src/components/Footer
+/Footer.tsx
+
+./src/components/WriteP
+ost/WritePost.tsx
+Module not found: Can't
+ resolve '@/lib/dealUti
+ls'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+Import trace for reques
+ted module:
+./src/app/submit/page.t
+sx
+
+./src/components/WriteP
+ost/WritePost.tsx
+Module not found: Can't
+ resolve './WritePost.c
+ss'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+Import trace for reques
+ted module:
+./src/app/submit/page.t
+sx
 
 
-> Build failed because
- of webpack errors
+> Build failed because 
+of webpack errors

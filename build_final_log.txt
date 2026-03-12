@@ -1,0 +1,79 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to co
+mpile.
+위치 줄:1 문자:1
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to com   
+ pile.:String) [],     
+RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./src/components/Header
+/Header.tsx
+Module not found: Can't
+ resolve './Navbar.css'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/board/[catego
+ry]/page.jsx
+Module not found: Can't
+ resolve '@/components/
+views/Board'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/free/page.jsx
+Module not found: Can't
+ resolve '@/components/
+views/Board'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/layout.tsx
+Module not found: Can't
+ resolve '@/styles/glob
+als.css'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/review/page.j
+sx
+Module not found: Can't
+ resolve '@/components/
+views/Board'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+
+> Build failed because 
+of webpack errors

@@ -1,5 +1,5 @@
 import { Suspense } from 'react'
-import Board from '../../../views/Board'
+import Board from '@/components/views/Board'
 
 export function generateStaticParams() {
   return [
