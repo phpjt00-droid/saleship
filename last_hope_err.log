@@ -1,0 +1,81 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 2.2s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+node.exe : Error: exp
+ort const dynamic = "
+force-static"/export 
+const revalidate not 
+configured on route "
+/sitemap.xml" with "o
+utput: export". See m
+ore info here: https:
+//nextjs.org/docs/adv
+anced-features/static
+-html-export
+위치 줄:1 문자:1
++ & "C:\Program Files
+\nodejs/node.exe" "C:
+\Program Files\nodejs
+/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~
+    + CategoryInfo   
+           : NotSpe  
+  cified: (Error:    
+ export c...tic-h    
+tml-export:Strin    g
+) [], RemoteExc    ep
+tion
+    + FullyQualified 
+   ErrorId : Native  
+  CommandError
+ 
+    at 13766 (C:\User
+s\源?명삎\Desktop\creat
+e_community\.next\ser
+ver\app\sitemap.xml\r
+oute.js:1:1975)
+    at c (C:\Users\源
+?명삎\Desktop\create_co
+mmunity\.next\server\
+webpack-runtime.js:1:
+128)
+    at <unknown> (C:\
+Users\源?명삎\Desktop\c
+reate_community\.next
+\server\app\sitemap.x
+ml\route.js:1:8066)
+    at c.X (C:\Users\
+源?명삎\Desktop\create_
+community\.next\serve
+r\webpack-runtime.js:
+1:1206)
+    at <unknown> (C:\
+Users\源?명삎\Desktop\c
+reate_community\.next
+\server\app\sitemap.x
+ml\route.js:1:8044)
+    at Object.<anonym
+ous> (C:\Users\源?명삎\
+Desktop\create_commun
+ity\.next\server\app\
+sitemap.xml\route.js:
+1:8098)
+
+> Build error occurre
+d
+[Error: Failed to col
+lect page data for /s
+itemap.xml] { type: '
+Error' }

@@ -2,9 +2,32 @@ import { Suspense } from 'react'
 import PostDetailWrapper from './PostDetailWrapper'
 import { supabase } from '../../../lib/supabase'
 
+// 정적 내보내기를 위해 개별 게시글 페이지들의 ID 목록을 생성
+export async function generateStaticParams() {
+  try {
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('id')
+    
+    if (error) {
+      console.error('Error fetching post IDs for static params:', error)
+      return []
+    }
+
+    return posts?.map((post) => ({
+      id: post.id.toString(),
+    })) || []
+  } catch (err) {
+    console.error('Exception in generateStaticParams:', err)
+    return []
+  }
+}
+
+export const dynamicParams = false
+
 // SEO를 위한 동적 메타 데이터 생성
 export async function generateMetadata({ params }) {
-  const { id } = params
+  const { id } = await params
   
   // Supabase에서 실제 포스트 정보 조회
   const { data: post, error } = await supabase

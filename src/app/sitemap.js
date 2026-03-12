@@ -1,12 +1,12 @@
 import { supabase } from '../lib/supabase'
 
-export const dynamic = 'force-dynamic'
+export const dynamic = 'force-static'
 
 export default async function sitemap() {
   const baseUrl = 'https://saleship-web.pages.dev'
   
   // 기본 페이지들
-  const routes = ['', '/board', '/saved', '/about', '/privacy', '/terms', '/contact'].map((route) => ({
+  const routes = ['', '/board', '/saved', '/about', '/privacy', '/terms', '/contact', '/faq', '/free', '/guide', '/review'].map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: new Date().toISOString().split('T')[0],
     changeFrequency: 'daily',
