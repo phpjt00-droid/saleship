@@ -7,22 +7,23 @@ import '../index.css'
 
 export const metadata = {
   title: {
-    default: '세일쉽 - 핫딜 큐레이션 커뮤니티',
-    template: '%s | 세일쉽'
+    default: 'Saleship | Hot Deal Community',
+    template: '%s | Saleship'
   },
-  description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티, 세일쉽입니다.',
-  keywords: ['핫딜', '세일', '쇼핑', '할인정보', '특가'],
-  authors: [{ name: '세일쉽 팀' }],
+  description: 'Discover the best online deals, discount information, and community reviews at Saleship. 양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티입니다.',
+  keywords: ['핫딜', '세일', '쇼핑', '할인정보', '특가', 'Saleship', '세일쉽'],
+  authors: [{ name: 'Saleship Team' }],
   openGraph: {
-    title: '세일쉽 - 핫딜 큐레이션 커뮤티기',
-    description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티',
+    title: 'Saleship | Hot Deal Community',
+    description: 'Discover the best online deals, discount information, and community reviews at Saleship.',
     url: 'https://saleship-web.pages.dev',
-    siteName: '세일쉽',
+    siteName: 'Saleship',
     images: [
       {
         url: 'https://saleship-web.pages.dev/og-image.png',
         width: 1200,
         height: 630,
+        alt: 'Saleship | Hot Deal Community',
       },
     ],
     locale: 'ko_KR',
@@ -30,8 +31,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: '세일쉽 - 핫딜 큐레이션 커뮤니티',
-    description: '양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티',
+    title: 'Saleship | Hot Deal Community',
+    description: 'Discover the best online deals, discount information, and community reviews at Saleship.',
     images: ['https://saleship-web.pages.dev/og-image.png'],
   },
   robots: {

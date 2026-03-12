@@ -10,7 +10,10 @@
 }
 
 .navbar--scrolled {
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: var(--bg-glass-strong);
 }
 
 /* 1단: Top (로고, 검색) */
@@ -332,4 +335,14 @@
   inset: 0;
   background: rgba(0,0,0,0.5);
   z-index: 1000;
+}
+
+/* Animations */
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-slideDown {
+  animation: slideDown 0.2s ease-out forwards;
 }

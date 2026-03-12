@@ -10,6 +10,7 @@ import './Navbar.css'
 function NavbarContent() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const [user, setUser] = useState(null)
   const router = useRouter()
   const pathname = usePathname()
@@ -127,6 +128,7 @@ function NavbarContent() {
           </Link>
           
           <div className="navbar__right">
+            {/* Desktop Search */}
             <div className="relative group hidden md:flex items-center w-64 mr-2">
               <Search size={16} className="absolute left-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
               <input 
@@ -139,13 +141,22 @@ function NavbarContent() {
             </div>
 
             <div className="navbar__actions">
+              {/* Mobile Search Toggle */}
+              <button 
+                className="navbar__icon-btn md:hidden" 
+                onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+                aria-label="Toggle search"
+              >
+                <Search size={22} />
+              </button>
+
               <Link href="/write" className="navbar__write-btn-hot">글쓰기</Link>
               <button className="navbar__icon-btn" onClick={toggleTheme}>
                 {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
               </button>
               {user ? (
                 <div className="flex items-center gap-2">
-                  <span className="hidden md:block text-sm font-bold text-slate-600">
+                  <span className="hidden lg:block text-sm font-bold text-slate-600">
                     <span className="text-blue-600">@{user.nickname}</span> 펭귄님
                   </span>
                   <Link href="/profile" className="navbar__icon-btn" title="프로필"><User size={22} /></Link>
@@ -161,6 +172,29 @@ function NavbarContent() {
           </div>
         </div>
       </div>
+
+      {/* Mobile Search Bar - Expandable */}
+      {mobileSearchOpen && (
+        <div className="md:hidden bg-white dark:bg-slate-900 px-4 py-3 border-b border-slate-100 dark:border-slate-800 animate-slideDown">
+          <div className="relative flex items-center">
+            <Search size={16} className="absolute left-3 text-slate-400" />
+            <input 
+              type="text" 
+              placeholder="제목으로 핫딜 검색..." 
+              className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-3 pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-blue-500/20"
+              value={localSearch}
+              onChange={handleSearchChange}
+              autoFocus
+            />
+            <button 
+              className="ml-2 text-slate-400 p-2"
+              onClick={() => setMobileSearchOpen(false)}
+            >
+              <X size={20} />
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 2단: 메인 보드 메뉴 (Main) */}
       <div className="navbar__main">
