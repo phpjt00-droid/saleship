@@ -1,7 +1,8 @@
 import React from 'react'
 import { Inter, Outfit } from 'next/font/google'
 import '@/styles/globals.css'
-import Header from '@/components/Header/Header'
+import '@/styles/globals.css'
+import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer/Footer'
 import ThemeProvider from '@/components/ThemeProvider/ThemeProvider'
 import { GoogleAnalytics } from '@next/third-parties/google'
@@ -81,13 +82,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
         <ThemeProvider>
-          <div className="app-layout">
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <Navbar />
+          <main className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
         </ThemeProvider>
       </body>
     </html>

@@ -1,5 +1,6 @@
-import { supabase } from '../../lib/supabase';
-import { Deal } from './dealTypes';
+import { supabase } from '@/lib/supabaseClient'
+import { Deal } from '@/types/deal'
+;
 import { sortDeals as sortDealsUtil } from './dealUtils';
 
 export const dealService = {

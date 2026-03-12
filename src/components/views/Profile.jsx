@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabaseClient'
 import { MapPin, Briefcase, Calendar, Star, Award, MessageSquare, Heart, Settings, Target, Users, RefreshCw, LogOut } from 'lucide-react'
 import './Profile.css'
 

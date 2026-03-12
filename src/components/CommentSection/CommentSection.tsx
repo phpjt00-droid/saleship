@@ -3,10 +3,10 @@ import { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { supabase } from '@/lib/supabaseClient'
 import { ArrowLeft, Clock, Eye, Heart, MessageSquare, Bookmark, Share2, ThumbsUp, MoreHorizontal, Send, ExternalLink, TrendingDown, Info } from 'lucide-react'
 import { calculatePriceMetrics, calculateLowestPrice } from '@/features/deals/dealUtils'
-import { Deal } from '@/features/deals/dealTypes'
+import { Deal } from '@/types/deal'
 import './PostDetail.css'
 
 const postData: Deal = {

@@ -1,8 +1,9 @@
-import { supabase } from '../lib/supabase'
+import { createClient } from '@/lib/supabaseServer'
 
 export const dynamic = 'force-static'
 
 export default async function sitemap() {
+  const supabase = await createClient()
   const baseUrl = 'https://saleship-web.pages.dev'
   
   // 기본 페이지들
@@ -23,7 +24,7 @@ export default async function sitemap() {
 
     if (!error && posts) {
       const dynamicRoutes = posts.map(post => ({
-        url: `${baseUrl}/deals/${post.id}`,
+        url: `${baseUrl}/deal/${post.id}`,
         lastModified: post.date ? new Date(post.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         changeFrequency: 'weekly',
         priority: 0.7,

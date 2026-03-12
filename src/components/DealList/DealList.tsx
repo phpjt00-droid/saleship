@@ -2,14 +2,14 @@
 import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams, usePathname } from 'next/navigation'
 import { Search, Filter, Grid, List, ChevronLeft, ChevronRight, TrendingUp, Users, Flame, ShoppingBag, Coffee, Home as HomeIcon, Cloud, Sparkles, Smartphone, Shirt, Utensils, Anchor, Gamepad2, Ticket, MapPin } from 'lucide-react'
-import HotDealCard from '@/components/HotDealCard/HotDealCard'
+import DealCard from '@/components/DealCard'
 import HighlightText from '@/components/HighlightText/HighlightText'
 import SkeletonCard from '@/components/SkeletonCard/SkeletonCard'
 import './Board.css'
 import './Home.css'
 import { dealService } from '@/features/deals/dealService'
 import { filterDeals } from '@/features/deals/dealUtils'
-import { Deal } from '@/features/deals/dealTypes'
+import { Deal } from '@/types/deal'
 
 // UI 렌더링에 필요한 카테고리 탭 정보
 const categoryTabs = [
@@ -122,10 +122,9 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
               Array(8).fill(0).map((_, idx) => <SkeletonCard key={idx} isListForm={viewMode === 'list'} />)
           ) : sortedAndFilteredPosts.length > 0 ? (
             sortedAndFilteredPosts.map((post, i) => (
-              <HotDealCard
+              <DealCard
                 key={post.id}
                 deal={post}
-                index={i}
                 viewMode={viewMode as 'grid' | 'list'}
                 searchQuery={searchQuery}
                 isLiked={userLikes.has(post.id.toString())}

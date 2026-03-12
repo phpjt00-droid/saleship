@@ -1,8 +1,8 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { dealService } from './dealService'
-import { Deal } from './dealTypes'
-import { supabase } from '@/lib/supabase'
+import { Deal } from '@/types/deal'
+import { supabase } from '@/lib/supabaseClient'
 
 export function useDeals() {
   const [posts, setPosts] = useState<Deal[]>([])

@@ -2,8 +2,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { Flame } from 'lucide-react'
-import HotDealCard from '@/components/HotDealCard/HotDealCard'
-import { Deal } from '@/features/deals/dealTypes'
+import DealCard from '@/components/DealCard'
+import { Deal } from '@/types/deal'
 
 interface PopularDealsProps {
   deals: Deal[];
@@ -39,7 +39,7 @@ export default function PopularDeals({ deals, userLikes, onLikeToggle }: Popular
               </div>
               
               <div className="pl-6">
-                <HotDealCard 
+                <DealCard 
                   deal={deal}
                   viewMode="list"
                   isLiked={userLikes.has(deal.id.toString())}
