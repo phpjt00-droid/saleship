@@ -6,7 +6,8 @@ import DealList from '@/components/DealList/DealList'
 export default function Home() {
   const { 
     posts, popularDeals, loading, userLikes, bookmarks, 
-    handleLikeToggle, handleBookmarkToggle 
+    handleLikeToggle, handleBookmarkToggle,
+    isLoadingMore, isReachingEnd, loadMore
   } = useDeals()
 
   return (
@@ -23,6 +24,9 @@ export default function Home() {
         bookmarks={bookmarks}
         onLikeToggle={handleLikeToggle}
         onBookmarkToggle={handleBookmarkToggle}
+        isLoadingMore={isLoadingMore}
+        isReachingEnd={isReachingEnd}
+        loadMore={loadMore}
       />
     </div>
   )

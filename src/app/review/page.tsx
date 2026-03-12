@@ -6,7 +6,8 @@ import { useDeals } from '@/features/deals/useDeals'
 export default function ReviewBoardPage() {
   const { 
     posts, loading, userLikes, bookmarks, 
-    handleLikeToggle, handleBookmarkToggle 
+    handleLikeToggle, handleBookmarkToggle,
+    isLoadingMore, isReachingEnd, loadMore
   } = useDeals()
 
   return (
@@ -18,6 +19,9 @@ export default function ReviewBoardPage() {
         bookmarks={bookmarks}
         onLikeToggle={handleLikeToggle}
         onBookmarkToggle={handleBookmarkToggle}
+        isLoadingMore={isLoadingMore}
+        isReachingEnd={isReachingEnd}
+        loadMore={loadMore}
       />
     </Suspense>
   )

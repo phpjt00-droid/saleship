@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef, Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import DOMPurify from 'dompurify'
 import { useParams } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { ArrowLeft, Clock, Eye, Heart, MessageSquare, Bookmark, Share2, ThumbsUp, MoreHorizontal, Send, ExternalLink, TrendingDown, Info } from 'lucide-react'
@@ -161,11 +162,19 @@ function PostDetailContent() {
     e.preventDefault()
     if (!replies['main'].trim() || !user) return // Assuming 'main' is the key for the main comment input
     try {
+      // XSS 방어: 댓글은 평문으로 보여지나, 혹시 모를 태그 강제 주입을 원천 차단하기 위해 이스케이프 처리
+      const safeContent = replies['main']
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+
       const newComment = {
         post_id: id,
         author: user.user_metadata?.full_name || user.email.split('@')[0],
         avatar: user.user_metadata?.avatar_url || '👤',
-        content: replies['main'],
+        content: safeContent,
         likes: 0,
         user_id: user.id
       }
@@ -239,8 +248,11 @@ function PostDetailContent() {
                 alt={currentPost.title} 
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, 1200px"
                 className="object-cover"
+                unoptimized={currentPost.image?.startsWith('http')}
               />
+
             </div>
 
             {/* 가격 정보 박스 */}
@@ -316,13 +328,15 @@ function PostDetailContent() {
 
             {/* 본문 내용 */}
             <div className="post-detail__content" dangerouslySetInnerHTML={{
-              __html: currentPost.content
-                .replace(/## (.*)/g, '<h2>$1</h2>')
-                .replace(/### (.*)/g, '<h3>$1</h3>')
-                .replace(/> (.*)/g, '<blockquote>$1</blockquote>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/---/g, '<hr />')
-                .replace(/\n\n/g, '<br /><br />')
+              __html: DOMPurify.sanitize(
+                currentPost.content
+                  .replace(/## (.*)/g, '<h2>$1</h2>')
+                  .replace(/### (.*)/g, '<h3>$1</h3>')
+                  .replace(/> (.*)/g, '<blockquote>$1</blockquote>')
+                  .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                  .replace(/---/g, '<hr />')
+                  .replace(/\n\n/g, '<br /><br />')
+              )
             }} />
 
             <div className="post-detail__actions">

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import DOMPurify from 'dompurify'
 import { ArrowLeft, Type, AlignLeft, Tag, Image, Send, Eye, ShoppingCart } from 'lucide-react'
 import { extractDealInfo } from '@/features/deals/dealUtils'
 import './WritePost.css'
@@ -108,9 +109,11 @@ function WritePost() {
               <div className="write-post__preview-content">
                 {content ? (
                   <div dangerouslySetInnerHTML={{
-                    __html: content
-                      .replace(/\n/g, '<br />')
-                      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    __html: DOMPurify.sanitize(
+                      content
+                        .replace(/\n/g, '<br />')
+                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    )
                   }} />
                 ) : (
                   <p className="write-post__preview-empty">미리볼 내용이 없습니다</p>

@@ -5,13 +5,17 @@ import { sortDeals as sortDealsUtil } from './dealUtils';
 
 export const dealService = {
   /**
-   * 전체 핫딜 목록을 가져옵니다.
+   * 전체 핫딜 목록을 가져옵니다. (페이지네이션 적용)
    */
-  async getDeals(): Promise<Deal[]> {
+  async getDeals(page: number = 1, limit: number = 20): Promise<Deal[]> {
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
     const { data: postsData, error: postsError } = await supabase
       .from('posts')
       .select('*')
-      .order('date', { ascending: false });
+      .order('date', { ascending: false })
+      .range(from, to);
 
     if (postsError) throw postsError;
 

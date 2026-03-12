@@ -31,9 +31,12 @@ interface DealListProps {
   bookmarks: Set<any>;
   onLikeToggle: (e: any, postId: number) => void;
   onBookmarkToggle: (e: any, postId: number) => void;
+  isLoadingMore?: boolean;
+  isReachingEnd?: boolean;
+  loadMore?: () => void;
 }
 
-function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBookmarkToggle }: DealListProps) {
+function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBookmarkToggle, isLoadingMore, isReachingEnd, loadMore }: DealListProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const categoryParam = searchParams.get('cat') || ''
@@ -140,29 +143,39 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
           )}
         </div>
 
-        {/* 페이지네이션 */}
-        <div className="board__pagination animate-fadeInUp">
-          <button className="board__page-btn" disabled>
-            <ChevronLeft size={18} />
-          </button>
-          {[1, 2, 3, 4, 5].map(page => (
-            <button
-              key={page}
-              className={`board__page-btn ${page === 1 ? 'board__page-btn--active' : ''}`}
+        {/* 데이터 로딩 처리 및 엣지 케이스 처리 완료 */}
+
+        {/* 더보기 (Load More) 영역 */}
+        <div className="flex justify-center mt-12 mb-8 animate-fadeInUp">
+          {!isReachingEnd && (
+            <button 
+              onClick={loadMore} 
+              disabled={isLoadingMore || loading}
+              className="flex items-center gap-2 px-8 py-4 bg-white border border-slate-200 text-slate-700 font-semibold rounded-full hover:bg-slate-50 hover:border-slate-300 transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
             >
-              {page}
+              {isLoadingMore ? (
+                <>
+                  <div className="w-5 h-5 border-2 border-slate-300 border-t-blue-600 rounded-full animate-spin"></div>
+                  불러오는 중...
+                </>
+              ) : (
+                <>더보기</>
+              )}
             </button>
-          ))}
-          <button className="board__page-btn">
-            <ChevronRight size={18} />
-          </button>
+          )}
+          {isReachingEnd && sortedAndFilteredPosts.length > 0 && (
+            <div className="text-slate-400 text-sm bg-slate-50 px-6 py-3 rounded-full">
+              모든 핫딜을 다 확인하셨습니다! 🎉
+            </div>
+          )}
         </div>
       </div>
+
     </div>
   )
 }
 
-export default function Board({ posts, loading, userLikes, bookmarks, onLikeToggle, onBookmarkToggle }: DealListProps) {
+export default function Board({ posts, loading, userLikes, bookmarks, onLikeToggle, onBookmarkToggle, isLoadingMore, isReachingEnd, loadMore }: DealListProps) {
   return (
     <Suspense fallback={<div className="container" style={{ padding: '100px 0', textAlign: 'center' }}>핫딜 목록을 불러오는 중...</div>}>
       <BoardContent 
@@ -171,7 +184,10 @@ export default function Board({ posts, loading, userLikes, bookmarks, onLikeTogg
         userLikes={userLikes} 
         bookmarks={bookmarks} 
         onLikeToggle={onLikeToggle} 
-        onBookmarkToggle={onBookmarkToggle} 
+        onBookmarkToggle={onBookmarkToggle}
+        isLoadingMore={isLoadingMore}
+        isReachingEnd={isReachingEnd}
+        loadMore={loadMore}
       />
     </Suspense>
   )

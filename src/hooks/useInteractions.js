@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export function useInteractions(postId) {
   const [isLiked, setIsLiked] = useState(false);
@@ -25,11 +25,20 @@ export function useInteractions(postId) {
     }
   }, [idStr]);
 
+  // 어뷰징 방지를 위한 쓰로틀링 타임스탬프 기록
+  const lastLikeTime = useRef(0);
+  const lastBookmarkTime = useRef(0);
+
   const toggleLike = (e) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
+    
+    // 쓰로틀링: 500ms 내의 반복 요청 무시
+    const now = Date.now();
+    if (now - lastLikeTime.current < 500) return;
+    lastLikeTime.current = now;
     
     setIsLiked(prev => {
       const next = !prev;
@@ -49,6 +58,11 @@ export function useInteractions(postId) {
       e.preventDefault();
       e.stopPropagation();
     }
+
+    // 쓰로틀링: 500ms 내의 반복 요청 무시
+    const now = Date.now();
+    if (now - lastBookmarkTime.current < 500) return;
+    lastBookmarkTime.current = now;
 
     setIsBookmarked(prev => {
       const next = !prev;

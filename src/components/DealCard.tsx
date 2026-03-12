@@ -35,9 +35,11 @@ export default function DealCard({
           src={deal.image} 
           alt={deal.title} 
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105" 
           unoptimized={deal.image?.startsWith('http')}
         />
+
         {deal.discount && (
           <div className="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-lg">
             {deal.discount}%
