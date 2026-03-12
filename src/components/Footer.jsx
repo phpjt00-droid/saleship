@@ -69,7 +69,12 @@ function Footer() {
         {/* Copyright */}
         <div className="footer__bottom">
           <p>&copy; {new Date().getFullYear()} SALESHIP. All rights reserved.</p>
-          <div className="footer__glow-accent" />
+          <nav className="footer__legal">
+            <Link href="/about">About</Link>
+            <Link href="/contact">Contact</Link>
+            <Link href="/privacy">Privacy Policy</Link>
+            <Link href="/terms">Terms of Service</Link>
+          </nav>
         </div>
       </div>
     </footer>
