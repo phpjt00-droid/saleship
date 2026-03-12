@@ -73,9 +73,32 @@ function PostDetailContent() {
   const [comments, setComments] = useState([])
   const [loading, setLoading] = useState(true)
   const [user, setUser] = useState(null)
+  const [post, setPost] = useState(null)
   
   const chartRef = useRef(null)
   const chartInstance = useRef(null)
+
+  // 게시글 정보 가져오기
+  const fetchPost = async () => {
+    if (!id) return
+    try {
+      setLoading(true)
+      const { data, error } = await supabase
+        .from('posts')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (error) throw error
+      setPost(data)
+    } catch (error) {
+      console.error('Error fetching post:', error)
+      // 폴백: 테이블이 없거나 데이터가 없는 경우 기존 postData 사용
+      setPost(postData)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   // 사용자 인증 정보 가져오기
   useEffect(() => {
@@ -87,8 +110,35 @@ function PostDetailContent() {
       setUser(session?.user ?? null)
     })
 
+    fetchPost()
+
     return () => subscription.unsubscribe()
-  }, [])
+  }, [id])
+
+  useEffect(() => {
+    if (!id) return;
+    const postIdStr = id.toString();
+    
+    const savedLikes = localStorage.getItem('saleship_likes')
+    if (savedLikes) {
+      try {
+        const likesSet = new Set(JSON.parse(savedLikes))
+        setLiked(likesSet.has(postIdStr))
+      } catch (e) {
+        console.error('Failed to parse likes', e)
+      }
+    }
+
+    const savedBookmarks = localStorage.getItem('saleship_bookmarks')
+    if (savedBookmarks) {
+      try {
+        const bookmarksSet = new Set(JSON.parse(savedBookmarks))
+        setBookmarked(bookmarksSet.has(postIdStr))
+      } catch (e) {
+        console.error('Failed to parse bookmarks', e)
+      }
+    }
+  }, [id])
 
   // 가격 데이터 계산
   const priceMetrics = calculatePriceMetrics(priceHistoryMock)
@@ -108,28 +158,7 @@ function PostDetailContent() {
       if (countError) throw countError
       setLikesCount(count || 0)
 
-      // 2. 현재 사용자의 상태 확인 (좋아요 & 북마크)
-      if (user) {
-        // 좋아요 확인
-        const { data: likeData } = await supabase
-          .from('post_likes')
-          .select('id')
-          .eq('post_id', id)
-          .eq('user_id', user.id)
-          .single()
-
-        setLiked(!!likeData)
-
-        // 북마크 확인
-        const { data: bookmarkData } = await supabase
-          .from('post_bookmarks')
-          .select('id')
-          .eq('post_id', id)
-          .eq('user_id', user.id)
-          .single()
-
-        setBookmarked(!!bookmarkData)
-      }
+      // 2. 현재 사용자의 상태 확인 (localStorage로 대체됨)
     } catch (error) {
       console.error('Error fetching interactions:', error)
     }
@@ -270,41 +299,31 @@ function PostDetailContent() {
   }
 
   // 북마크 처리
-  const handleBookmarkToggle = async () => {
-    if (!user) {
-      alert('로그인 후 북마크 기능을 사용할 수 있습니다.')
-      return
-    }
-
+  const handleBookmarkToggle = () => {
     const prevBookmarked = bookmarked
     setBookmarked(!prevBookmarked)
 
     try {
-      if (prevBookmarked) {
-        const { error } = await supabase
-          .from('post_bookmarks')
-          .delete()
-          .eq('post_id', id)
-          .eq('user_id', user.id)
-        if (error) throw error
-      } else {
-        const { error } = await supabase
-          .from('post_bookmarks')
-          .insert({ post_id: id, user_id: user.id })
-        if (error) throw error
+      const postIdStr = id.toString()
+      const savedBookmarks = localStorage.getItem('saleship_bookmarks')
+      let bookmarksSet = new Set()
+      if (savedBookmarks) {
+        bookmarksSet = new Set(JSON.parse(savedBookmarks))
       }
+      
+      if (prevBookmarked) {
+        bookmarksSet.delete(postIdStr)
+      } else {
+        bookmarksSet.add(postIdStr)
+      }
+      localStorage.setItem('saleship_bookmarks', JSON.stringify(Array.from(bookmarksSet)))
     } catch (error) {
       console.error('Error toggling bookmark:', error)
       setBookmarked(prevBookmarked)
-      alert('북마크 처리 중 오류가 발생했습니다.')
     }
   }
-  const handleLikeToggle = async () => {
-    if (!user) {
-      alert('로그인 후 좋아요를 누를 수 있습니다.')
-      return
-    }
 
+  const handleLikeToggle = () => {
     const prevLiked = liked
     const prevCount = likesCount
 
@@ -313,29 +332,24 @@ function PostDetailContent() {
     setLikesCount(prevLiked ? prevCount - 1 : prevCount + 1)
 
     try {
-      if (prevLiked) {
-        // Unlike
-        const { error } = await supabase
-          .from('post_likes')
-          .delete()
-          .eq('post_id', id)
-          .eq('user_id', user.id)
-
-        if (error) throw error
-      } else {
-        // Like
-        const { error } = await supabase
-          .from('post_likes')
-          .insert({ post_id: id, user_id: user.id })
-
-        if (error) throw error
+      const postIdStr = id.toString()
+      const savedLikes = localStorage.getItem('saleship_likes')
+      let likesSet = new Set()
+      if (savedLikes) {
+        likesSet = new Set(JSON.parse(savedLikes))
       }
+      
+      if (prevLiked) {
+        likesSet.delete(postIdStr)
+      } else {
+        likesSet.add(postIdStr)
+      }
+      localStorage.setItem('saleship_likes', JSON.stringify(Array.from(likesSet)))
     } catch (error) {
       console.error('Error toggling like:', error)
       // Rollback on error
       setLiked(prevLiked)
       setLikesCount(prevCount)
-      alert('좋아요 처리 중 오류가 발생했습니다.')
     }
   }
 
@@ -357,6 +371,17 @@ function PostDetailContent() {
     }
   }
 
+  if (loading && !post) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>게시물을 불러오는 중입니다...</p>
+      </div>
+    )
+  }
+
+  const currentPost = post || postData
+
   return (
     <div className="post-detail">
       <div className="container">
@@ -371,18 +396,18 @@ function PostDetailContent() {
 
             {/* 카테고리 & 메타 */}
             <div className="post-detail__meta">
-              <span className="post-detail__category">{postData.category}</span>
-              <span className="post-detail__date"><Clock size={14} />{postData.date}</span>
+              <span className="post-detail__category">{currentPost.category}</span>
+              <span className="post-detail__date"><Clock size={14} />{currentPost.date || (currentPost.created_at && new Date(currentPost.created_at).toLocaleDateString())}</span>
             </div>
 
             {/* 제목 */}
-            <h1 className="post-detail__title">{postData.title}</h1>
+            <h1 className="post-detail__title">{currentPost.title}</h1>
 
             {/* 대표 이미지 */}
             <div className="post-detail__featured-image relative h-[300px] md:h-[450px] overflow-hidden rounded-3xl mb-8">
               <Image 
-                src={postData.image} 
-                alt={postData.title} 
+                src={currentPost.image} 
+                alt={currentPost.title} 
                 fill
                 priority
                 className="object-cover"
@@ -392,11 +417,11 @@ function PostDetailContent() {
             {/* 가격 정보 박스 */}
             <div className="post-detail__price-box">
               <div className="price-box__info">
-                <span className="price-box__discount">{postData.discount}</span>
-                <span className="price-box__price">{postData.price}</span>
-                <span className="price-box__original">{postData.originalPrice}</span>
+                <span className="price-box__discount">{currentPost.price_info?.discount || currentPost.discount}</span>
+                <span className="price-box__price">{currentPost.price_info?.currentPrice || currentPost.price}</span>
+                <span className="price-box__original">{currentPost.price_info?.originalPrice || currentPost.originalPrice}</span>
               </div>
-              <a href={postData.link} target="_blank" rel="noopener noreferrer" className="btn-primary price-box__btn">
+              <a href={currentPost.link || currentPost.url} target="_blank" rel="noopener noreferrer" className="btn-primary price-box__btn">
                 <ExternalLink size={18} /> 쇼핑몰 바로가기
               </a>
             </div>

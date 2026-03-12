@@ -1,0 +1,6 @@
+--- Final Table Check ---
+Table "posts": EXISTS (null records)
+Table "post": EXISTS (null records)
+Table "post_likes": EXISTS (0 records)
+Table "post_bookmarks": EXISTS (0 records)
+Table "comments": EXISTS (0 records)

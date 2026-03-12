@@ -1,89 +1,15 @@
 'use client'
 import { useState, useMemo, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useSearchParams, usePathname } from 'next/navigation'
-import { Search, Filter, Grid, List, Clock, Eye, Heart, MessageSquare, Bookmark, ChevronLeft, ChevronRight, TrendingUp, Users, Flame, ShoppingBag, Coffee, Home as HomeIcon, Cloud, Sparkles, Smartphone, Shirt, Utensils, Anchor, Gamepad2, Ticket, MapPin } from 'lucide-react'
+import { Search, Filter, Grid, List, Clock, Eye, Heart, ThumbsUp, MessageSquare, Bookmark, ChevronLeft, ChevronRight, TrendingUp, Users, Flame, ShoppingBag, Coffee, Home as HomeIcon, Cloud, Sparkles, Smartphone, Shirt, Utensils, Anchor, Gamepad2, Ticket, MapPin } from 'lucide-react'
+import HighlightText from '../components/HighlightText'
+import SkeletonCard from '../components/SkeletonCard'
 import './Board.css'
 import { supabase } from '../lib/supabase'
 
-const allPosts = [
-  { 
-    id: 1, 
-    title: '[국내선/LF스퀘어몰] 챔피온 단독 브랜드 위크 (최대 ~90%)', 
-    category: '패션', 
-    catKey: 'fashion', 
-    store: 'LF스퀘어몰',
-    author: '세일쉽', 
-    avatar: '🐧', 
-    date: '2026.03.10', 
-    views: 8241, 
-    likes: 1254, 
-    comments: 56, 
-    currentPrice: '9,900원',
-    originalPrice: '99,000원',
-    discount: '-90%',
-    shipping: '무료배송',
-    timestamp: new Date('2026-03-10T10:00:00').getTime(),
-    image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&q=80&w=400'
-  },
-  { 
-    id: 2, 
-    title: '[국내선/네이버스토어] 아로마티카 패밀리 세일 (최대 ~76%)', 
-    category: '뷰티', 
-    catKey: 'beauty', 
-    store: '네이버스토어',
-    author: '세일쉽', 
-    avatar: '🐧', 
-    date: '2026.03.09', 
-    views: 5822, 
-    likes: 912, 
-    comments: 34, 
-    currentPrice: '15,600원',
-    originalPrice: '65,000원',
-    discount: '-76%',
-    shipping: '배송비 3,000원',
-    timestamp: new Date('2026-03-09T14:00:00').getTime(),
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=400'
-  },
-  { 
-    id: 3, 
-    title: '[국내선/네오팜] 아토팜 패밀리 세일 (최대 ~93%)', 
-    category: '뷰티', 
-    catKey: 'beauty', 
-    store: '네오팜샵',
-    author: '세일쉽', 
-    avatar: '🐧', 
-    date: '2026.03.08', 
-    views: 12431, 
-    likes: 2102, 
-    comments: 124, 
-    currentPrice: '4,500원',
-    originalPrice: '64,000원',
-    discount: '-93%',
-    shipping: '무료배송',
-    timestamp: new Date('2026-03-08T09:00:00').getTime(),
-    image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=400'
-  },
-  { 
-    id: 4, 
-    title: '[국내선/크록스코리아] 크록스 패밀리 세일 (최대 ~70%)', 
-    category: '패션', 
-    catKey: 'fashion', 
-    store: '크록스코리아',
-    author: '세일쉽', 
-    avatar: '🐧', 
-    date: '2026.03.07', 
-    views: 7122, 
-    likes: 832, 
-    comments: 67, 
-    currentPrice: '29,800원',
-    originalPrice: '99,000원',
-    discount: '-70%',
-    shipping: '무료배송',
-    timestamp: new Date('2026-03-07T11:00:00').getTime(),
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=400'
-  }
-]
+const allPosts = []
 
 // 요청받은 9개 카테고리 구성
 const categoryTabs = [
@@ -109,13 +35,37 @@ function BoardContent() {
   const [activeCategory, setActiveCategory] = useState(categoryParam)
   const [activeSort, setActiveSort] = useState(sortParam)
   const [posts, setPosts] = useState(allPosts)
+  const [loading, setLoading] = useState(true)
   const [bookmarks, setBookmarks] = useState(new Set())
   const [user, setUser] = useState(null)
+  const [userLikes, setUserLikes] = useState(new Set())
 
   useEffect(() => {
     setActiveCategory(categoryParam)
     setActiveSort(sortParam)
   }, [categoryParam, sortParam])
+
+  useEffect(() => {
+    // 좋아요 정보 로드
+    const savedLikes = localStorage.getItem('saleship_likes')
+    if (savedLikes) {
+      try {
+        setUserLikes(new Set(JSON.parse(savedLikes)))
+      } catch (e) {
+        console.error('Failed to parse likes from localStorage', e)
+      }
+    }
+
+    // 북마크 정보 로드
+    const savedBookmarks = localStorage.getItem('saleship_bookmarks')
+    if (savedBookmarks) {
+      try {
+        setBookmarks(new Set(JSON.parse(savedBookmarks)))
+      } catch (e) {
+        console.error('Failed to parse bookmarks from localStorage', e)
+      }
+    }
+  }, [])
 
   // 사용자 인증 정보 가져오기
   useEffect(() => {
@@ -130,10 +80,21 @@ function BoardContent() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // 실제 좋아요 및 북마크 정보 가져오기
-  const fetchInteractions = async () => {
+  // 실제 게시글 및 좋아요/북마크 정보 가져오기
+  const fetchBoardData = async () => {
     try {
-      // 1. 좋아요 집계
+      setLoading(true)
+      setPosts([]) // 초기화
+      
+      // 1. 게시글 가져오기
+      const { data: postsData, error: postsError } = await supabase
+        .from('posts')
+        .select('*')
+        .order('date', { ascending: false })
+
+      if (postsError) throw postsError
+
+      // 2. 좋아요 집계
       const { data: likesData, error: likesError } = await supabase
         .from('post_likes')
         .select('post_id')
@@ -145,72 +106,110 @@ function BoardContent() {
         return acc
       }, {})
 
-      const updatedPosts = allPosts.map(post => ({
-        ...post,
-        likes: likeCounts[post.id.toString()] || 0
-      }))
-      setPosts(updatedPosts)
-
-      // 2. 현재 사용자의 북마크 정보 가져오기
-      if (user) {
-        const { data: bookmarkData, error: bookmarkError } = await supabase
-          .from('post_bookmarks')
-          .select('post_id')
-          .eq('user_id', user.id)
-
-        if (bookmarkError) throw bookmarkError
-        setBookmarks(new Set(bookmarkData.map(b => b.post_id)))
+      // 3. 데이터 변환 (category -> catKey 매핑 포함)
+      const catMapping = {
+        '패션': 'fashion',
+        '푸드': 'food',
+        '뷰티': 'beauty',
+        '리빙': 'home',
+        '가전': 'electronics',
+        '게임': 'game',
+        '상품권/이용권': 'ticket',
+        '오프라인': 'offline'
       }
+
+      const updatedPosts = postsData.map(post => ({
+        ...post,
+        catKey: catMapping[post.category] || '',
+        likes: likeCounts[post.id.toString()] || post.likes || 0,
+        views: parseInt(post.views || '0', 10),
+        // price_info가 JSONB로 저장되어 있으므로 여기서 추출
+        currentPrice: post.price_info?.currentPrice || '가격 확인',
+        originalPrice: post.price_info?.originalPrice,
+        discount: post.price_info?.discount,
+        shipping: post.shipping || '무료배송',
+        author: post.author || '세일쉽',
+        avatar: '🐧'
+      }))
+      
+      setPosts(updatedPosts)
     } catch (error) {
-      console.error('Error fetching interactions:', error)
+      console.error('Error fetching board data:', error)
+      setPosts([])
+    } finally {
+      setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchInteractions()
+    fetchBoardData()
   }, [user])
 
-  // 북마크 토글 처리
-  const handleBookmarkToggle = async (e, postId) => {
+  // 좋아요 토글 처리 (localStorage 저장 및 즉시 카운트 반영)
+  const handleLikeToggle = (e, postId) => {
     e.preventDefault()
     e.stopPropagation()
 
-    if (!user) {
-      alert('로그인 후 북마크 기능을 사용할 수 있습니다.')
-      return
-    }
+    const postIdStr = postId.toString()
+    const isLiking = !userLikes.has(postIdStr)
+
+    // 1. 사용자 좋아요 상태 업데이트
+    setUserLikes(prev => {
+      const newLikes = new Set(prev)
+      if (isLiking) {
+        newLikes.add(postIdStr)
+      } else {
+        newLikes.delete(postIdStr)
+      }
+      localStorage.setItem('saleship_likes', JSON.stringify(Array.from(newLikes)))
+      return newLikes
+    })
+
+    // 2. 게시글 리스트의 likes 즉시 업데이트
+    setPosts(prevPosts => prevPosts.map(post => {
+      if (post.id.toString() === postIdStr) {
+        return {
+          ...post,
+          likes: isLiking ? (post.likes || 0) + 1 : Math.max(0, (post.likes || 0) - 1)
+        }
+      }
+      return post
+    }))
+  }
+
+  // 북마크 토글 처리
+  const handleBookmarkToggle = (e, postId) => {
+    e.preventDefault()
+    e.stopPropagation()
 
     const postIdStr = postId.toString()
-    const isBookmarked = bookmarks.has(postIdStr)
-    const newBookmarks = new Set(bookmarks)
-
-    if (isBookmarked) {
-      newBookmarks.delete(postIdStr)
-    } else {
-      newBookmarks.add(postIdStr)
-    }
-    setBookmarks(newBookmarks)
-
-    try {
-      if (isBookmarked) {
-        await supabase.from('post_bookmarks').delete().eq('post_id', postIdStr).eq('user_id', user.id)
+    setBookmarks(prev => {
+      const newBookmarks = new Set(prev)
+      if (newBookmarks.has(postIdStr)) {
+        newBookmarks.delete(postIdStr)
       } else {
-        await supabase.from('post_bookmarks').insert({ post_id: postIdStr, user_id: user.id })
+        newBookmarks.add(postIdStr)
       }
-    } catch (error) {
-      console.error('Error toggling bookmark:', error)
-      // Rollback
-      setBookmarks(bookmarks)
-      alert('북마크 처리 중 오류가 발생했습니다.')
-    }
+      localStorage.setItem('saleship_bookmarks', JSON.stringify(Array.from(newBookmarks)))
+      return newBookmarks
+    })
   }
 
   const sortedAndFilteredPosts = useMemo(() => {
-    let result = posts.filter(post => {
-      const matchCategory = !activeCategory || post.catKey === activeCategory
-      const matchSearch = !searchQuery || post.title.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchCategory && matchSearch
-    })
+    let result = [...posts]
+
+    if (activeCategory !== '' && activeCategory !== 'all') { // Changed from !activeCategory
+      result = result.filter(post => post.catKey === activeCategory)
+    }
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase()
+      result = result.filter(post => 
+        post.title.toLowerCase().includes(q) || 
+        post.store?.toLowerCase().includes(q) || 
+        post.content?.toLowerCase().includes(q)
+      )
+    }
 
     if (activeSort === 'popular') {
       result.sort((a, b) => b.likes - a.likes)
@@ -227,7 +226,7 @@ function BoardContent() {
         }
         return getDiscountValue(b.discount) - getDiscountValue(a.discount)
       })
-    } else {
+    } else { // Default to latest if no sort or 'latest'
       result.sort((a, b) => b.timestamp - a.timestamp)
     }
 
@@ -283,16 +282,6 @@ function BoardContent() {
             </div>
 
             <div className="board__right-tools">
-              <div className="board__search">
-                <Search size={16} />
-                <input
-                  type="text"
-                  placeholder="핫딜 제목 검색..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
               <div className="board__view-toggle">
                 <button
                   className={viewMode === 'grid' ? 'active' : ''}
@@ -313,7 +302,9 @@ function BoardContent() {
 
         {/* 게시글 목록 */}
         <div className={`board__posts ${viewMode === 'list' ? 'board__posts--list' : 'board__posts--grid'}`}>
-          {sortedAndFilteredPosts.length > 0 ? (
+          {loading ? (
+             Array(8).fill(0).map((_, idx) => <SkeletonCard key={idx} isListForm={viewMode === 'list'} />)
+          ) : sortedAndFilteredPosts.length > 0 ? (
             sortedAndFilteredPosts.map((post, i) => (
               <Link
                 key={post.id}
@@ -323,7 +314,15 @@ function BoardContent() {
               >
                 {viewMode === 'grid' && (
                   <div className="board__post-thumbnail relative overflow-hidden rounded-t-2xl">
-                    <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                    <Image 
+                      src={post.image} 
+                      alt={post.title} 
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105" 
+                      priority={i < 4}
+                      unoptimized
+                    />
                     {/* 할인율 뱃지 (좌상단) */}
                     {post.discount && (
                       <div className="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md z-10 transition-transform group-hover:scale-110">
@@ -350,7 +349,7 @@ function BoardContent() {
                   </div>
 
                   <h3 className="text-sm font-bold text-slate-800 line-clamp-2 mb-3 h-10 leading-snug group-hover:text-blue-600 transition-colors">
-                    {post.title}
+                    <HighlightText text={post.title} query={searchQuery} />
                   </h3>
 
                   <div className="mt-auto">
@@ -366,10 +365,15 @@ function BoardContent() {
                         <span className="text-sm">{post.avatar}</span>
                         <span>{post.author}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-[10px] text-slate-400">
-                        <span className="flex items-center gap-1"><Eye size={12} />{post.views.toLocaleString()}</span>
-                        <span className="flex items-center gap-1"><Heart size={12} fill={post.likes > 0 ? "currentColor" : "none"} />{post.likes.toLocaleString()}</span>
-                        <span className="flex items-center gap-1"><MessageSquare size={12} />{post.comments}</span>
+                      <div className="flex items-center gap-3 text-[11px] text-slate-400 dark:text-slate-500 font-medium">
+                        <span className="flex items-center gap-1.5"><Eye size={12} />{post.views.toLocaleString()}</span>
+                        <button 
+                          className={`flex items-center gap-1.5 transition-colors hover:text-blue-500 ${userLikes.has(post.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
+                          onClick={(e) => handleLikeToggle(e, post.id)}
+                        >
+                           <ThumbsUp size={12} fill={userLikes.has(post.id.toString()) ? "currentColor" : "none"} />{post.likes.toLocaleString()}
+                        </button>
+                        <span className="flex items-center gap-1.5"><MessageSquare size={12} />{post.comments}</span>
                       </div>
                     </div>
                   </div>

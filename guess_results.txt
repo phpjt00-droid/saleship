@@ -1,0 +1,7 @@
+--- Listing All Tables ---
+Table "posts": NO - Could not find the table 'public.posts' in the schema cache
+Table "post": NO - Could not find the table 'public.post' in the schema cache
+Table "Posts": NO - Could not find the table 'public.Posts' in the schema cache
+Table "Post": NO - Could not find the table 'public.Post' in the schema cache
+Table "hot_deals": NO - Could not find the table 'public.hot_deals' in the schema cache
+Table "deals": NO - Could not find the table 'public.deals' in the schema cache

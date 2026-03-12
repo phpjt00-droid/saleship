@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "pages:build": "next build",
-    "pages:deploy": "npm run build && wrangler pages deploy ./out --project-name=saleship --commit-dirty=true"
+    "pages:deploy": "powershell -Command \"Remove-Item -Recurse -Force .next, out -ErrorAction SilentlyContinue\"; npm run build && wrangler pages deploy ./out --project-name=saleship-web --commit-dirty=true"
   },
   "dependencies": {
     "@next/third-parties": "^16.1.6",
@@ -18,10 +18,13 @@
     "@supabase/supabase-js": "^2.99.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "dotenv": "^17.3.1",
     "lucide-react": "^0.344.0",
+    "node-fetch": "^3.3.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "tailwind-merge": "^3.5.0"
+    "tailwind-merge": "^3.5.0",
+    "xml2js": "^0.6.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

@@ -1,107 +1,27 @@
 'use client'
 import { useState, useMemo } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { ArrowRight, MessageSquare, TrendingUp, Sparkles, Clock, Eye, Flame, ShoppingCart, ShoppingBag, Percent, ThumbsUp, ChevronRight, Heart, MapPin, Bookmark, Search } from 'lucide-react'
+import HighlightText from '../components/HighlightText'
 import './Home.css'
 import DailyWidgets from '../components/DailyWidgets'
 import { supabase } from '../lib/supabase'
 import { useEffect } from 'react'
 
-const trendingDeals = [
-  {
-    id: 1,
-    title: '[국내선/LF스퀘어몰] 챔피온 단독 브랜드 위크 (최대 ~90%)',
-    category: '패션',
-    store: 'LF스퀘어몰',
-    time: '3월 10일',
-    image: 'https://images.unsplash.com/photo-1556906781-9a412961c28c?auto=format&fit=crop&q=80&w=800',
-    price: '균일가 특가',
-    originalPrice: '정가 대비 90%',
-    discount: '90% 할인',
-    upvotes: 1254,
-    comments: 56,
-    views: '8.2k',
-    timestamp: new Date('2026-03-10T10:00:00').getTime(),
-    author: '세일쉽',
-    date: '2026.03.10'
-  },
-  {
-    id: 2,
-    title: '[국내선/네이버스토어] 아로마티카 패밀리 세일 (최대 ~76%)',
-    category: '뷰티',
-    store: '네이버스토어',
-    time: '3월 09일',
-    image: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&q=80&w=800',
-    price: '팸셀 특가',
-    originalPrice: '브랜드 공식가',
-    discount: '76% 할인',
-    upvotes: 912,
-    comments: 34,
-    views: '5.8k',
-    timestamp: new Date('2026-03-09T14:00:00').getTime(),
-    author: '세일쉽',
-    date: '2026.03.09'
-  },
-  {
-    id: 3,
-    title: '[국내선/네오팜] 아토팜 패밀리 세일 (최대 ~93%)',
-    category: '뷰티',
-    store: '네오팜샵',
-    time: '3월 08일',
-    image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&q=80&w=800',
-    price: '초특가 할인',
-    originalPrice: '시중가 대비 93%',
-    discount: '93% 할인',
-    upvotes: 2102,
-    comments: 124,
-    views: '12.4k',
-    timestamp: new Date('2026-03-08T09:00:00').getTime(),
-    author: '세일쉽',
-    date: '2026.03.08'
-  },
-  {
-    id: 4,
-    title: '[국내선/크록스] 크록스 패밀리 세일 (최대 ~70%)',
-    category: '패션',
-    store: '크록스코리아',
-    time: '3월 07일',
-    image: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&q=80&w=800',
-    price: '시즌 오프가',
-    originalPrice: '정상가',
-    discount: '70% 할인',
-    upvotes: 832,
-    comments: 67,
-    views: '7.1k',
-    timestamp: new Date('2026-03-07T11:00:00').getTime(),
-    author: '세일쉽',
-    date: '2026.03.07'
-  },
-  {
-    id: 5,
-    title: '[국내선/기타] 헨켈 신학기 세일 위크 (최대 ~82%)',
-    category: '리빙',
-    store: '헨켈공식몰',
-    time: '3월 06일',
-    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?auto=format&fit=crop&q=80&w=800',
-    price: '신학기 세일',
-    originalPrice: '정가',
-    discount: '82% 할인',
-    upvotes: 431,
-    comments: 25,
-    views: '3.5k',
-    timestamp: new Date('2026-03-06T15:00:00').getTime(),
-    author: '세일쉽',
-    date: '2026.03.06'
-  }
-]
+const trendingDeals = []
 
 function Home() {
   const [activeTab, setActiveTab] = useState('최신')
-  const [deals, setDeals] = useState(trendingDeals)
+  const [deals, setDeals] = useState([])
   const [bookmarks, setBookmarks] = useState(new Set())
-  const [user, setUser] = useState(null)
   const [userLikes, setUserLikes] = useState(new Set())
+  const [loading, setLoading] = useState(true)
+  
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get('q') || ''
+  const [selectedCategory, setSelectedCategory] = useState('전체')
 
   // 사용자 인증 정보 가져오기
   useEffect(() => {
@@ -116,9 +36,16 @@ function Home() {
     return () => subscription.unsubscribe()
   }, [])
 
-  // 실제 좋아요 정보 가져오기 (사용자별 좋아요는 localStorage 사용)
-  const fetchInteractions = async () => {
+  const fetchDeals = async () => {
     try {
+      setLoading(true)
+      const { data: postsData, error: postsError } = await supabase
+        .from('posts')
+        .select('*')
+        .order('date', { ascending: false })
+
+      if (postsError) throw postsError
+
       // 1. 좋아요 집계
       const { data: likesData, error: likesError } = await supabase
         .from('post_likes')
@@ -131,13 +58,19 @@ function Home() {
         return acc
       }, {})
 
-      const updatedDeals = trendingDeals.map(deal => ({
-        ...deal,
-        upvotes: likeCounts[deal.id.toString()] || 0
+      const updatedDeals = postsData.map(post => ({
+        ...post,
+        upvotes: likeCounts[post.id.toString()] || post.likes || 0,
+        time: new Date(post.date).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })
       }))
+      
       setDeals(updatedDeals)
     } catch (error) {
-      console.error('Error fetching interactions for home:', error)
+      console.error('Error fetching deals or interactions:', error)
+      // 폴백: 테이블이 없을 경우 대비 (최초 실행 시 등)
+      setDeals([])
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -163,12 +96,12 @@ function Home() {
       }
     }
     
-    fetchInteractions()
+    fetchDeals()
   }, [])
 
   useEffect(() => {
     if (user) {
-      fetchInteractions()
+      fetchDeals()
     }
   }, [user])
 
@@ -223,9 +156,6 @@ function Home() {
       return deal
     }))
   }
-
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('전체')
 
   const filteredAndSortedDeals = useMemo(() => {
     let result = [...deals]
@@ -337,25 +267,10 @@ function Home() {
       {/* Daily Widgets Section */}
       <DailyWidgets />
 
-      {/* Search & Filter Section */}
-      <section className="py-8 bg-slate-50/30">
+      {/* Categories Filter Section */}
+      <section className="py-4 bg-slate-50/30">
         <div className="container">
-          <div className="max-w-2xl mx-auto">
-            <div className="relative group animate-fadeInUp">
-              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-slate-400 group-focus-within:text-orange-500 transition-colors" />
-              </div>
-              <input
-                type="text"
-                className="block w-full pl-11 pr-4 py-4 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-4 focus:ring-orange-500/10 focus:border-orange-500 transition-all shadow-sm hover:border-slate-300"
-                placeholder="찾으시는 상품명이나 키워드를 입력해 보세요"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 mt-6 animate-fadeInUp delay-1">
+          <div className="flex flex-wrap items-center justify-center gap-2 animate-fadeInUp delay-1">
             {categories.map((cat) => (
               <button
                 key={cat}
@@ -424,6 +339,15 @@ function Home() {
                       </div>
                       
                       <div className="flex items-center gap-1.5 bg-slate-50 text-slate-500 border border-slate-100 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
+                        <button 
+                          className={`flex items-center gap-1 transition-colors hover:text-blue-500 ${userLikes.has(deal.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
+                          onClick={(e) => handleLikeToggle(e, deal.id)}
+                        >
+                          <ThumbsUp size={14} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} />
+                          {deal.upvotes}
+                        </button>
+                      </div>
+                      <div className="flex items-center gap-1.5 bg-slate-50 text-slate-500 border border-slate-100 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
                         <MessageSquare size={14} className="text-slate-400" />
                         {deal.comments}
                       </div>
@@ -472,66 +396,71 @@ function Home() {
           <div className="deals-grid">
             {filteredAndSortedDeals.length > 0 ? (
               filteredAndSortedDeals.map((deal, i) => (
-                <div key={deal.id} className="hot-card animate-fadeInUp group cursor-pointer" style={{ animationDelay: `${i * 0.1}s` }}>
-                  <Link href={`/post/${deal.id}`} className="block h-full flex flex-col">
-                    <div className="hot-card__image-wrap relative overflow-hidden h-48">
+                <Link 
+                  href={`/post/${deal.id}`} 
+                  key={deal.id} 
+                  className="animate-fadeInUp group relative block h-full flex flex-col bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-orange-500" 
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                    <div className="relative w-full h-52 overflow-hidden bg-slate-50 dark:bg-slate-800/80 shrink-0">
                       <Image 
                         src={deal.image} 
                         alt={deal.title} 
                         fill
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="hot-card__image object-cover transition-transform duration-300 group-hover:scale-110" 
+                        className="object-cover transition-transform duration-500 group-hover:scale-110" 
                       />
                       
                       {/* 할인율 뱃지 (좌상단) */}
-                      <div className="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md z-10 transition-transform group-hover:scale-110">
-                        {deal.discount}
-                      </div>
+                      {deal.discount && (
+                        <div className="absolute top-3 left-3 bg-rose-500/95 backdrop-blur-sm text-white text-[11px] font-black px-2.5 py-1 rounded-sm shadow-lg z-10">
+                          {deal.discount}
+                        </div>
+                      )}
 
                       {/* 북마크 버튼 추가 */}
                       <button 
-                        className={`absolute top-3 right-3 p-1.5 rounded-full backdrop-blur-md transition-all z-20 ${bookmarks.has(deal.id.toString()) ? 'bg-amber-400 text-white' : 'bg-slate-900/40 text-white hover:bg-slate-900/60'}`}
+                        className={`absolute top-3 right-3 p-1.5 rounded-full backdrop-blur-md transition-all z-20 shadow-sm ${bookmarks.has(deal.id.toString()) ? 'bg-amber-400 text-white' : 'bg-slate-900/30 text-white hover:bg-slate-900/60'}`}
                         onClick={(e) => handleBookmarkToggle(e, deal.id)}
                       >
-                        <Bookmark size={12} fill={bookmarks.has(deal.id.toString()) ? "currentColor" : "none"} />
+                        <Bookmark size={14} fill={bookmarks.has(deal.id.toString()) ? "currentColor" : "none"} />
                       </button>
                     </div>
                     
-                    <div className="hot-card__content p-4 flex flex-col flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                         <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded uppercase border border-slate-200">{deal.store}</span>
-                         <span className="text-[10px] text-slate-400 ml-auto">{deal.shipping}</span>
+                    <div className="p-5 flex flex-col flex-1">
+                      <div className="flex items-center gap-2 mb-2.5">
+                         <span className="text-[10px] font-bold text-slate-600 bg-slate-100 dark:bg-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md uppercase border border-slate-200 dark:border-slate-600 shadow-sm">{deal.store}</span>
+                         <span className="text-[11px] font-medium text-slate-400 ml-auto flex items-center gap-1"><MapPin size={10} />{deal.shipping}</span>
                       </div>
 
-                      <h3 className="hot-card__title text-sm font-bold text-slate-900 line-clamp-2 mb-3 leading-snug group-hover:text-blue-600 transition-colors h-10">
-                        {deal.title}
+                      <h3 className="text-[15px] font-extrabold text-slate-900 dark:text-slate-100 line-clamp-2 mb-4 leading-snug group-hover:text-amber-500 transition-colors h-11">
+                        <HighlightText text={deal.title} query={searchQuery} />
                       </h3>
 
                       <div className="mt-auto">
-                        <div className="flex items-baseline gap-1.5 mb-3">
-                          <span className="text-lg font-black text-slate-900">{deal.currentPrice}</span>
+                        <div className="flex items-baseline gap-2 mb-4">
+                          <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight group-hover:text-blue-600 transition-colors">{deal.currentPrice}</span>
                           {deal.originalPrice && (
-                            <span className="text-xs text-slate-400 line-through decoration-slate-300">{deal.originalPrice}</span>
+                            <span className="text-sm font-medium text-slate-400 line-through decoration-slate-300 dark:decoration-slate-500">{deal.originalPrice}</span>
                           )}
                         </div>
 
-                        <div className="flex items-center justify-between pt-3 border-t border-slate-50 text-[10px] text-slate-400">
+                        <div className="flex items-center justify-between pt-3.5 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-400 dark:text-slate-500 font-medium">
                           <div className="flex items-center gap-3">
                             <button 
-                              className={`flex items-center gap-1 transition-colors hover:text-blue-500 ${userLikes.has(deal.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
+                              className={`flex items-center gap-1.5 transition-colors hover:text-blue-500 ${userLikes.has(deal.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
                               onClick={(e) => handleLikeToggle(e, deal.id)}
                             >
-                              <ThumbsUp size={10} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} /> 
-                              {deal.upvotes}
+                              <ThumbsUp size={12} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} /> 
+                              {deal.upvotes.toLocaleString()}
                             </button>
-                            <span className="flex items-center gap-1"><MessageSquare size={10} /> {deal.comments}</span>
+                            <span className="flex items-center gap-1.5"><MessageSquare size={12} /> {deal.comments.toLocaleString()}</span>
                           </div>
-                          <span className="flex items-center gap-1"><Eye size={10} /> {deal.views}</span>
+                          <span className="flex items-center gap-1.5"><Eye size={12} /> {typeof deal.views === 'number' ? deal.views.toLocaleString() : deal.views}</span>
                         </div>
                       </div>
                     </div>
-                  </Link>
-                </div>
+                </Link>
               ))
             ) : (
               <div className="col-span-full py-20 text-center animate-fadeIn">
@@ -541,7 +470,7 @@ function Home() {
                 <h3 className="text-lg font-bold text-slate-900 mb-1">검색 결과가 없습니다</h3>
                 <p className="text-slate-500">다른 키워드나 카테고리를 선택해 보세요.</p>
                 <button 
-                  onClick={() => {setSearchQuery(''); setSelectedCategory('전체');}}
+                  onClick={() => {setSelectedCategory('전체');}}
                   className="mt-6 text-sm font-bold text-orange-600 hover:text-orange-700 transition-colors"
                 >
                   필터 초기화

@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { supabase } from '../lib/supabase'
 import { Search, Menu, X, User, Bell, Anchor, Laptop, Shirt, Utensils, Home as HomeIcon, Smartphone, Sun, Moon, Sparkles, Gamepad2, Ticket, MapPin, LogOut } from 'lucide-react'
 import { useTheme } from './ThemeProvider'
@@ -11,11 +11,18 @@ function NavbarContent() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [user, setUser] = useState(null)
+  const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const { theme, toggleTheme } = useTheme()
 
   const catParam = searchParams.get('cat') || ''
+  const searchParam = searchParams.get('q') || ''
+  const [localSearch, setLocalSearch] = useState(searchParam)
+
+  useEffect(() => {
+    setLocalSearch(searchParam)
+  }, [searchParam])
 
   useEffect(() => {
     const fetchProfile = async (sessionUser) => {
@@ -61,11 +68,35 @@ function NavbarContent() {
     setMobileOpen(false)
   }, [pathname, searchParams])
 
+  const handleSearchChange = (e) => {
+    const val = e.target.value
+    setLocalSearch(val)
+
+    const params = new URLSearchParams(searchParams)
+    if (val) {
+      params.set('q', val)
+    } else {
+      params.delete('q')
+    }
+
+    let targetPath = pathname
+    const isDealPage = pathname === '/' || pathname.startsWith('/board') || pathname === '/saved'
+    
+    if (!isDealPage && val) {
+      targetPath = '/board'
+      router.push(`${targetPath}?${params.toString()}`)
+      return
+    }
+
+    router.replace(`${targetPath}?${params.toString()}`, { scroll: false })
+  }
+
   // 메인 보드 메뉴 정의
   const boardMenus = [
     { name: '핫딜게시판', path: '/board', active: pathname.startsWith('/board') && !pathname.includes('/free') && !pathname.includes('/review') },
     { name: '자유게시판', path: '/board/free', active: pathname.includes('/free') },
     { name: '리뷰게시판', path: '/board/review', active: pathname.includes('/review') },
+    { name: '관심핫딜', path: '/saved', active: pathname.includes('/saved') },
     { name: '문의하기', path: '/contact', active: pathname.includes('/contact') },
   ]
 
@@ -86,7 +117,7 @@ function NavbarContent() {
   const isHotDealBoard = boardMenus[0].active
 
   return (
-    <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${isHotDealBoard ? 'navbar--has-sub' : ''}`}>
+    <nav data-v="v2-pill-fix" className={`navbar ${scrolled ? 'navbar--scrolled' : ''} ${isHotDealBoard ? 'navbar--has-sub' : ''}`}>
       {/* 1단: 로고 및 로우 (Top) */}
       <div className="navbar__top">
         <div className="container navbar__container">
@@ -96,9 +127,15 @@ function NavbarContent() {
           </Link>
           
           <div className="navbar__right">
-            <div className="navbar__search-wrap">
-              <Search size={18} className="navbar__search-icon" />
-              <input type="text" placeholder="어떤 핫딜을 찾으시나요?" className="navbar__search-input" />
+            <div className="relative group hidden md:flex items-center w-64 mr-2">
+              <Search size={16} className="absolute left-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
+              <input 
+                type="text" 
+                placeholder="어떤 핫딜을 찾으시나요?" 
+                className="w-full bg-slate-100 dark:bg-slate-800 border-transparent focus:bg-white dark:focus:bg-slate-900 border focus:border-blue-500 rounded-full py-2 pl-9 pr-4 text-sm text-slate-900 dark:text-slate-100 placeholder-slate-400 outline-none transition-all shadow-sm"
+                value={localSearch}
+                onChange={handleSearchChange}
+              />
             </div>
 
             <div className="navbar__actions">

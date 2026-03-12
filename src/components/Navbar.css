@@ -104,16 +104,28 @@
 }
 
 .navbar__sub-link {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--text-muted);
   white-space: nowrap;
-  padding: 6px 0;
-  transition: all var(--transition-fast);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  transition: all var(--transition-base);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid transparent;
 }
 
-.navbar__sub-link:hover, .navbar__sub-link.active {
-  color: var(--accent-primary);
+.navbar__sub-link:hover {
+  background: var(--bg-glass-strong);
+  color: var(--text-primary);
+}
+
+.navbar__sub-link.active {
+  background: var(--accent-primary);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(30, 136, 229, 0.2);
 }
 
 /* Right Actions */
