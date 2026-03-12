@@ -22,10 +22,10 @@ export default function Footer() {
           <div className="footer__links-group">
             <h3 className="footer__title">커뮤니티</h3>
             <ul className="footer__list">
-              <li><Link href="/board">핫딜 게시판</Link></li>
-              <li><Link href="/free">자유 게시판</Link></li>
-              <li><Link href="/review">리뷰 게시판</Link></li>
-              <li><Link href="/board/trend">최신 트렌드</Link></li>
+              <li><Link href="/deal">핫딜 게시판</Link></li>
+              <li><Link href="/community/free">자유 게시판</Link></li>
+              <li><Link href="/community/review">리뷰 게시판</Link></li>
+              <li><Link href="/deal">최신 트렌드</Link></li>
             </ul>
           </div>
 

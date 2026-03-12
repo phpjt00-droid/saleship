@@ -1,6 +1,7 @@
 export interface Deal {
-  id: number;
+  id: string | number;
   title: string;
+  subtitle?: string;
   image: string;
   url: string;
   price: string | number;
@@ -18,6 +19,17 @@ export interface Deal {
   author?: string;
   avatar?: string;
   isHot?: boolean;
+}
+
+export interface DealComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  user_name: string;
+  user_avatar?: string;
+  content: string;
+  likes: number;
+  created_at: string;
 }
 
 export type DealViewMode = 'grid' | 'list';

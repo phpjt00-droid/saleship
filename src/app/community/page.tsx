@@ -1,48 +1,23 @@
-'use client'
-import { Suspense } from 'react'
-import { useDeals } from '@/features/deals/useDeals'
-import DealCard from '@/components/DealCard'
-
-function CommunityContent() {
-  const { posts, loading, userLikes, bookmarks, handleLikeToggle, handleBookmarkToggle } = useDeals()
-
-  // 팁이나 QNA 카테고리만 필터링 (예시 필터)
-  const commPosts = posts.filter(p => !p.store || p.category === 'tips' || p.category === 'qna')
-
-  if (loading) return <div className="py-10 text-center">불러오는 중...</div>
-
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {commPosts.map((deal) => (
-        <DealCard 
-          key={deal.id} 
-          deal={deal}
-          isLiked={userLikes.has(deal.id.toString())}
-          isBookmarked={bookmarks.has(deal.id.toString())}
-          onLikeToggle={handleLikeToggle}
-          onBookmarkToggle={handleBookmarkToggle}
-        />
-      ))}
-      {commPosts.length === 0 && (
-        <div className="col-span-full py-20 text-center text-slate-400 font-bold border-2 border-dashed border-slate-100 rounded-3xl">
-          아직 커뮤니티 게시글이 없습니다. 첫 글을 남겨보세요!
-        </div>
-      )}
-    </div>
-  )
-}
+import React from 'react'
 
 export default function CommunityPage() {
   return (
-    <div className="container py-24">
-      <div className="mb-12">
-        <h1 className="text-4xl font-black mb-4 tracking-tighter">커뮤니티</h1>
-        <p className="text-slate-500 font-medium">다양한 정보와 꿀팁을 나누는 공간입니다.</p>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">커뮤니티 메인</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <a href="/community/free" className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+          <h2 className="text-xl font-semibold mb-2">자유게시판</h2>
+          <p className="text-gray-600 dark:text-gray-300">자유로운 이야기를 나누는 공간입니다.</p>
+        </a>
+        <a href="/community/review" className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+          <h2 className="text-xl font-semibold mb-2">구매후기</h2>
+          <p className="text-gray-600 dark:text-gray-300">내돈내산 생생한 후기를 확인하세요.</p>
+        </a>
+        <a href="/community/market" className="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-shadow">
+          <h2 className="text-xl font-semibold mb-2">중고장터</h2>
+          <p className="text-gray-600 dark:text-gray-300">필요한 물건을 사고 팔 수 있는 공간입니다.</p>
+        </a>
       </div>
-      
-      <Suspense fallback={<div className="py-10 text-center">로딩 중...</div>}>
-        <CommunityContent />
-      </Suspense>
     </div>
   )
 }

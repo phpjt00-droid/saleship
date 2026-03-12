@@ -73,13 +73,13 @@ function NavbarContent() {
     const params = new URLSearchParams(searchParams)
     if (localSearch) params.set('q', localSearch)
     else params.delete('q')
-    router.push(`/hotdeal?${params.toString()}`)
+    router.push(`/deal?${params.toString()}`)
   }
 
   const menuItems = [
-    { name: '핫딜', path: '/hotdeal' },
+    { name: '핫딜', path: '/deal' },
     { name: '커뮤니티', path: '/community' },
-    { name: '글쓰기', path: '/admin/create-deal' },
+    { name: '글쓰기', path: '/write' },
   ]
 
   return (

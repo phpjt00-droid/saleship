@@ -42,14 +42,20 @@ export function useDeals() {
     revalidateOnFocus: false // 포커스시 백그라운드 재페칭 방지로 성능 최적화
   })
 
-  // 인기 핫딜 별도 SWR 캐싱
-  const { data: popularDealsData } = useSWR('/api/popular-deals', () => dealService.getPopularDeals(), {
+  // 트렌딩 핫딜 (Trending)
+  const { data: trendingDeals } = useSWR('/api/trending-deals', () => dealService.getTrendingDeals(5), {
     revalidateOnFocus: false,
-    dedupingInterval: 60000 // 1분 동안 캐시 유지
+    dedupingInterval: 60000
   })
 
+  // 누적 인기 핫딜 (Popular)
+  const { data: popularDeals } = useSWR('/api/popular-deals', () => dealService.getPopularDeals(4), {
+    revalidateOnFocus: false,
+    dedupingInterval: 60000
+  })
+
+  // 최신 핫딜 (Latest) - 무한 스크롤 연동
   const posts = data ? ([] as Deal[]).concat(...data) : []
-  const popularDeals = popularDealsData || []
   
   const isLoadingInitialData = !data && !error
   const isLoadingMore = isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === "undefined")
@@ -86,7 +92,8 @@ export function useDeals() {
 
   return {
     posts,
-    popularDeals,
+    trendingDeals: trendingDeals || [],
+    popularDeals: popularDeals || [],
     loading,
     isLoadingMore,
     isReachingEnd,

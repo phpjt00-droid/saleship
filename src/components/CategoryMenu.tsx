@@ -23,7 +23,7 @@ export default function CategoryMenu() {
     if (id) params.set('cat', id)
     else params.delete('cat')
     
-    router.push(`/hotdeal?${params.toString()}`, { scroll: false })
+    router.push(`/deal?${params.toString()}`, { scroll: false })
   }
 
   return (

@@ -27,10 +27,10 @@ const categoryTabs = [
 interface DealListProps {
   posts: Deal[];
   loading: boolean;
-  userLikes: Set<any>;
-  bookmarks: Set<any>;
-  onLikeToggle: (e: any, postId: number) => void;
-  onBookmarkToggle: (e: any, postId: number) => void;
+  userLikes: Set<string>;
+  bookmarks: Set<string>;
+  onLikeToggle: (e: any, postId: string | number) => void;
+  onBookmarkToggle: (e: any, postId: string | number) => void;
   isLoadingMore?: boolean;
   isReachingEnd?: boolean;
   loadMore?: () => void;

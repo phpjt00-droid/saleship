@@ -86,12 +86,32 @@ export function sortDeals(deals: any[], sortBy: string) {
       case 'views': return parsePrice(b.views) - parsePrice(a.views);
       case 'comments': return (b.comments || 0) - (a.comments || 0);
       case 'discount': return parsePrice(b.discount || b.price_info?.discount) - parsePrice(a.discount || a.price_info?.discount);
+      case 'trending':
+        const now = new Date().getTime();
+        const getTrendingScore = (item: any) => {
+          const likes = item.likes || 0;
+          const comments = item.comments || 0;
+          const views = parsePrice(item.views || 0);
+          const createdAt = new Date(item.createdAt || item.created_at || now).getTime();
+          const hoursPassed = (now - createdAt) / (1000 * 60 * 60);
+          return (likes * 3) + comments + (views / 10) - hoursPassed;
+        };
+        return getTrendingScore(b) - getTrendingScore(a);
+
       case 'popular':
-        const scoreA = parsePrice(a.views) + ((a.likes || 0) * 3) + ((a.comments || 0) * 2);
-        const scoreB = parsePrice(b.views) + ((b.likes || 0) * 3) + ((b.comments || 0) * 2);
-        return scoreB - scoreA;
+        const getPopularScore = (item: any) => {
+          const likes = item.likes || 0;
+          const comments = item.comments || 0;
+          const views = parsePrice(item.views || 0);
+          return (likes * 5) + (comments * 2) + (views / 5);
+        };
+        return getPopularScore(b) - getPopularScore(a);
+
       case 'latest':
-      default: return (b.id || 0) - (a.id || 0);
+      default:
+        const timeA = new Date(a.createdAt || a.created_at || 0).getTime();
+        const timeB = new Date(b.createdAt || b.created_at || 0).getTime();
+        return timeB - timeA;
     }
   });
 }

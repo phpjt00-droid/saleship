@@ -7,8 +7,8 @@ import { Deal } from '@/types/deal'
 
 interface PopularDealsProps {
   deals: Deal[];
-  userLikes: Set<any>;
-  onLikeToggle: (e: any, id: number) => void;
+  userLikes: Set<string>;
+  onLikeToggle: (e: any, id: string | number) => void;
 }
 
 export default function PopularDeals({ deals, userLikes, onLikeToggle }: PopularDealsProps) {
@@ -20,8 +20,8 @@ export default function PopularDeals({ deals, userLikes, onLikeToggle }: Popular
             <Flame size={20} fill="currentColor" />
           </div>
           <div>
-            <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Today's Popular Deals</h2>
-            <p className="text-sm font-bold text-slate-400">실시간 커뮤니티 인기 핫딜 Top 5</p>
+            <h2 className="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Trending Hot Deals</h2>
+            <p className="text-sm font-bold text-slate-400">커뮤니티 반응과 시간을 계산한 실시간 트렌딩</p>
           </div>
         </div>
         

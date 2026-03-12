@@ -1,6 +1,5 @@
 import { supabase } from '@/lib/supabaseClient'
-import { Deal } from '@/types/deal'
-;
+import { Deal, DealComment } from '@/types/deal'
 import { sortDeals as sortDealsUtil } from './dealUtils';
 
 export const dealService = {
@@ -11,93 +10,272 @@ export const dealService = {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    const { data: postsData, error: postsError } = await supabase
-      .from('posts')
+    // 새로운 'deals' 테이블에서 최신순으로 가져오기
+    const { data: dealsData, error: dealsError } = await supabase
+      .from('deals')
       .select('*')
-      .order('date', { ascending: false })
+      .order('created_at', { ascending: false })
       .range(from, to);
 
-    if (postsError) throw postsError;
+    if (dealsError) throw dealsError;
 
-    const { data: likesData, error: likesError } = await supabase
-      .from('post_likes')
-      .select('post_id');
-
-    const likeCounts = (likesData || []).reduce((acc: any, curr: any) => {
-      acc[curr.post_id] = (acc[curr.post_id] || 0) + 1;
-      return acc;
-    }, {});
-
-    return postsData.map(post => ({
-      id: post.id,
-      title: post.title,
-      image: post.image,
-      url: post.link || post.url || '',
-      price: post.price_info?.currentPrice || post.currentPrice || '가격 확인',
-      originalPrice: post.price_info?.originalPrice || post.originalPrice,
-      discount: post.price_info?.discount || post.discount,
-      store: post.store || '기타',
-      shipping: post.shipping || '무료배송',
-      likes: likeCounts[post.id.toString()] || post.likes || 0,
-      comments: post.comments || 0,
-      views: parseInt(post.views || '0', 10) || 0,
-      createdAt: post.date || post.created_at,
-      authorId: post.user_id || post.author_id || '',
-      category: post.category,
-      content: post.content,
-      author: post.author || '세일쉽',
-      avatar: post.avatar || '🐧'
+    return dealsData.map(deal => ({
+      id: deal.id,
+      title: deal.title,
+      image: deal.image,
+      url: deal.link || deal.url || '',
+      price: Number(deal.price) || 0, // 가격을 숫자형으로 처리
+      originalPrice: Number(deal.original_price) || 0, // 원가를 숫자형으로 처리
+      discount: Number(deal.discount) || 0, // 할인율을 숫자형으로 처리
+      store: deal.store || '세일쉽',
+      shipping: deal.shipping || '무료배송',
+      likes: deal.likes || 0,
+      comments: deal.comments_count || deal.comments || 0,
+      views: deal.views || 0,
+      createdAt: deal.created_at,
+      authorId: deal.user_id || '',
+      category: deal.category,
+      content: deal.content,
+      author: deal.author || '세일쉽',
+      avatar: deal.avatar || '🐧'
     }));
   },
 
   async getDealById(id: string | number): Promise<Deal> {
     const { data, error } = await supabase
-      .from('posts')
+      .from('deals')
       .select('*')
       .eq('id', id)
       .single();
 
     if (error) throw error;
     
+    return this._mapDealData(data);
+  },
+
+  /**
+   * 슬러그를 통해 특정 핫딜 정보를 가져옵니다.
+   */
+  async getDealBySlug(slug: string): Promise<Deal> {
+    const { data, error } = await supabase
+      .from('deals')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (error) throw error;
+    return this._mapDealData(data);
+  },
+
+  /**
+   * 핫딜의 조회수를 1 증가시킵니다.
+   */
+  async incrementViewCount(id: string | number) {
+    // 주의: 실제 환경에서는 동시성 제어를 위해 RPC 기능을 사용하는 것이 좋습니다.
+    // 여기서는 간단한 업데이트 로직을 구현합니다.
+    const { data: current } = await supabase
+      .from('deals')
+      .select('views')
+      .eq('id', id)
+      .single();
+    
+    if (current) {
+      await supabase
+        .from('deals')
+        .update({ views: (current.views || 0) + 1 })
+        .eq('id', id);
+    }
+  },
+
+  /**
+   * 마이그레이션을 위한 데이터 매핑 헬퍼
+   */
+  _mapDealData(deal: any): Deal {
     return {
-      id: data.id,
-      title: data.title,
-      image: data.image,
-      url: data.link || data.url || '',
-      price: data.price_info?.currentPrice || data.currentPrice || '가격 확인',
-      originalPrice: data.price_info?.originalPrice || data.originalPrice,
-      discount: data.price_info?.discount || data.discount,
-      store: data.store || '기타',
-      shipping: data.shipping || '무료배송',
-      likes: data.likes || 0,
-      comments: data.comments || 0,
-      views: parseInt(data.views || '0', 10) || 0,
-      createdAt: data.date || data.created_at,
-      authorId: data.user_id || data.author_id || '',
-      category: data.category,
-      content: data.content,
-      author: data.author || '세일쉽',
-      avatar: data.avatar || '🐧'
+      id: deal.id,
+      title: deal.title,
+      subtitle: deal.subtitle,
+      image: deal.image,
+      url: deal.link || deal.url || '',
+      price: Number(deal.price) || 0,
+      originalPrice: Number(deal.original_price) || 0,
+      discount: Number(deal.discount) || 0,
+      store: deal.store || '세일쉽',
+      shipping: deal.shipping || '무료배송',
+      likes: deal.likes || 0,
+      comments: deal.comments_count || deal.comments || 0,
+      views: deal.views || 0,
+      createdAt: deal.created_at,
+      authorId: deal.user_id || '',
+      category: deal.category,
+      content: deal.content,
+      author: deal.author || '세일쉽',
+      avatar: deal.avatar || '🐧'
     };
   },
 
-  async getComments(postId: string | number) {
+  async getComments(postId: string | number): Promise<DealComment[]> {
     const { data, error } = await supabase
       .from('comments')
-      .select('*')
+      .select(`
+        *,
+        profiles:user_id (nickname, avatar_url)
+      `)
       .eq('post_id', postId)
       .order('created_at', { ascending: true });
 
     if (error) throw error;
-    return data || [];
+    
+    return (data || []).map(comment => ({
+      id: comment.id,
+      post_id: comment.post_id,
+      user_id: comment.user_id,
+      user_name: comment.profiles?.nickname || '익명 사용자',
+      user_avatar: comment.profiles?.avatar_url || '👤',
+      content: comment.content,
+      likes: comment.likes || 0,
+      created_at: comment.created_at
+    }));
   },
 
   /**
-   * 실시간 인기순(점수 기반) Top 5 핫딜을 가져옵니다.
+   * 새로운 댓글을 작성합니다.
    */
-  async getPopularDeals(): Promise<Deal[]> {
-    const deals = await this.getDeals();
-    return this.sortDeals(deals, 'popular').slice(0, 5);
+  async addComment(postId: string, content: string, userId: string): Promise<void> {
+    const { error } = await supabase
+      .from('comments')
+      .insert([
+        {
+          post_id: postId,
+          user_id: userId,
+          content: content,
+          post_type: 'deal'
+        }
+      ]);
+
+    if (error) throw error;
+  },
+
+  /**
+   * 사용자의 투표를 등록하거나 변경합니다. (Upsert)
+   */
+  async vote(postId: string, userId: string, voteType: 'up' | 'down' | null): Promise<void> {
+    if (voteType === null) {
+      // 투표 취소
+      const { error } = await supabase
+        .from('votes')
+        .delete()
+        .eq('post_id', postId)
+        .eq('user_id', userId);
+      if (error) throw error;
+      return;
+    }
+
+    const { error } = await supabase
+      .from('votes')
+      .upsert({
+        post_id: postId,
+        user_id: userId,
+        vote_type: voteType,
+        created_at: new Date().toISOString()
+      }, {
+        onConflict: 'post_id,user_id'
+      });
+
+    if (error) throw error;
+  },
+
+  /**
+   * 특정 게시물의 Up/Down 실시간 합계를 가져옵니다.
+   */
+  async getVoteCounts(postId: string): Promise<{ up: number, down: number }> {
+    const { data, error } = await supabase
+      .from('votes')
+      .select('vote_type')
+      .eq('post_id', postId);
+
+    if (error) throw error;
+
+    const counts = (data || []).reduce((acc, curr) => {
+      if (curr.vote_type === 'up') acc.up++;
+      else if (curr.vote_type === 'down') acc.down++;
+      return acc;
+    }, { up: 0, down: 0 });
+
+    return counts;
+  },
+
+  /**
+   * 현재 사용자의 특정 게시물에 대한 투표 상태를 가져옵니다.
+   */
+  async getUserVote(postId: string, userId: string): Promise<'up' | 'down' | null> {
+    const { data, error } = await supabase
+      .from('votes')
+      .select('vote_type')
+      .eq('post_id', postId)
+      .eq('user_id', userId)
+      .maybeSingle();
+
+    if (error) throw error;
+    return data?.vote_type || null;
+  },
+
+  /**
+   * 새로운 핫딜을 등록합니다.
+   */
+  async createDeal(dealData: Partial<Deal>): Promise<{ id: string, slug: string }> {
+    const baseSlug = encodeURIComponent(
+      dealData.title?.slice(0, 20).replace(/\s+/g, '-') || 'deal'
+    );
+    const slug = `${baseSlug}-${Date.now().toString().slice(-6)}`;
+
+    const { data, error } = await supabase
+      .from('deals')
+      .insert([
+        {
+          title: dealData.title,
+          subtitle: dealData.subtitle,
+          slug: slug,
+          price: dealData.price,
+          original_price: dealData.originalPrice,
+          discount: dealData.discount,
+          image: dealData.image,
+          link: dealData.url,
+          content: dealData.content,
+          category: dealData.category,
+          views: 0,
+          likes: 0,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select('id, slug')
+      .single();
+
+    if (error) throw error;
+    return data;
+  },
+
+  /**
+   * 실시간 트렌딩 핫딜을 가져옵니다. (점수 + 시간경과 반영)
+   */
+  async getTrendingDeals(limit: number = 5): Promise<Deal[]> {
+    const deals = await this.getDeals(1, 50);
+    return this.sortDeals(deals, 'trending').slice(0, limit);
+  },
+
+  /**
+   * 누적 인기 핫딜을 가져옵니다. (순수 반응도 합계)
+   */
+  async getPopularDeals(limit: number = 8): Promise<Deal[]> {
+    const deals = await this.getDeals(1, 100);
+    return this.sortDeals(deals, 'popular').slice(0, limit);
+  },
+
+  /**
+   * 최신 핫딜을 가져옵니다.
+   */
+  async getLatestDeals(limit: number = 12): Promise<Deal[]> {
+    return await this.getDeals(1, limit);
   },
 
   /**

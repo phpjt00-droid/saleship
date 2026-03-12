@@ -2,7 +2,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MessageSquare, Eye, Clock, ThumbsUp, Bookmark } from 'lucide-react'
+import { MessageSquare, Eye, Clock, ThumbsUp, ThumbsDown, Bookmark } from 'lucide-react'
 import { Deal, DealViewMode } from '@/types/deal'
 
 interface DealCardProps {
@@ -10,8 +10,8 @@ interface DealCardProps {
   viewMode?: DealViewMode;
   isLiked?: boolean;
   isBookmarked?: boolean;
-  onLikeToggle?: (e: any, id: number) => void;
-  onBookmarkToggle?: (e: any, id: number) => void;
+  onLikeToggle?: (e: any, id: string | number) => void;
+  onBookmarkToggle?: (e: any, id: string | number) => void;
   searchQuery?: string;
 }
 
@@ -77,12 +77,12 @@ export default function DealCard({
           <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-slate-700/50">
             <div className="flex items-center gap-4 text-[11px] text-slate-400 font-bold">
               <span className="flex items-center gap-1.5"><Eye size={12} /> {deal.views}</span>
-              <button 
-                onClick={(e) => onLikeToggle?.(e, deal.id)}
-                className={`flex items-center gap-1.5 transition-colors ${isLiked ? 'text-rose-500' : 'hover:text-rose-500'}`}
-              >
-                <ThumbsUp size={12} fill={isLiked ? "currentColor" : "none"} /> {deal.likes}
-              </button>
+              <div className="flex items-center gap-1.5 transition-colors hover:text-blue-600">
+                <ThumbsUp size={12} />
+                <span className="font-bold text-slate-700 dark:text-slate-300">
+                  {deal.likes}
+                </span>
+              </div>
               <span className="flex items-center gap-1.5 cursor-default"><MessageSquare size={12} /> {deal.comments}</span>
             </div>
             
