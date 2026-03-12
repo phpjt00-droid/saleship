@@ -15,17 +15,18 @@ import PopularDeals from '../components/PopularDeals'
 const trendingDeals = []
 
 function Home() {
-  const [activeTab, setActiveTab] = useState('최신')
   const [deals, setDeals] = useState([])
   const [bookmarks, setBookmarks] = useState(new Set())
   const [userLikes, setUserLikes] = useState(new Set())
   const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState(null)
   
   const searchParams = useSearchParams()
   const searchQuery = searchParams.get('q') || ''
   const [selectedCategory, setSelectedCategory] = useState('전체')
+  const [sortBy, setBy] = useState('latest')
 
-  // 사용자 인증 정보 가져오기
+  // Load persistence from localStorage
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null)
@@ -34,6 +35,11 @@ function Home() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
+
+    const savedLikes = localStorage.getItem('saleship_likes')
+    const savedBookmarks = localStorage.getItem('saleship_bookmarks')
+    if (savedLikes) setUserLikes(new Set(JSON.parse(savedLikes)))
+    if (savedBookmarks) setBookmarks(new Set(JSON.parse(savedBookmarks)))
 
     return () => subscription.unsubscribe()
   }, [])
@@ -48,176 +54,90 @@ function Home() {
 
       if (postsError) throw postsError
 
-      // 1. 좋아요 집계
-      const { data: likesData, error: likesError } = await supabase
-        .from('post_likes')
-        .select('post_id')
-
-      if (likesError) throw likesError
-
-      const likeCounts = likesData.reduce((acc, curr) => {
-        acc[curr.post_id] = (acc[curr.post_id] || 0) + 1
-        return acc
-      }, {})
-
       const updatedDeals = postsData.map(post => ({
         ...post,
-        upvotes: likeCounts[post.id.toString()] || post.likes || 0,
+        upvotes: post.likes || 0,
         time: new Date(post.date).toLocaleDateString('ko-KR', { month: 'long', day: 'numeric' })
       }))
       
       setDeals(updatedDeals)
     } catch (error) {
-      console.error('Error fetching deals or interactions:', error)
-      // 폴백: 테이블이 없을 경우 대비 (최초 실행 시 등)
+      console.error('Error fetching deals:', error)
       setDeals([])
     } finally {
       setLoading(false)
     }
   }
 
-  // 초기 로딩 시 localStorage에서 데이터 불러오기
   useEffect(() => {
-    // 북마크 로드
-    const savedBookmarks = localStorage.getItem('saleship_bookmarks')
-    if (savedBookmarks) {
-      try {
-        setBookmarks(new Set(JSON.parse(savedBookmarks)))
-      } catch (e) {
-        console.error('Failed to parse bookmarks from localStorage', e)
-      }
-    }
-
-    // 좋아요 로드
-    const savedLikes = localStorage.getItem('saleship_likes')
-    if (savedLikes) {
-      try {
-        setUserLikes(new Set(JSON.parse(savedLikes)))
-      } catch (e) {
-        console.error('Failed to parse likes from localStorage', e)
-      }
-    }
-    
     fetchDeals()
   }, [])
 
-  useEffect(() => {
-    if (user) {
-      fetchDeals()
-    }
-  }, [user])
-
-  // 북마크 토글 처리 (localStorage 저장)
-  const handleBookmarkToggle = (e, postId) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    const postIdStr = postId.toString()
-    setBookmarks(prev => {
-      const newBookmarks = new Set(prev)
-      if (newBookmarks.has(postIdStr)) {
-        newBookmarks.delete(postIdStr)
-      } else {
-        newBookmarks.add(postIdStr)
-      }
-      
-      // localStorage에 즉시 반영
-      localStorage.setItem('saleship_bookmarks', JSON.stringify(Array.from(newBookmarks)))
-      return newBookmarks
-    })
-  }
-
-  // 좋아요 토글 처리 (localStorage 저장 및 즉시 카운트 반영)
   const handleLikeToggle = (e, postId) => {
     e.preventDefault()
     e.stopPropagation()
-
-    const postIdStr = postId.toString()
-    const isLiking = !userLikes.has(postIdStr)
-
-    // 1. 사용자 좋아요 상태 업데이트
+    const idStr = postId.toString()
     setUserLikes(prev => {
-      const newLikes = new Set(prev)
-      if (isLiking) {
-        newLikes.add(postIdStr)
-      } else {
-        newLikes.delete(postIdStr)
-      }
-      localStorage.setItem('saleship_likes', JSON.stringify(Array.from(newLikes)))
-      return newLikes
+      const next = new Set(prev)
+      if (next.has(idStr)) next.delete(idStr)
+      else next.add(idStr)
+      localStorage.setItem('saleship_likes', JSON.stringify([...next]))
+      return next
     })
-
-    // 2. 딜 리스트의 upvotes 즉시 업데이트
-    setDeals(prevDeals => prevDeals.map(deal => {
-      if (deal.id.toString() === postIdStr) {
-        return {
-          ...deal,
-          upvotes: isLiking ? (deal.upvotes || 0) + 1 : Math.max(0, (deal.upvotes || 0) - 1)
-        }
-      }
-      return deal
-    }))
   }
 
-  const filteredAndSortedDeals = useMemo(() => {
-    let result = [...deals]
-
-    // 1. 카테고리 필터링
-    if (selectedCategory !== '전체') {
-      result = result.filter(deal => deal.category === selectedCategory)
-    }
-
-    // 2. 검색어 필터링
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase()
-      result = result.filter(deal => 
-        deal.title.toLowerCase().includes(query) || 
-        deal.store.toLowerCase().includes(query)
-      )
-    }
-
-    // 3. 정렬 적용
-    return result.sort((a, b) => {
-      if (activeTab === '최신') {
-        return b.timestamp - a.timestamp
-      } else if (activeTab === '조회순') {
-        const getViews = (v) => {
-          if (typeof v === 'string') {
-            return parseFloat(v.replace('k', '')) * (v.includes('k') ? 1000 : 1)
-          }
-          return v || 0
-        }
-        return getViews(b.views) - getViews(a.views)
-      } else if (activeTab === '댓글순') {
-        return (b.comments || 0) - (a.comments || 0)
-      } else if (activeTab === '할인율순') {
-        const getDiscount = (d) => {
-          if (typeof d === 'string') {
-            const match = d.match(/(\d+)%/)
-            return match ? parseInt(match[1], 10) : 0
-          }
-          return 0
-        }
-        return getDiscount(b.discount) - getDiscount(a.discount)
-      } else {
-        return b.upvotes - a.upvotes
-      }
+  const handleBookmarkToggle = (e, postId) => {
+    e.preventDefault()
+    e.stopPropagation()
+    const idStr = postId.toString()
+    setBookmarks(prev => {
+      const next = new Set(prev)
+      if (next.has(idStr)) next.delete(idStr)
+      else next.add(idStr)
+      localStorage.setItem('saleship_bookmarks', JSON.stringify([...next]))
+      return next
     })
-  }, [deals, activeTab, searchQuery, selectedCategory])
+  }
 
-  // Top 5 추출 로직 (score = views + comments*2 + upvotes*3)
+  const parseValue = (val) => {
+    if (typeof val === 'number') return val;
+    if (!val) return 0;
+    const str = val.toString().toLowerCase();
+    if (str.includes('%')) return parseFloat(str) || 0;
+    if (str.includes('k')) return parseFloat(str) * 1000;
+    return parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+  }
+
+  const filteredDeals = useMemo(() => {
+    return deals.filter(deal => {
+      const matchesCategory = selectedCategory === '전체' || deal.category === selectedCategory;
+      const matchesSearch = deal.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          deal.store.toLowerCase().includes(searchQuery.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [deals, selectedCategory, searchQuery]);
+
+  const sortedDeals = useMemo(() => {
+    return [...filteredDeals].sort((a, b) => {
+      if (sortBy === 'views') return parseValue(b.views) - parseValue(a.views);
+      if (sortBy === 'comments') return b.comments - a.comments;
+      if (sortBy === 'discount') return parseValue(b.discount) - parseValue(a.discount);
+      return b.id - a.id; // latest
+    });
+  }, [filteredDeals, sortBy]);
+
   const top5Deals = useMemo(() => {
-    return [...deals].map(deal => {
-      let numericViews = typeof deal.views === 'string' 
-        ? parseFloat(deal.views.replace('k', '')) * (deal.views.includes('k') ? 1000 : 1)
-        : deal.views || 0;
-      
-      const score = numericViews + (deal.comments * 2) + (deal.upvotes * 3);
-      return { ...deal, score };
-    }).sort((a, b) => b.score - a.score).slice(0, 5);
+    return [...deals]
+      .sort((a, b) => {
+        const scoreA = parseValue(a.views) + (a.upvotes * 3) + (a.comments * 2);
+        const scoreB = parseValue(b.views) + (b.upvotes * 3) + (b.comments * 2);
+        return scoreB - scoreA;
+      })
+      .slice(0, 5);
   }, [deals]);
 
-  const categories = ['전체', '가전', '패션', '푸드', '뷰티', '리빙', '게임']
+
+  const categories = ['전체', '전자제품', '패션', '식품', '뷰티', '리빙', '게임']
 
   return (
     <div className="home">
@@ -307,8 +227,8 @@ function Home() {
       {/* Daily Widgets Section */}
       <DailyWidgets />
 
-      {/* Categories Filter Section */}
-      <section className="py-4 bg-slate-50/30">
+      {/* Category Filter Section */}
+      <section className="bg-slate-50/50 py-10 border-b border-slate-100">
         <div className="container">
           <div className="flex flex-wrap items-center justify-center gap-2 animate-fadeInUp delay-1">
             {categories.map((cat) => (
@@ -339,37 +259,33 @@ function Home() {
         <div className="container">
           <div className="deals-header">
             <h2 className="deals-title">실시간 인기 핫딜</h2>
-            <div className="deals-tabs">
-              <button 
-                className={`deals-tab ${activeTab === '최신' ? 'active' : ''}`}
-                onClick={() => setActiveTab('최신')}
-              >
-                최신순
-              </button>
-              <button 
-                className={`deals-tab ${activeTab === '조회순' ? 'active' : ''}`}
-                onClick={() => setActiveTab('조회순')}
-              >
-                조회순
-              </button>
-              <button 
-                className={`deals-tab ${activeTab === '댓글순' ? 'active' : ''}`}
-                onClick={() => setActiveTab('댓글순')}
-              >
-                댓글순
-              </button>
-              <button 
-                className={`deals-tab ${activeTab === '할인율순' ? 'active' : ''}`}
-                onClick={() => setActiveTab('할인율순')}
-              >
-                할인율순
-              </button>
+            
+            {/* Sorting Tabs */}
+            <div className="flex flex-wrap items-center gap-2 mt-6 mb-2">
+              {[
+                { id: 'latest', label: '최신순' },
+                { id: 'views', label: '조회순' },
+                { id: 'comments', label: '댓글순' },
+                { id: 'discount', label: '할인율' }
+              ].map(tab => (
+                <button
+                  key={tab.id}
+                  onClick={() => setBy(tab.id)}
+                  className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
+                    sortBy === tab.id 
+                    ? 'bg-slate-900 text-white shadow-lg shadow-slate-200 scale-105' 
+                    : 'bg-white text-slate-500 hover:bg-slate-50 border border-slate-100'
+                  }`}
+                >
+                  {tab.label}
+                </button>
+              ))}
             </div>
           </div>
 
           <div className="deals-grid">
-            {filteredAndSortedDeals.length > 0 ? (
-              filteredAndSortedDeals.map((deal, i) => (
+            {sortedDeals.length > 0 ? (
+              sortedDeals.map((deal, i) => (
                 <HotDealCard
                   key={deal.id}
                   deal={deal}

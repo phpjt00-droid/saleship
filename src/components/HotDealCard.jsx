@@ -14,6 +14,17 @@ export default function HotDealCard({
   onLikeToggle, 
   onBookmarkToggle 
 }) {
+  // Parse numeric values for HOT badge criteria
+  const parseNum = (val) => {
+    if (typeof val === 'number') return val;
+    if (!val) return 0;
+    const str = val.toString().toLowerCase();
+    if (str.includes('k')) return parseFloat(str) * 1000;
+    return parseFloat(str.replace(/[^0-9.]/g, '')) || 0;
+  };
+
+  const isHot = (deal.upvotes > 30) || (deal.comments > 20) || (parseNum(deal.views) > 1000);
+
   return (
     <Link 
       href={`/post/${deal.id}`} 
@@ -56,7 +67,12 @@ export default function HotDealCard({
         </div>
 
         {/* Title */}
-        <h3 className="text-[16px] font-extrabold text-slate-900 dark:text-slate-100 line-clamp-2 mb-4 leading-snug group-hover:text-orange-600 transition-colors h-12">
+        <h3 className="text-[16px] font-extrabold text-slate-900 dark:text-slate-100 line-clamp-2 mb-4 leading-snug group-hover:text-orange-600 transition-colors h-12 flex items-center gap-2">
+          {isHot && (
+            <span className="shrink-0 bg-red-500 text-white text-[10px] font-black px-1.5 py-0.5 rounded leading-none animate-pulse">
+              HOT
+            </span>
+          )}
           <HighlightText text={deal.title} query={searchQuery} />
         </h3>
 
@@ -79,7 +95,7 @@ export default function HotDealCard({
           <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-700/50 text-[11px] text-slate-400 dark:text-slate-500 font-bold">
             <DealActions 
               postId={deal.id}
-              upvotes={deal.upvotes}
+              upvotes={deal.upvotes + (isLiked ? 1 : 0)}
               isLiked={isLiked}
               isBookmarked={isBookmarked}
               onLikeToggle={onLikeToggle}

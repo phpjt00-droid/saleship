@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { Flame, MessageSquare } from 'lucide-react'
+import { Flame, MessageSquare, ThumbsUp } from 'lucide-react'
 import DealActions from './DealActions'
 
 export default function PopularDeals({ 
@@ -65,9 +65,12 @@ export default function PopularDeals({
                   </div>
                   
                   <div className="flex items-center gap-5 pr-2">
-                    <div className="flex items-center gap-1.5 text-slate-400 group-hover:text-blue-500 transition-colors">
+                    <div 
+                      className="flex items-center gap-1.5 text-slate-400 group-hover:text-blue-500 transition-colors"
+                      onClick={(e) => onLikeToggle(e, deal.id)}
+                    >
                       <ThumbsUp size={16} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} className={userLikes.has(deal.id.toString()) ? 'text-blue-500' : ''} />
-                      <span className="text-xs font-black">{deal.upvotes}</span>
+                      <span className="text-xs font-black">{deal.upvotes + (userLikes.has(deal.id.toString()) ? 1 : 0)}</span>
                     </div>
                     <div className="flex items-center gap-1.5 text-slate-400 group-hover:text-slate-600 transition-colors">
                       <MessageSquare size={16} />
