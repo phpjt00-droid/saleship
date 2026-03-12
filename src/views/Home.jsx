@@ -9,6 +9,8 @@ import './Home.css'
 import DailyWidgets from '../components/DailyWidgets'
 import { supabase } from '../lib/supabase'
 import { useEffect } from 'react'
+import HotDealCard from '../components/HotDealCard'
+import PopularDeals from '../components/PopularDeals'
 
 const trendingDeals = []
 
@@ -219,8 +221,52 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Hero Section with Mascot */}
-      <section className="hero-hot">
+      {/* New Intro Hero Section */}
+      <section className="relative bg-white pt-24 pb-16 overflow-hidden border-b border-slate-100">
+        {/* Subtle background element */}
+        <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-orange-50/30 to-transparent pointer-events-none" />
+        
+        <div className="container relative z-10 px-6">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 bg-orange-50 text-orange-600 px-3 py-1 rounded-full text-xs font-bold mb-6 animate-fadeInUp">
+              <Sparkles size={14} />
+              <span>Premium Deal Curation</span>
+            </div>
+            
+            <h1 className="text-4xl md:text-6xl font-black text-slate-900 leading-[1.1] mb-6 animate-fadeInUp delay-1">
+              🔥 Saleship <br />
+              <span className="text-orange-500">Hot Deal</span> Community
+            </h1>
+            
+            <p className="text-lg md:text-xl text-slate-500 leading-relaxed mb-8 animate-fadeInUp delay-2">
+              Discover and share the best online deals from across the internet.<br className="hidden md:block" />
+              <span className="font-semibold text-slate-700">Electronics, Fashion, Food, Beauty, Living, Gaming.</span>
+            </p>
+            
+            <div className="flex flex-wrap gap-4 animate-fadeInUp delay-3">
+              <a 
+                href="#deals" 
+                className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold rounded-2xl shadow-lg shadow-orange-200 transition-all hover:-translate-y-1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById('deals')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                View Hot Deals
+              </a>
+              <Link 
+                href="/write" 
+                className="px-8 py-4 bg-white border-2 border-slate-200 hover:border-orange-200 text-slate-700 hover:text-orange-600 font-bold rounded-2xl transition-all hover:-translate-y-1"
+              >
+                Submit a Deal
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Existing Hero Section (Renamed to be secondary or keeping as mascot intro) */}
+      <section className="hero-hot border-b border-slate-50">
         <div className="hero-hot__bg">
           <div className="hero-hot__orb hero-hot__orb--1" />
           <div className="hero-hot__orb hero-hot__orb--2" />
@@ -233,21 +279,15 @@ function Home() {
               <span>실시간 최저가 핫딜 정보</span>
             </div>
 
-            <h1 className="hero-hot__title animate-fadeInUp delay-1">
+            <h2 className="hero-hot__title animate-fadeInUp delay-1 !text-4xl">
               무분별한 정보를 넘어<br />
               <span className="gradient-text">양질의 핫딜</span>을 경험하세요
-            </h1>
+            </h2>
 
             <p className="hero-hot__subtitle animate-fadeInUp delay-2">
               패션부터 리빙, 뷰티까지!<br />
               광고가 아닌, 소비자를 위한 고품질 정보를 큐레이션합니다.
             </p>
-
-            <div className="hero-hot__actions animate-fadeInUp delay-3">
-              <Link href="/board" className="btn-primary">
-                지금 핫딜 확인하기
-              </Link>
-            </div>
           </div>
 
           <div className="hero-hot__mascot-wrap animate-fadeInUp delay-4">
@@ -289,79 +329,13 @@ function Home() {
       </section>
 
       {/* Today's Popular Deals Section */}
-      <section className="section bg-gradient-to-b from-transparent to-slate-50/50 pt-8 pb-12">
-        <div className="container">
-          <div className="flex items-center gap-2 mb-6">
-            <Flame className="text-orange-500" size={24} />
-            <h2 className="text-xl md:text-2xl font-extrabold text-slate-900 tracking-tight">🔥 Today's Popular Deals</h2>
-          </div>
-          
-          <div className="bg-white rounded-2xl border border-slate-200/60 shadow-[0_8px_30px_rgb(0,0,0,0.02)] overflow-hidden">
-            <div className="divide-y divide-slate-100/80">
-              {top5Deals.map((deal, index) => (
-                <Link 
-                  key={deal.id} 
-                  href={`/post/${deal.id}`}
-                  className="flex items-center gap-4 p-5 hover:bg-slate-50/80 transition-all group"
-                >
-                  <div className={`flex-shrink-0 w-10 h-10 flex items-center justify-center rounded-xl font-black text-lg
-                    ${index === 0 ? 'bg-orange-500 text-white shadow-lg shadow-orange-200' : 
-                      index === 1 ? 'bg-slate-700 text-white shadow-lg shadow-slate-200' : 
-                      index === 2 ? 'bg-orange-400 text-white shadow-lg shadow-orange-100' : 
-                      'bg-slate-100 text-slate-400'}`}
-                  >
-                    {index + 1}
-                  </div>
-                  
-                  <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        <span className="text-[11px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded border border-slate-200">
-                          {deal.store}
-                        </span>
-                        {deal.discount && (
-                          <span className="text-[11px] font-extrabold text-orange-600 bg-orange-50 px-2 py-0.5 rounded border border-orange-100">
-                            {deal.discount}
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="text-base font-bold text-slate-800 truncate group-hover:text-orange-600 transition-colors">
-                        {deal.title}
-                      </h3>
-                    </div>
-                    
-                    <div className="flex items-center sm:justify-end gap-6 flex-shrink-0">
-                      <div className="text-right">
-                        <div className="text-lg font-black text-slate-900">{deal.currentPrice}</div>
-                        {deal.originalPrice && (
-                          <div className="text-[11px] text-slate-400 line-through opacity-70">{deal.originalPrice}</div>
-                        )}
-                      </div>
-                      
-                      <div className="flex items-center gap-1.5 bg-slate-50 text-slate-500 border border-slate-100 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
-                        <button 
-                          className={`flex items-center gap-1 transition-colors hover:text-blue-500 ${userLikes.has(deal.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
-                          onClick={(e) => handleLikeToggle(e, deal.id)}
-                        >
-                          <ThumbsUp size={14} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} />
-                          {deal.upvotes}
-                        </button>
-                      </div>
-                      <div className="flex items-center gap-1.5 bg-slate-50 text-slate-500 border border-slate-100 px-3 py-1.5 rounded-full text-xs font-bold shadow-sm">
-                        <MessageSquare size={14} className="text-slate-400" />
-                        {deal.comments}
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <PopularDeals 
+        deals={top5Deals}
+        userLikes={userLikes}
+        onLikeToggle={handleLikeToggle}
+      />
 
-      {/* Trending Deals Section */}
-      <section className="section deals-section">
+      <section className="section deals-section" id="deals">
         <div className="container">
           <div className="deals-header">
             <h2 className="deals-title">실시간 인기 핫딜</h2>
@@ -396,71 +370,15 @@ function Home() {
           <div className="deals-grid">
             {filteredAndSortedDeals.length > 0 ? (
               filteredAndSortedDeals.map((deal, i) => (
-                <Link 
-                  href={`/post/${deal.id}`} 
-                  key={deal.id} 
-                  className="animate-fadeInUp group relative block h-full flex flex-col bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-[0_25px_50px_-12px_rgba(0,0,0,0.15)] hover:border-orange-500" 
-                  style={{ animationDelay: `${i * 0.1}s` }}
-                >
-                    <div className="relative w-full h-52 overflow-hidden bg-slate-50 dark:bg-slate-800/80 shrink-0">
-                      <Image 
-                        src={deal.image} 
-                        alt={deal.title} 
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-110" 
-                      />
-                      
-                      {/* 할인율 뱃지 (좌상단) */}
-                      {deal.discount && (
-                        <div className="absolute top-3 left-3 bg-rose-500/95 backdrop-blur-sm text-white text-[11px] font-black px-2.5 py-1 rounded-sm shadow-lg z-10">
-                          {deal.discount}
-                        </div>
-                      )}
-
-                      {/* 북마크 버튼 추가 */}
-                      <button 
-                        className={`absolute top-3 right-3 p-1.5 rounded-full backdrop-blur-md transition-all z-20 shadow-sm ${bookmarks.has(deal.id.toString()) ? 'bg-amber-400 text-white' : 'bg-slate-900/30 text-white hover:bg-slate-900/60'}`}
-                        onClick={(e) => handleBookmarkToggle(e, deal.id)}
-                      >
-                        <Bookmark size={14} fill={bookmarks.has(deal.id.toString()) ? "currentColor" : "none"} />
-                      </button>
-                    </div>
-                    
-                    <div className="p-5 flex flex-col flex-1">
-                      <div className="flex items-center gap-2 mb-2.5">
-                         <span className="text-[10px] font-bold text-slate-600 bg-slate-100 dark:bg-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md uppercase border border-slate-200 dark:border-slate-600 shadow-sm">{deal.store}</span>
-                         <span className="text-[11px] font-medium text-slate-400 ml-auto flex items-center gap-1"><MapPin size={10} />{deal.shipping}</span>
-                      </div>
-
-                      <h3 className="text-[15px] font-extrabold text-slate-900 dark:text-slate-100 line-clamp-2 mb-4 leading-snug group-hover:text-amber-500 transition-colors h-11">
-                        <HighlightText text={deal.title} query={searchQuery} />
-                      </h3>
-
-                      <div className="mt-auto">
-                        <div className="flex items-baseline gap-2 mb-4">
-                          <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight group-hover:text-blue-600 transition-colors">{deal.currentPrice}</span>
-                          {deal.originalPrice && (
-                            <span className="text-sm font-medium text-slate-400 line-through decoration-slate-300 dark:decoration-slate-500">{deal.originalPrice}</span>
-                          )}
-                        </div>
-
-                        <div className="flex items-center justify-between pt-3.5 border-t border-slate-100 dark:border-slate-700/50 text-[11px] text-slate-400 dark:text-slate-500 font-medium">
-                          <div className="flex items-center gap-3">
-                            <button 
-                              className={`flex items-center gap-1.5 transition-colors hover:text-blue-500 ${userLikes.has(deal.id.toString()) ? 'text-blue-500 font-bold' : ''}`}
-                              onClick={(e) => handleLikeToggle(e, deal.id)}
-                            >
-                              <ThumbsUp size={12} fill={userLikes.has(deal.id.toString()) ? "currentColor" : "none"} /> 
-                              {deal.upvotes.toLocaleString()}
-                            </button>
-                            <span className="flex items-center gap-1.5"><MessageSquare size={12} /> {deal.comments.toLocaleString()}</span>
-                          </div>
-                          <span className="flex items-center gap-1.5"><Eye size={12} /> {typeof deal.views === 'number' ? deal.views.toLocaleString() : deal.views}</span>
-                        </div>
-                      </div>
-                    </div>
-                </Link>
+                <HotDealCard
+                  key={deal.id}
+                  deal={deal}
+                  searchQuery={searchQuery}
+                  isLiked={userLikes.has(deal.id.toString())}
+                  isBookmarked={bookmarks.has(deal.id.toString())}
+                  onLikeToggle={handleLikeToggle}
+                  onBookmarkToggle={handleBookmarkToggle}
+                />
               ))
             ) : (
               <div className="col-span-full py-20 text-center animate-fadeIn">
