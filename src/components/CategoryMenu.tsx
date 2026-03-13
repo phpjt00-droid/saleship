@@ -3,15 +3,15 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { LayoutGrid, Shirt, Utensils, Sparkles, Home as HomeIcon, Smartphone, Gamepad2, Ticket, MapPin } from 'lucide-react'
 
 const categories = [
-  { id: 'all', name: 'All', icon: LayoutGrid },
-  { id: 'fashion', name: 'Fashion', icon: Shirt },
-  { id: 'beauty', name: 'Beauty', icon: Sparkles },
-  { id: 'food', name: 'Food', icon: Utensils },
-  { id: 'living', name: 'Living', icon: HomeIcon },
-  { id: 'tech', name: 'Tech', icon: Smartphone },
-  { id: 'game', name: 'Game', icon: Gamepad2 },
-  { id: 'ticket', name: 'Voucher', icon: Ticket },
-  { id: 'offline', name: 'Offline', icon: MapPin },
+  { id: 'all', name: '전체', icon: LayoutGrid },
+  { id: 'fashion', name: '패션', icon: Shirt },
+  { id: 'beauty', name: '뷰티', icon: Sparkles },
+  { id: 'food', name: '식품', icon: Utensils },
+  { id: 'living', name: '리빙', icon: HomeIcon },
+  { id: 'tech', name: '테크', icon: Smartphone },
+  { id: 'game', name: '게임', icon: Gamepad2 },
+  { id: 'ticket', name: '이용권', icon: Ticket },
+  { id: 'offline', name: '오프라인', icon: MapPin },
 ]
 
 export default function CategoryMenu() {

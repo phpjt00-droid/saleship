@@ -14,24 +14,24 @@ export default function Hero() {
       <div className="container relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <div className="flex-1 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 animate-in fade-in duration-1000">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                <span className="absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
               </span>
               Curated Hot Deals
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[1.1]">
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[1.1] animate-in fade-in duration-1000 delay-100">
               취향과 가치를 담은 핫딜,<br />
               <span className="text-blue-600 underline decoration-blue-200 dark:decoration-blue-900/50 decoration-8 underline-offset-4">세일쉽(Saleship)</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
+            <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed animate-in fade-in duration-1000 delay-200">
               단순히 저렴한 물건이 아닌, 당신의 라이프스타일을 완성할 특별한 제안을 만나보세요. 깐깐하게 엄선된 정보만을 전달합니다.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 animate-in fade-in duration-1000 delay-300">
               <form 
                 onSubmit={(e) => {
                   e.preventDefault();
@@ -54,7 +54,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="flex-1 relative">
+          <div className="flex-1 relative animate-in fade-in duration-1000 delay-500">
             <div className="relative w-full max-w-[500px] aspect-square mx-auto lg:ml-auto">
               {/* Glass Card Effect */}
               <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-[3rem] -rotate-6 scale-95 transition-transform group-hover:rotate-0" />
@@ -64,7 +64,7 @@ export default function Hero() {
                   alt="Saleship Mascot Hello" 
                   width={350} 
                   height={350}
-                  className="object-contain animate-bounce transition-transform duration-700 group-hover:scale-110"
+                  className="object-contain transition-transform duration-700 group-hover:scale-110"
                 />
               </div>
               
