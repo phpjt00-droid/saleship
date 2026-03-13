@@ -9,9 +9,8 @@ interface TrendingDealsClientProps {
 }
 
 export default function TrendingDealsClient({ initialDeals }: TrendingDealsClientProps) {
-  const { userLikes, handleLikeToggle } = useDeals();
+  const { userLikes, isBookmarked, handleLikeToggle, handleBookmarkToggle } = useDeals();
   
-  // 서버에서 받은 초기 데이터 사용
   const deals = initialDeals.length > 0 ? initialDeals : [];
 
   return (
@@ -31,9 +30,9 @@ export default function TrendingDealsClient({ initialDeals }: TrendingDealsClien
             deal={deal}
             viewMode="grid"
             isLiked={userLikes.has(deal.id.toString())}
-            isBookmarked={false}
+            isBookmarked={isBookmarked(deal.id)}
             onLikeToggle={handleLikeToggle}
-            onBookmarkToggle={() => {}} 
+            onBookmarkToggle={(e) => handleBookmarkToggle(e, deal.id)} 
           />
         </div>
       ))}

@@ -70,7 +70,7 @@ export function useDeals() {
   const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE)
   const loading = isValidating || isLoadingInitialData
 
-  const handleLikeToggle = useCallback((e: any, postId: number) => {
+  const handleLikeToggle = useCallback((e: any, postId: string | number) => {
     e.preventDefault(); e.stopPropagation()
     const idStr = postId.toString()
     
@@ -79,13 +79,11 @@ export function useDeals() {
       if (next.has(idStr)) next.delete(idStr)
       else next.add(idStr)
       localStorage.setItem('saleship_likes', JSON.stringify(Array.from(next)))
-      
-      // 낙관적 업데이트 로직 생략 (SWR이 담당하거나 기존 mutate 방식 활용)
       return next
     })
   }, [])
 
-  const handleBookmarkToggle = useCallback((e: any, postId: number) => {
+  const handleBookmarkToggle = useCallback((e: any, postId: string | number) => {
     e.preventDefault(); e.stopPropagation()
     const idStr = postId.toString()
     setBookmarks(prev => {
@@ -97,6 +95,10 @@ export function useDeals() {
     })
   }, [])
 
+  const isBookmarked = useCallback((postId: number | string) => {
+    return bookmarks.has(postId.toString())
+  }, [bookmarks])
+
   return {
     posts,
     trendingDeals: trendingDeals || [],
@@ -107,6 +109,7 @@ export function useDeals() {
     loadMore: () => setSize(size + 1),
     userLikes,
     bookmarks,
+    isBookmarked,
     user,
     handleLikeToggle,
     handleBookmarkToggle,
