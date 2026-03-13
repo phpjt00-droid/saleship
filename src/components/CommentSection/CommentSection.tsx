@@ -107,7 +107,7 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
           </div>
         ) : comments.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/50 dark:bg-slate-800/30 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-800">
-            <p className="text-slate-400 font-bold">첫 번째 댓글을 남겨보세요! 🐧</p>
+            <p className="text-slate-400 font-bold">첫 번째 댓글을 남겨보세요! <img src="/images/mascot.png" alt="" className="inline-block w-5 h-5 mb-1 opacity-60" /></p>
           </div>
         ) : (
           comments.map((comment) => (

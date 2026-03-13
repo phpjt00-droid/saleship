@@ -152,7 +152,7 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
                   className="object-contain drop-shadow-lg"
                 />
               </div>
-              <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">검색 결과가 없어요 🐧</h3>
+              <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">검색 결과가 없어요 <img src="/images/mascot.png" alt="" className="inline-block w-8 h-8 mb-1" /></h3>
               <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm mx-auto">
                 펭귄이 열심히 찾아봤지만 찾지 못했습니다.<br />
                 다른 검색어나 카테고리를 시도해보세요.

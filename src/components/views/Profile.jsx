@@ -125,7 +125,9 @@ function Profile() {
             <div className="profile__card">
               <div className="profile__card-bg" />
               <div className="profile__card-content">
-                <div className="profile__avatar">🐧</div>
+                <div className="profile__avatar overflow-hidden">
+                  <img src="/images/mascot.png" alt="Mascot" className="w-full h-full object-cover" />
+                </div>
                 
                 <h1 className="profile__name">@{profile?.nickname || '펭귄'}</h1>
                 <div className="profile__role">스마트 큐레이터</div>

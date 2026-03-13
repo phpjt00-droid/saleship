@@ -17,7 +17,7 @@ export default function ContactPage() {
     if (state.succeeded) {
       setIsSuccess(true);
       toast.success('문의가 성공적으로 전송되었습니다!', {
-        description: '최대한 빨리 답변해 드릴게요 🐧'
+        description: '최대한 빨리 답변해 드릴게요 <img src="/images/mascot.png" alt="" className="inline-block w-4 h-4 mb-0.5" />'
       });
     }
     if (state.errors) {
@@ -35,7 +35,7 @@ export default function ContactPage() {
           <div className="mb-6">
             <h2 className="text-2xl font-black text-slate-800">문의가 접수되었습니다!</h2>
             <p className="text-lg font-medium text-slate-500 mt-2">
-              최대한 빨리 답변해 드릴게요 🐧
+              최대한 빨리 답변해 드릴게요 <img src="/images/mascot.png" alt="" className="inline-block w-6 h-6 mb-1" />
             </p>
           </div>
           <div>

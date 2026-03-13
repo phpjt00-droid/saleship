@@ -171,8 +171,8 @@ function NavbarContent() {
             <div className="flex items-center gap-2">
               <div className="hidden sm:flex flex-col items-end -gap-0.5">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Welcome</span>
-                <Link href="/profile" className="text-sm font-black text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
-                  {user.nickname}님
+                <Link href="/profile" className="text-sm font-black text-slate-900 dark:text-white hover:text-blue-600 transition-colors flex items-center gap-1">
+                  {user.nickname}님 <img src="/images/mascot.png" alt="" className="w-4 h-4" />
                 </Link>
               </div>
               <div className="h-8 w-[1px] bg-slate-100 dark:bg-slate-800 mx-2 hidden sm:block" />

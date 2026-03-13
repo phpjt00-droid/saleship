@@ -26,8 +26,11 @@ export default function AdminPostPage() {
     original_price: '',
     discount_rate: '',
     thumbnail: '',
-    summary: '', // 네이버 블로그 최적화 요약 필드
-    content: ''
+    summary: '',
+    // 네이버 블로그 3단 구성
+    content_head: '',
+    content_body1: '',
+    content_body2: ''
   })
 
   useEffect(() => {
@@ -40,12 +43,13 @@ export default function AdminPostPage() {
         return
       }
 
-      // 이메일 권한 체크 (주석 유지하되 시연을 위해 활성화 가능)
-      // if (!ADMIN_EMAILS.includes(session.user.email || '')) {
-      //   toast.error('관리 권한이 없는 이메일입니다.')
-      //   router.push('/')
-      //   return
-      // }
+      // 이메일 보안 강화 (실제 사용자 이메일로 교체 권장)
+      const allowedEmails = ['ksy@example.com', 'admin@saleship.com']; // ksy@... 이메일 포함
+      if (!allowedEmails.includes(session.user.email || '')) {
+        toast.error('접근 권한이 없습니다.')
+        router.push('/')
+        return
+      }
 
       setUser(session.user)
       setLoading(false)
@@ -69,6 +73,11 @@ export default function AdminPostPage() {
         discount: formData.discount_rate
       }
 
+      // 3단 본문을 하나의 content로 통합 (구분자 사용) 또는 개별 저장
+      // 여기서는 구조화를 위해 JSON 형태로 content에 저장하는 방식을 제안하거나, 
+      // 개별 컬럼이 없다면 문자열 결합을 사용합니다.
+      const structuredContent = `[HEAD]\n${formData.content_head}\n\n[BODY1]\n${formData.content_body1}\n\n[BODY2]\n${formData.content_body2}`;
+
       const { data, error } = await supabase
         .from('posts')
         .insert([
@@ -83,7 +92,7 @@ export default function AdminPostPage() {
             end_date: formData.end_date || null,
             image: formData.thumbnail,
             summary: formData.summary,
-            content: formData.content,
+            content: structuredContent, // 통합된 본문
             price_info: price_info,
             authorId: user.id
           }
@@ -275,18 +284,52 @@ export default function AdminPostPage() {
                 />
               </div>
 
-              {/* Full Content */}
-              <div className="space-y-2">
-                <label className="text-[11px] font-black text-slate-400 uppercase tracking-widest ml-1">Main Content Body</label>
-                <textarea
-                  name="content"
-                  required
-                  rows={10}
-                  value={formData.content}
-                  onChange={handleChange}
-                  placeholder="상세 내용을 입력하세요..."
-                  className="w-full px-0 py-2 bg-transparent border-none outline-none resize-none text-lg leading-relaxed text-slate-700 dark:text-slate-300 placeholder:text-slate-300 font-medium"
-                />
+              {/* Naver Blog Style 3-Section Content */}
+              <div className="space-y-8 pt-8 border-t border-slate-100 dark:border-slate-800">
+                <div className="space-y-2">
+                  <label className="text-[11px] font-black text-rose-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                    <Layout size={14} /> Section 1: Head (도입부)
+                  </label>
+                  <textarea
+                    name="content_head"
+                    required
+                    rows={4}
+                    value={formData.content_head}
+                    onChange={handleChange}
+                    placeholder="포스팅의 도입부 내용을 입력하세요..."
+                    className="w-full px-6 py-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-rose-500 transition-all font-medium text-slate-700 dark:text-slate-300 resize-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[11px] font-black text-rose-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                    <FileText size={14} /> Section 2: Body 1 (상세 정보)
+                  </label>
+                  <textarea
+                    name="content_body1"
+                    required
+                    rows={6}
+                    value={formData.content_body1}
+                    onChange={handleChange}
+                    placeholder="딜의 상세 조건 및 특징을 입력하세요..."
+                    className="w-full px-6 py-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-rose-500 transition-all font-medium text-slate-700 dark:text-slate-300 resize-none"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[11px] font-black text-rose-500 uppercase tracking-widest ml-1 flex items-center gap-2">
+                    <FileText size={14} /> Section 3: Body 2 (결론 및 팁)
+                  </label>
+                  <textarea
+                    name="content_body2"
+                    required
+                    rows={6}
+                    value={formData.content_body2}
+                    onChange={handleChange}
+                    placeholder="구매 팁이나 결론을 입력하세요..."
+                    className="w-full px-6 py-5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-rose-500 transition-all font-medium text-slate-700 dark:text-slate-300 resize-none"
+                  />
+                </div>
               </div>
             </div>
 

@@ -18,7 +18,7 @@ export default function BookmarkPage() {
             </div>
             <div>
               <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tighter">내 북마크</h1>
-              <p className="text-slate-500 font-medium mt-1">저장하신 보물같은 핫딜들을 모아봤어요 🐧</p>
+              <p className="text-slate-500 font-medium mt-1">저장하신 보물같은 핫딜들을 모아봤어요 <img src="/images/mascot.png" alt="" className="inline-block w-5 h-5 mb-1" /></p>
             </div>
           </div>
         </div>
