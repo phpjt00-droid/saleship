@@ -9,16 +9,13 @@ import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
 
 export const metadata = {
-  title: {
-    default: 'Saleship | Hot Deal Community',
-    template: '%s | Saleship'
-  },
-  description: 'Discover the best online deals, discount information, and community reviews at Saleship. 양질의 핫딜 정보를 선별하여 공유하는 소비자 커뮤니티입니다.',
+  title: '세일쉽(Saleship) | 취향과 가치를 담은 핫딜',
+  description: '운영자가 엄선한 핫딜 큐레이션 커뮤니티',
   keywords: ['핫딜', '세일', '쇼핑', '할인정보', '특가', 'Saleship', '세일쉽'],
   authors: [{ name: 'Saleship Team' }],
   openGraph: {
-    title: 'Saleship | Hot Deal Community',
-    description: 'Discover the best online deals, discount information, and community reviews at Saleship.',
+    title: '세일쉽(Saleship) | 취향과 가치를 담은 핫딜',
+    description: '운영자가 엄선한 핫딜 큐레이션 커뮤니티',
     url: 'https://saleship-web.pages.dev',
     siteName: 'Saleship',
     images: [
@@ -26,7 +23,7 @@ export const metadata = {
         url: 'https://saleship-web.pages.dev/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'Saleship | Hot Deal Community',
+        alt: '세일쉽(Saleship)',
       },
     ],
     locale: 'ko_KR',
@@ -34,8 +31,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Saleship | Hot Deal Community',
-    description: 'Discover the best online deals, discount information, and community reviews at Saleship.',
+    title: '세일쉽(Saleship) | 취향과 가치를 담은 핫딜',
+    description: '운영자가 엄선한 핫딜 큐레이션 커뮤니티',
     images: ['https://saleship-web.pages.dev/og-image.png'],
   },
   robots: {
