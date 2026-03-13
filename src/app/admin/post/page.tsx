@@ -6,8 +6,7 @@ import { AlertCircle, PlusCircle, ArrowLeft, Image as ImageIcon, Link as LinkIco
 import Link from 'next/link'
 import { toast } from 'sonner'
 
-// 관리자 이메일 화이트리스트 (여기에 사용자 이메일을 추가해야 함)
-const ADMIN_EMAILS = ['admin@saleship.com', 'ksy@example.com'] // 실제 운영 시에는 env나 DB로 관리
+import { isAdmin } from '@/lib/security'
 
 export default function AdminPostPage() {
   const router = useRouter()
@@ -35,27 +34,19 @@ export default function AdminPostPage() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
+      const { data: { session } } = await supabase.auth.getSession();
       
-      if (!session) {
-        toast.error('관리자 로그인이 필요합니다.')
-        router.push('/login?redirect=/admin/post')
-        return
+      if (!session || !isAdmin(session.user.email)) {
+        toast.error('관리자 권한이 없습니다.');
+        router.push('/');
+        return;
       }
 
-      // 이메일 보안 강화 (실제 사용자 이메일로 교체 권장)
-      const allowedEmails = ['ksy@example.com', 'admin@saleship.com']; // ksy@... 이메일 포함
-      if (!allowedEmails.includes(session.user.email || '')) {
-        toast.error('접근 권한이 없습니다.')
-        router.push('/')
-        return
-      }
-
-      setUser(session.user)
-      setLoading(false)
-    }
-    checkAuth()
-  }, [router])
+      setUser(session.user);
+      setLoading(false);
+    };
+    checkAuth();
+  }, [router]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react'
 import { useTheme } from '@/components/ThemeProvider/ThemeProvider'
 import { UserProfile } from '@/types/user'
+import { isAdmin } from '@/lib/security'
 
 function NavbarContent() {
   const [scrolled, setScrolled] = useState(false)
@@ -115,7 +116,7 @@ function NavbarContent() {
     },
   ]
 
-  const isAdmin = user?.email && ['admin@saleship.com', 'ksy@example.com'].includes(user.email);
+  const isAdminUser = isAdmin(user?.email);
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'}`}>
@@ -158,7 +159,7 @@ function NavbarContent() {
               </div>
             </div>
           ))}
-          {isAdmin && (
+          {isAdminUser && (
             <Link href="/admin/post" className="text-sm font-black text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all flex items-center gap-1">
               Admin Post
             </Link>
@@ -233,7 +234,7 @@ function NavbarContent() {
                 </div>
               </div>
             ))}
-            {isAdmin && (
+            {isAdminUser && (
               <Link href="/admin/post" onClick={() => setMobileOpen(false)} className="bg-blue-600 text-white text-center py-4 rounded-xl font-black shadow-lg shadow-blue-200">
                 Admin Post
               </Link>

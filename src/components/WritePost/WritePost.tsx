@@ -7,6 +7,7 @@ import DOMPurify from 'dompurify'
 import { ArrowLeft, Type, AlignLeft, Tag, Image as ImageIcon, Send, Eye, ShoppingCart, AlertTriangle } from 'lucide-react'
 import { extractDealInfo } from '@/features/deals/dealUtils'
 import { toast } from 'sonner'
+import { validateContent } from '@/lib/security'
 import './WritePost.css'
 
 const categories = ['자유', 'Q&A', '팁 & 노하우', '트렌드']
@@ -38,11 +39,12 @@ function WritePost() {
       return
     }
 
-    // 링크 차단 필터 (정규표현식)
-    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
-    if (urlRegex.test(title) || urlRegex.test(content)) {
+    // 링크 차단 필터 (유틸리티 사용)
+    try {
+      validateContent(title + content);
+    } catch (error: any) {
       toast.warning('Links are not permitted to ensure a clean community.', {
-        description: 'URL inclusion is restricted to prevent spam.'
+        description: error.message
       });
       return;
     }

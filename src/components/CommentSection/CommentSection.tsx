@@ -5,6 +5,7 @@ import { dealService } from '@/features/deals/dealService'
 import { DealComment } from '@/types/deal'
 import { Send, User, Trash2, MessageCircle } from 'lucide-react'
 import { toast } from 'sonner'
+import { validateContent } from '@/lib/security'
 
 interface CommentSectionProps {
   postId: string;
@@ -45,11 +46,12 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
       return
     }
     
-    // 링크 차단 필터 (정규표현식: http, https, www, .com, .net 등 광범위 감지)
-    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
-    if (urlRegex.test(content)) {
+    // 링크 차단 필터 (유틸리티 사용)
+    try {
+      validateContent(content);
+    } catch (error: any) {
       toast.warning('Links are not permitted to ensure a clean community.', {
-        description: 'URL inclusion is restricted to prevent spam.'
+        description: error.message
       });
       return;
     }
