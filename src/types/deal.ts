@@ -27,6 +27,13 @@ export interface Deal {
   end_date?: string;
   upvote_count?: number;
   summary?: string;
+  thumbnail?: string;
+  price_info?: {
+    currentPrice: string | number;
+    originalPrice?: string | number;
+    discount?: string | number;
+    discountRate?: string | number;
+  };
 }
 
 export interface DealComment {
@@ -38,6 +45,7 @@ export interface DealComment {
   content: string;
   likes: number;
   created_at: string;
+  author_email?: string;
 }
 
 export type DealViewMode = 'grid' | 'list';

@@ -6,7 +6,13 @@ export const dealService = {
   /**
    * 전체 핫딜 목록을 가져옵니다. (페이지네이션, 카테고리 필터, 정렬 적용)
    */
-  async getDeals(page: number = 1, limit: number = 20, category?: string, sort: string = 'latest'): Promise<Deal[]> {
+  async getDeals({ page = 1, limit = 20, category, sort = 'latest', query: search }: { 
+    page?: number; 
+    limit?: number; 
+    category?: string; 
+    sort?: string;
+    query?: string;
+  } = {}): Promise<Deal[]> {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
@@ -15,8 +21,13 @@ export const dealService = {
       .select('*');
 
     // 카테고리 필터
-    if (category) {
+    if (category && category !== 'all') {
       query = query.eq('category', category);
+    }
+
+    // 검색어 필터
+    if (search) {
+      query = query.ilike('title', `%${search}%`);
     }
 
     // 정렬 로직

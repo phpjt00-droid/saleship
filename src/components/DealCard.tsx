@@ -1,134 +1,84 @@
 'use client'
+
 import React from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { MessageSquare, Eye, Clock, ThumbsUp, ThumbsDown, Bookmark } from 'lucide-react'
 import { Deal, DealViewMode } from '@/types/deal'
-import VoteControl from './VoteControl'
+import { Heart, MessageCircle, Eye, ExternalLink, Clock, Tag } from 'lucide-react'
+import { useBookmarks } from '@/features/bookmarks/useBookmarks'
 
 interface DealCardProps {
   deal: Deal;
   viewMode?: DealViewMode;
-  isLiked?: boolean;
-  isBookmarked?: boolean;
-  onLikeToggle?: (e: any, id: string | number) => void;
-  onBookmarkToggle?: (e: any, id: string | number) => void;
-  searchQuery?: string;
 }
 
-export default function DealCard({ 
-  deal, 
-  viewMode = 'grid', 
-  isLiked = false, 
-  isBookmarked = false,
-  onLikeToggle,
-  onBookmarkToggle
-}: DealCardProps) {
-  const isList = viewMode === 'list';
-  const isPopular = (Number(deal.likes) || 0) >= 10;
+export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
+  const { toggleBookmark, isBookmarked } = useBookmarks()
+  const bookmarked = isBookmarked(deal.id)
 
   return (
-    <Link 
-      href={`/deal/${deal.id}`}
-      className={`group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1.5 ${isList ? 'flex h-48' : 'flex flex-col h-full'}`}
-    >
-      {/* 이미지 섹션: 16:9 비율 고정 및 object-cover */}
-      <div className={`relative bg-slate-100 dark:bg-slate-900 shrink-0 overflow-hidden aspect-video ${isList ? 'w-64 h-full' : 'w-full'}`}>
-        <Image 
-          src={deal.image} 
-          alt={deal.title} 
-          fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105" 
-          unoptimized={deal.image?.startsWith('http')}
-          loading="lazy"
-        />
+    <div className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full">
+      {/* Thumbnail */}
+      <div className="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-slate-800/50">
+        <Link href={`/deals/${deal.id}`} className="block h-full">
+          <img 
+            src={deal.thumbnail} 
+            alt={deal.title}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </Link>
+        <button 
+          onClick={() => toggleBookmark(deal)}
+          className={`absolute top-6 right-6 p-3 rounded-2xl backdrop-blur-md transition-all active:scale-90 ${
+            bookmarked 
+              ? 'bg-rose-500 text-white shadow-lg' 
+              : 'bg-white/80 dark:bg-slate-900/80 text-slate-400 hover:text-rose-500'
+          }`}
+        >
+          <Heart size={20} fill={bookmarked ? 'currentColor' : 'none'} />
+        </button>
+        {deal.price_info?.discountRate && (
+          <div className="absolute bottom-6 left-6 px-4 py-2 bg-rose-600 text-white text-xs font-black rounded-xl shadow-lg">
+            {deal.price_info.discountRate} OFF
+          </div>
+        )}
+      </div>
 
-        {/* 좌측 상단 배지들 */}
-        <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-          {Number(deal.discount) > 0 && (
-            <div className="bg-rose-600 text-white text-xs font-black px-2.5 py-1 rounded-lg shadow-lg animate-in fade-in zoom-in">
-              {deal.discount}% OFF
-            </div>
-          )}
-          {isPopular && (
-            <div className="bg-white/90 backdrop-blur-sm text-rose-500 text-[10px] font-black px-2.5 py-1 rounded-lg shadow-sm border border-rose-100 flex items-center gap-1">
-              🔥 HOT
-            </div>
-          )}
-        </div>
-
-        {/* 카테고리 배지 (우측 하단) */}
-        <div className="absolute bottom-3 right-3 z-10">
-          <span className="text-[10px] font-black tracking-wider text-white bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-md uppercase">
-            {deal.category || 'DEAL'}
+      {/* Content */}
+      <div className="p-8 flex flex-col flex-1">
+        <div className="flex items-center gap-2 mb-4">
+          <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 rounded-lg uppercase tracking-widest">
+            {deal.category}
+          </span>
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center gap-1.5">
+            <Clock size={12} /> Hot Now
           </span>
         </div>
-      </div>
 
-      {/* 컨텐츠 섹션 */}
-      <div className={`flex flex-col flex-1 p-5 md:p-6 ${isList ? 'justify-between min-w-0' : ''}`}>
-        <div>
-          <div className="flex items-center justify-between mb-3 text-[10px] font-bold text-slate-400">
-            <span className="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded-md">
-              {deal.brand_name || deal.store || 'Saleship'}
-            </span>
-            <span className="flex items-center gap-1">
-              <Clock size={12} /> {deal.createdAt ? new Date(deal.createdAt).toLocaleDateString() : '방금 전'}
-            </span>
-          </div>
-
-          <h3 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-snug group-hover:text-blue-600 transition-colors mb-4 text-base tracking-tight">
+        <Link href={`/deals/${deal.id}`} className="block mb-4">
+          <h3 className="text-xl font-black text-slate-900 dark:text-white line-clamp-2 leading-[1.3] group-hover:text-blue-600 transition-colors">
             {deal.title}
           </h3>
-        </div>
+          <div className="text-sm font-bold text-slate-400">{deal.brand_name}</div>
+        </Link>
 
-        <div className="mt-auto">
-          <div className="flex items-center gap-3 mb-5">
-            <span className="text-2xl font-black text-rose-600 tracking-tighter">
-              {Number(deal.price).toLocaleString()}원
-            </span>
-            {Number(deal.originalPrice) > 0 && (
-              <div className="flex flex-col text-[10px] leading-none">
-                <span className="text-slate-300 line-through font-medium">
-                  {Number(deal.originalPrice).toLocaleString()}원
-                </span>
-                <span className="text-rose-500 font-extrabold mt-0.5 tracking-tighter">
-                   {(100 - (Number(deal.price) / Number(deal.originalPrice) * 100)).toFixed(0)}% 파격세일
-                </span>
-              </div>
+        <div className="mt-auto pt-6 border-t dark:border-slate-800 flex items-center justify-between">
+          <div className="flex items-baseline gap-2">
+            <span className="text-xl font-black text-slate-900 dark:text-white">{deal.price_info?.currentPrice}</span>
+            {deal.price_info?.originalPrice && (
+              <span className="text-xs font-bold text-slate-400 line-through">{deal.price_info.originalPrice}</span>
             )}
           </div>
-
-          <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800/50">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-bold">
-                <Eye size={14} /> {deal.views}
-              </span>
-              <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-bold">
-                <MessageSquare size={14} /> {deal.comments}
-              </span>
+          
+          <div className="flex items-center gap-3 text-slate-400">
+            <div className="flex items-center gap-1.5 text-[11px] font-black">
+              <MessageCircle size={14} /> 0
             </div>
-            
-            <div className="flex items-center gap-2">
-              {/* 실시간 투표 컨트롤 (Up/Down) */}
-              <VoteControl postId={String(deal.id)} />
-
-              <button 
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onBookmarkToggle?.(e, deal.id);
-                }}
-                className={`p-2 rounded-xl transition-all ${isBookmarked ? 'text-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-inner' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
-                title="북마크 저장"
-              >
-                <Bookmark size={16} fill={isBookmarked ? "currentColor" : "none"} />
-              </button>
+            <div className="flex items-center gap-1.5 text-[11px] font-black">
+              <Heart size={14} /> {deal.likes || 0}
             </div>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }

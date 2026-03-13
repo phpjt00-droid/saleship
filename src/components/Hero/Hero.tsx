@@ -6,33 +6,29 @@ import { Search } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative overflow-hidden bg-white dark:bg-slate-900 pt-32 pb-20 md:pt-40 md:pb-32">
-      {/* Background patterns */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-3xl opacity-60"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-rose-50/50 dark:bg-rose-900/10 rounded-full blur-3xl opacity-60"></div>
-      </div>
+    <section className="relative overflow-hidden pt-32 pb-24 md:pt-48 md:pb-32 bg-white dark:bg-slate-950">
+      {/* Background Decorative Elements */}
+      <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/4 w-[600px] h-[600px] bg-blue-50/50 dark:bg-blue-900/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 translate-y-1/2 -translate-x-1/4 w-[400px] h-[400px] bg-pink-50/50 dark:bg-pink-900/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="container relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-16">
-          {/* Text Content */}
-          <div className="flex-1 text-center lg:text-left animate-in fade-in slide-in-from-bottom-8 duration-700">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full mb-8">
+          <div className="flex-1 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 animate-in fade-in slide-in-from-bottom-4 duration-1000">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-500"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-600"></span>
               </span>
-              <span className="text-xs font-black uppercase tracking-widest">대한민국 모든 핫딜이 한눈에</span>
+              Curated Hot Deals
             </div>
             
-            <h1 className="text-5xl md:text-7xl font-black text-slate-900 dark:text-white leading-[1.1] tracking-tighter mb-8">
-              쇼핑의 정답,<br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-rose-500">세일쉽</span>에서 찾으세요.
+            <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[1.1]">
+              취향과 가치를 담은<br />
+              <span className="text-blue-600 underline decoration-blue-200 dark:decoration-blue-900/50 decoration-8 underline-offset-4">프리미엄 핫딜</span>
             </h1>
             
-            <p className="text-xl text-slate-500 dark:text-slate-400 font-medium mb-12 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              매일 쏟아지는 수천 개의 할인 정보 중<br className="hidden sm:block" />
-              당신에게 꼭 필요한 진짜 핫딜만 펭귄이 찾아드립니다.
+            <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
+              단순히 저렴한 물건이 아닌, 당신의 라이프스타일을 완성할 특별한 제안을 만나보세요. 깐깐하게 엄선된 정보만을 전달합니다.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
@@ -40,7 +36,7 @@ export default function Hero() {
                 onSubmit={(e) => {
                   e.preventDefault();
                   const val = (e.currentTarget.elements.namedItem('q') as HTMLInputElement).value;
-                  if (val) window.location.href = `/deal?q=${encodeURIComponent(val)}`;
+                  if (val) window.location.href = `/deals?q=${encodeURIComponent(val)}`;
                 }}
                 className="relative w-full sm:w-[450px] group flex"
               >
@@ -58,30 +54,35 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* Mascot Image */}
-          <div className="flex-1 relative animate-in zoom-in fade-in duration-1000 delay-200">
-            <div className="relative w-[300px] h-[300px] md:w-[500px] md:h-[500px] mx-auto">
-              {/* Decorative rings */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] h-[110%] border-2 border-slate-100 dark:border-slate-800 rounded-full animate-[spin_20s_linear_infinite]"></div>
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] border-2 border-slate-100 dark:border-slate-800 border-dashed rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+          <div className="flex-1 relative">
+            <div className="relative w-full max-w-[500px] aspect-square mx-auto lg:ml-auto">
+              {/* Glass Card Effect */}
+              <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-[3rem] -rotate-6 scale-95 transition-transform group-hover:rotate-0" />
+              <div className="absolute inset-0 bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 flex items-center justify-center">
+                <Image 
+                  src="/images/pingu-hello.png.jpg" 
+                  alt="Saleship Mascot Hello" 
+                  width={350} 
+                  height={350}
+                  className="object-contain animate-bounce transition-transform duration-700 group-hover:scale-110"
+                />
+              </div>
               
-              <Image 
-                src="/images/pingu-hello.png.jpg" 
-                alt="세일쉽 펭귄 마스코트" 
-                fill
-                priority
-                className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-
-            {/* Floating Badges */}
-            <div className="absolute top-[20%] right-0 bg-white dark:bg-slate-800 shadow-2xl p-4 rounded-2xl animate-bounce duration-[3000ms]">
-              <div className="text-rose-500 font-black text-xl">80% UP</div>
-              <div className="text-[10px] text-slate-400 font-bold">폭탄 세일 진행 중</div>
-            </div>
-            <div className="absolute bottom-[20%] left-0 bg-white dark:bg-slate-800 shadow-2xl p-4 rounded-2xl animate-bounce duration-[4000ms] delay-500">
-              <div className="text-blue-600 font-black text-xl">LIVE DEALS</div>
-              <div className="text-[10px] text-slate-400 font-bold">실시간 핫딜 24h</div>
+              {/* Floating Badges */}
+              <div className="absolute -top-4 -right-4 bg-rose-500 text-white p-6 rounded-3xl font-black text-2xl shadow-xl rotate-12 animate-pulse">
+                -70% OFF
+              </div>
+              <div className="absolute -bottom-8 -left-8 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <Search className="text-white" size={24} />
+                  </div>
+                  <div>
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Real-time</div>
+                    <div className="text-sm font-black text-slate-900 dark:text-white">실시간 핫딜 24h</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

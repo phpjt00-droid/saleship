@@ -1,12 +1,12 @@
 import React from 'react'
 import { Inter, Outfit } from 'next/font/google'
 import '@/styles/globals.css'
-import '@/styles/globals.css'
-import Navbar from '@/components/Navbar'
+import Header from '@/components/Header'
 import Footer from '@/components/Footer/Footer'
 import ThemeProvider from '@/components/ThemeProvider/ThemeProvider'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import Script from 'next/script'
+import { Toaster } from 'sonner'
 
 export const metadata = {
   title: '세일쉽(Saleship) | 취향과 가치를 담은 핫딜',
@@ -40,8 +40,6 @@ export const metadata = {
     follow: true,
   }
 }
-
-import { Toaster } from 'sonner'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -82,7 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Script>
         <ThemeProvider>
           <Toaster position="top-center" richColors />
-          <Navbar />
+          <Header />
           <main className="min-h-screen">
             {children}
           </main>
@@ -92,5 +90,3 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   )
 }
-
-// Test deployment trigger: 2026-03-13

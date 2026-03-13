@@ -16,7 +16,7 @@ export default async function TrendingDealsSection() {
             <h2 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               실시간 인기 핫딜
             </h2>
-            <p className="text-sm text-slate-500 font-medium">지금 가장 뜨거운 반응을 얻고 있는 추천 제품들</p>
+            <p className="text-sm text-slate-500 font-medium">지금 가격이 뜨겁거나 반응이 뜨겁게 나타나고 있는 추천 제품들</p>
           </div>
         </div>
         

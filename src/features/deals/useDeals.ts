@@ -41,7 +41,7 @@ export function useDeals() {
     const limit = parseInt(urlObj.searchParams.get('limit') || '20')
     const category = urlObj.searchParams.get('cat') || undefined
     const sort = urlObj.searchParams.get('sort') || 'latest'
-    return await dealService.getDeals(page, limit, category, sort)
+    return await dealService.getDeals({ page, limit, category, sort })
   }
 
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite(getKey, fetcher, {

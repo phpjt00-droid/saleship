@@ -58,7 +58,7 @@ export async function middleware(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession();
 
   // 보호된 경로 설정
-  const protectedRoutes = ['/write', '/profile', '/admin', '/bookmark'];
+  const protectedRoutes = ['/write', '/profile', '/admin', '/bookmarks'];
   const isProtectedRoute = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route));
 
   if (isProtectedRoute && !session) {

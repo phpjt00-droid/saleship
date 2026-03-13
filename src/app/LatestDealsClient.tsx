@@ -1,35 +1,29 @@
 'use client';
 
 import { useDeals } from '@/features/deals/useDeals';
-import DealList from '@/components/DealList/DealList';
+import DealCard from '@/components/DealCard';
+
 import { Deal } from '@/types/deal';
 
 interface LatestDealsClientProps {
-  initialDeals: Deal[];
+  initialDeals?: Deal[];
 }
 
-export default function LatestDealsClient({ initialDeals }: LatestDealsClientProps) {
-  const { 
-    posts, loading, userLikes, bookmarks, 
-    handleLikeToggle, handleBookmarkToggle,
-    isLoadingMore, isReachingEnd, loadMore
-  } = useDeals();
+export default function LatestDealsClient({ initialDeals = [] }: LatestDealsClientProps) {
+  const { posts: fetchedDeals, loading } = useDeals();
+  const deals = fetchedDeals.length > 0 ? fetchedDeals : initialDeals;
 
-  // 만약 posts가 비어있고(로딩 중일 때), 서버에서 받은 initialDeals가 있다면 그것을 먼저 보여줌
-  // SWR Infinite가 페칭을 완료하면 posts가 채워짐
-  const displayPosts = (posts.length === 0 && initialDeals.length > 0) ? initialDeals : posts;
+  if (loading) return (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {[1, 2].map(i => <div key={i} className="h-64 bg-slate-100 animate-pulse rounded-[2.5rem]" />)}
+    </div>
+  );
 
   return (
-    <DealList 
-      posts={displayPosts} 
-      loading={loading && posts.length === 0 && initialDeals.length === 0} 
-      userLikes={userLikes} 
-      bookmarks={bookmarks}
-      onLikeToggle={handleLikeToggle}
-      onBookmarkToggle={handleBookmarkToggle}
-      isLoadingMore={isLoadingMore}
-      isReachingEnd={isReachingEnd}
-      loadMore={loadMore}
-    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {deals.slice(0, 4).map(deal => (
+        <DealCard key={deal.id} deal={deal} />
+      ))}
+    </div>
   );
 }

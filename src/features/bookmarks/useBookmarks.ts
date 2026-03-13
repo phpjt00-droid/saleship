@@ -5,6 +5,7 @@ import { toast } from 'sonner'
 
 export function useBookmarks() {
   const [bookmarks, setBookmarks] = useState<Deal[]>([])
+  const [isLoading, setIsLoading] = useState(true)
 
   // 로컬 스토리지에서 북마크 불러오기
   useEffect(() => {
@@ -16,6 +17,7 @@ export function useBookmarks() {
         console.error('Failed to parse bookmarks', e)
       }
     }
+    setIsLoading(false)
   }, [])
 
   // 북마크 토글 기능
@@ -41,5 +43,5 @@ export function useBookmarks() {
     return bookmarks.some(b => b.id === id)
   }
 
-  return { bookmarks, toggleBookmark, isBookmarked }
+  return { bookmarks, isLoading, toggleBookmark, isBookmarked }
 }

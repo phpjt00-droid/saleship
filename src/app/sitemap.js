@@ -24,7 +24,7 @@ export default async function sitemap() {
 
     if (!error && posts) {
       const dynamicRoutes = posts.map(post => ({
-        url: `${baseUrl}/deal/${post.id}`,
+        url: `${baseUrl}/deals/${post.id}`,
         lastModified: post.date ? new Date(post.date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
         changeFrequency: 'weekly',
         priority: 0.7,

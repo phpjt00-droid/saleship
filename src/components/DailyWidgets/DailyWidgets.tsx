@@ -1,7 +1,6 @@
 'use client'
 import { useEffect } from 'react'
 import Script from 'next/script'
-import Head from 'next/head'
 import './DailyWidgets.css'
 
 declare global {
@@ -30,8 +29,10 @@ export default function DailyWidgets() {
         const temp = data.current_condition[0].temp_C;
         const iconCode = data.current_condition[0].weatherCode;
         
-        document.getElementById('temperature').innerText = `${temp}°C`;
-        document.getElementById('city').innerText = '서울, 대한민국';
+        const tempEl = document.getElementById('temperature');
+        if (tempEl) tempEl.innerText = `${temp}°C`;
+        const cityEl = document.getElementById('city');
+        if (cityEl) cityEl.innerText = '서울, 대한민국';
         
         const iconMap = {
           "113": "https://img.icons8.com/fluency/96/sun.png",
@@ -61,10 +62,10 @@ export default function DailyWidgets() {
       headerToolbar: false,
       height: 'auto',
       events: [
-        { title: '🔥 패밀리세일', start: '2026-03-05', color: '#ef4444' },
-        { title: '📦 브랜드위크', start: '2026-03-12', color: '#3b82f6' },
-        { title: '✨ 뷰티특가', start: '2026-03-18', color: '#ec4899' },
-        { title: '🍎 신선핫딜', start: '2026-03-25', color: '#10b981' }
+        { title: '맥 인벤토리 세일', start: '2026-03-05', color: '#ef4444' },
+        { title: '애플 브랜드위크', start: '2026-03-12', color: '#3b82f6' },
+        { title: '봄맞이 뷰티위크', start: '2026-03-18', color: '#ec4899' },
+        { title: '오늘의 추천핫딜', start: '2026-03-25', color: '#10b981' }
       ],
       dayMaxEvents: true
     });
@@ -124,16 +125,16 @@ export default function DailyWidgets() {
         <div className="widgets-grid">
           {/* Date Widget */}
           <div className="widget-card">
-            <div className="widget-title">📅 핫딜 데이</div>
+            <div className="widget-title">오늘의 핫딜 데이</div>
             <div id="today-date">--월 --일</div>
             <div id="today-day">--요일</div>
           </div>
 
           {/* Weather Widget */}
           <div className="widget-card">
-            <div className="widget-title">☀️ 실시간 날씨</div>
+            <div className="widget-title">실시간 기상/날씨</div>
             <div id="weather">
-              <span id="city">로딩 중...</span>
+              <span id="city">로딩 중..</span>
               <img id="weather-icon" style={{width: '64px', height: '64px'}} alt="날씨 아이콘" />
               <span id="temperature">--°C</span>
             </div>
@@ -141,13 +142,13 @@ export default function DailyWidgets() {
 
           {/* Calendar Widget */}
           <div className="widget-card widget-card--large">
-            <div className="widget-title">🗓️ 핫딜 캘린더</div>
+            <div className="widget-title">이번주 핫딜 캘린더</div>
             <div id="deal-calendar-fc"></div>
           </div>
 
           {/* Price Chart Widget */}
           <div className="widget-card">
-            <div className="widget-title">📉 가격 변동 그래프</div>
+            <div className="widget-title">최근 가격 변동 그래프</div>
             <div className="chart-container">
               <canvas id="priceChart"></canvas>
             </div>

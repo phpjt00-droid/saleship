@@ -120,7 +120,7 @@ export default function DealDetailContent({ deal }: DealDetailContentProps) {
               <div className="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
               <div className="flex flex-col items-center gap-1">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">투표하기</span>
-                <VoteControl postId={deal.id.toString()} />
+                <VoteControl postId={deal.id} />
               </div>
               <div className="w-px h-8 bg-slate-200 dark:bg-slate-700"></div>
               <div className="flex flex-col items-center gap-1">
@@ -148,7 +148,7 @@ export default function DealDetailContent({ deal }: DealDetailContentProps) {
         </div>
 
         <section className="mt-20">
-          <CommentSection postId={deal.id.toString()} initialCount={deal.comments} />
+          <CommentSection postId={deal.id.toString()} />
         </section>
       </div>
     </main>
