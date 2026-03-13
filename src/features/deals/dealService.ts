@@ -10,35 +10,47 @@ export const dealService = {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    // 새로운 'deals' 테이블에서 최신순으로 가져오기
-    const { data: dealsData, error: dealsError } = await supabase
-      .from('deals')
+    // 'posts' 테이블에서 최신순으로 가져오기
+    const { data, error } = await supabase
+      .from('posts')
       .select('*')
       .order('created_at', { ascending: false })
       .range(from, to);
 
-    if (dealsError) throw dealsError;
+    if (error) throw error;
 
-    return dealsData.map(deal => ({
-      id: deal.id,
-      title: deal.title,
-      image: deal.image,
-      url: deal.link || deal.url || '',
-      price: Number(deal.price) || 0, // 가격을 숫자형으로 처리
-      originalPrice: Number(deal.original_price) || 0, // 원가를 숫자형으로 처리
-      discount: Number(deal.discount) || 0, // 할인율을 숫자형으로 처리
-      store: deal.store || '세일쉽',
-      shipping: deal.shipping || '무료배송',
-      likes: deal.likes || 0,
-      comments: deal.comments_count || deal.comments || 0,
-      views: deal.views || 0,
-      createdAt: deal.created_at,
-      authorId: deal.user_id || '',
-      category: deal.category,
-      content: deal.content,
-      author: deal.author || '세일쉽',
-      avatar: deal.avatar || '🐧'
-    }));
+    return data.map(post => {
+      const priceInfo = post.price_info || {};
+      const parseNum = (val: any) => {
+        if (typeof val === 'number') return val;
+        if (typeof val === 'string') {
+          const num = parseInt(val.replace(/[^0-9]/g, ''));
+          return isNaN(num) ? 0 : num;
+        }
+        return 0;
+      };
+
+      return {
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        category: post.category,
+        store: post.store || '세일쉽',
+        image: post.image || '',
+        url: post.link || '',
+        price: parseNum(priceInfo.currentPrice) || 0,
+        originalPrice: parseNum(priceInfo.originalPrice) || 0,
+        discount: parseNum(priceInfo.discount) || 0,
+        likes: post.likes || 0,
+        comments: post.comments || 0,
+        views: parseNum(post.views) || 0,
+        createdAt: post.created_at || post.date,
+        authorId: post.user_id || '',
+        shipping: '배송 정보 확인',
+        author: '세일쉽',
+        avatar: '🐧'
+      };
+    });
   },
 
   async getDealById(id: string | number): Promise<Deal> {

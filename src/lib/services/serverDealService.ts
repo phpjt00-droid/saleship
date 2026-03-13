@@ -16,7 +16,7 @@ export const getDeals = unstable_cache(
     const to = from + limit - 1;
 
     const { data, error } = await supabase
-      .from('deals')
+      .from('posts')
       .select('*')
       .order('created_at', { ascending: false })
       .range(from, to);
@@ -26,7 +26,7 @@ export const getDeals = unstable_cache(
       throw new Error('데이터를 불러오는데 실패했습니다.');
     }
 
-    return (data || []).map(mapDealData);
+    return (data || []).map(mapPostToDeal);
   },
   ['deals-list'],
   { revalidate: 60, tags: ['deals'] } // 60초마다 재검증
@@ -37,10 +37,8 @@ export const getTrendingDeals = unstable_cache(
   async (limit: number = 5): Promise<Deal[]> => {
     const supabase = await createClient();
     
-    // 로직: 최근 24시간 내 좋아요가 많은 순 등 (여기서는 단순 상위 5개 예시)
-    // 실제 정렬 로직은 dealUtils의 sortDeals와 유사하게 적용 가능
     const { data, error } = await supabase
-      .from('deals')
+      .from('posts')
       .select('*')
       .order('likes', { ascending: false })
       .limit(limit);
@@ -50,10 +48,10 @@ export const getTrendingDeals = unstable_cache(
       throw new Error('트렌딩 데이터를 불러오는데 실패했습니다.');
     }
 
-    return (data || []).map(mapDealData);
+    return (data || []).map(mapPostToDeal);
   },
   ['trending-deals'],
-  { revalidate: 300, tags: ['deals', 'trending'] } // 5분마다 재검증
+  { revalidate: 300, tags: ['deals', 'trending'] }
 );
 
 // 인기 딜 조회 (캐싱 적용)
@@ -62,7 +60,7 @@ export const getPopularDeals = unstable_cache(
     const supabase = await createClient();
     
     const { data, error } = await supabase
-      .from('deals')
+      .from('posts')
       .select('*')
       .order('views', { ascending: false })
       .limit(limit);
@@ -72,50 +70,61 @@ export const getPopularDeals = unstable_cache(
       throw new Error('인기 데이터를 불러오는데 실패했습니다.');
     }
 
-    return (data || []).map(mapDealData);
+    return (data || []).map(mapPostToDeal);
   },
   ['popular-deals'],
-  { revalidate: 600, tags: ['deals', 'popular'] } // 10분마다 재검증
+  { revalidate: 600, tags: ['deals', 'popular'] }
 );
 
 // 특정 딜 상세 조회 (단기 캐싱)
 export const getDealById = cache(async (id: string | number): Promise<Deal | null> => {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('deals')
+    .from('posts')
     .select('*')
     .eq('id', id)
     .single();
 
   if (error) {
-    if (error.code === 'PGRST116') return null; // Not found
+    if (error.code === 'PGRST116') return null;
     throw error;
   }
   
-  return mapDealData(data);
+  return mapPostToDeal(data);
 });
 
-// 데이터 매핑 헬퍼
-function mapDealData(deal: any): Deal {
+// 데이터 매핑 헬퍼: posts 테이블 스키마를 Deal 타입으로 변환
+function mapPostToDeal(post: any): Deal {
+  const priceInfo = post.price_info || {};
+  
+  // 숫자 추출 도우미 (예: "15,000원" -> 15000)
+  const parseNum = (val: any) => {
+    if (typeof val === 'number') return val;
+    if (typeof val === 'string') {
+      const num = parseInt(val.replace(/[^0-9]/g, ''));
+      return isNaN(num) ? 0 : num;
+    }
+    return 0;
+  };
+
   return {
-    id: deal.id,
-    title: deal.title,
-    subtitle: deal.subtitle,
-    image: deal.image,
-    url: deal.link || deal.url || '',
-    price: Number(deal.price) || 0,
-    originalPrice: Number(deal.original_price) || 0,
-    discount: Number(deal.discount) || 0,
-    store: deal.store || '세일쉽',
-    shipping: deal.shipping || '무료배송',
-    likes: deal.likes || 0,
-    comments: deal.comments_count || deal.comments || 0,
-    views: deal.views || 0,
-    createdAt: deal.created_at,
-    authorId: deal.user_id || '',
-    category: deal.category,
-    content: deal.content,
-    author: deal.author || '세일쉽',
-    avatar: deal.avatar || '🐧'
+    id: post.id,
+    title: post.title,
+    content: post.content,
+    category: post.category,
+    store: post.store || '세일쉽',
+    image: post.image || '',
+    url: post.link || '',
+    price: parseNum(priceInfo.currentPrice) || 0,
+    originalPrice: parseNum(priceInfo.originalPrice) || 0,
+    discount: parseNum(priceInfo.discount) || 0,
+    likes: post.likes || 0,
+    comments: post.comments || 0,
+    views: parseNum(post.views) || 0,
+    createdAt: post.created_at || post.date,
+    authorId: post.user_id || '',
+    shipping: '배송 정보 확인',
+    author: '세일쉽',
+    avatar: '🐧'
   };
 }

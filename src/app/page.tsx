@@ -1,20 +1,16 @@
 import { Suspense } from 'react';
 import { Sparkles } from 'lucide-react';
-import { getDeals } from '@/lib/services/serverDealService';
 import Hero from '@/components/Hero/Hero';
 import TrendingDealsSection from '@/components/PopularDeals/TrendingDealsSection';
 import PopularDealsSidebar from '@/components/PopularDeals/PopularDealsSidebar';
 import DealGridSkeleton from '@/components/DealList/DealGridSkeleton';
-import LatestDealsClient from '@/app/LatestDealsClient';
+import LatestDealsSection from '@/features/deals/LatestDealsSection';
 
 /**
  * 핫딜 메인 페이지 (서버 컴포넌트)
  * 중앙 집중식 데이터 페칭, 캐싱, 및 Suspense를 활용한 고성능 레이아웃을 제공합니다.
  */
 export default async function Home() {
-  // 초기 핫딜 데이터 조회
-  const initialDeals = await getDeals(1, 20);
-
   return (
     <main className="min-h-screen bg-white dark:bg-slate-900 pb-20">
       {/* 0. 프리미엄 Hero 섹션 */}
@@ -25,7 +21,7 @@ export default async function Home() {
         <div className="bg-slate-50/50 dark:bg-slate-800/30 py-12">
           <div className="container">
             <div className="h-10 w-48 bg-slate-200 dark:bg-slate-700 rounded-2xl mb-10 animate-pulse"></div>
-            <DealGridSkeleton count={5} />
+            <DealGridSkeleton count={4} />
           </div>
         </div>
       }>
@@ -51,7 +47,9 @@ export default async function Home() {
               </div>
             </div>
             
-            <LatestDealsClient initialDeals={initialDeals} />
+            <Suspense fallback={<DealGridSkeleton count={8} />}>
+              <LatestDealsSection />
+            </Suspense>
           </div>
 
           {/* 3. 인기 핫딜 사이드바 (우측 1/3, Suspense 적용) */}
