@@ -4,6 +4,7 @@ import { Suspense, useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { Plus } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import DealList from '@/components/DealList/DealList'
 import CategoryMenu from '@/components/CategoryMenu'
 
@@ -19,9 +20,19 @@ export default function DealsPage() {
   return (
     <main className="container py-8">
       <div className="flex justify-between items-center mb-12">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight mb-4">Hot Deals</h1>
-          <p className="text-slate-500 font-medium">새롭게 올라오는 최저가 정보를 확인하세요.</p>
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-16">
+            <Image 
+              src="/images/pingu-shopping.png" 
+              alt="Shopping Pingu" 
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h1 className="text-4xl font-black tracking-tight mb-2">핫딜</h1>
+            <p className="text-slate-500 font-medium">새롭게 올라오는 최저가 정보를 확인하세요.</p>
+          </div>
         </div>
         {user && (
           <Link

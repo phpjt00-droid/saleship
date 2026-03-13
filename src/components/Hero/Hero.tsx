@@ -48,7 +48,7 @@ export default function Hero() {
                 />
                 <button type="submit" className="h-16 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-r-2xl transition-colors font-black flex items-center justify-center gap-2">
                   <Search size={20} />
-                  <span className="hidden sm:inline">Search</span>
+                  <span className="hidden sm:inline">검색</span>
                 </button>
               </form>
             </div>
@@ -60,7 +60,7 @@ export default function Hero() {
               <div className="absolute inset-0 bg-blue-100/30 dark:bg-blue-900/20 rounded-[3rem] -rotate-6 scale-95 transition-transform group-hover:rotate-0" />
               <div className="absolute inset-0 bg-white dark:bg-slate-900 rounded-[3rem] shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-800 flex items-center justify-center">
                 <Image 
-                  src="/images/pingu-hello.png.jpg" 
+                  src="/images/pingu-hello.png" 
                   alt="Saleship Mascot Hello" 
                   width={350} 
                   height={350}
@@ -70,16 +70,21 @@ export default function Hero() {
               
               {/* Floating Badges */}
               <div className="absolute -top-4 -right-4 bg-rose-500 text-white p-6 rounded-3xl font-black text-2xl shadow-xl rotate-12 animate-pulse">
-                -70% OFF
+                대박 할인!
               </div>
               <div className="absolute -bottom-8 -left-8 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <Award className="text-white" size={24} />
+                  <div className="w-12 h-12 relative overflow-hidden bg-blue-50 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
+                    <Image 
+                      src="/images/pingu-search.png" 
+                      alt="Search Pingu" 
+                      fill
+                      className="object-contain p-2"
+                    />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Editors Pick</div>
-                    <div className="text-sm font-black text-slate-900 dark:text-white">엄선된 추천 핫딜</div>
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Editor's Pick</div>
+                    <div className="text-sm font-black text-slate-900 dark:text-white">핑구가 추천하는 핫딜</div>
                   </div>
                 </div>
               </div>

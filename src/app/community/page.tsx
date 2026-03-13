@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { MessageCircle, LayoutGrid, Award, ShoppingBag, Plus } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { toast } from 'sonner'
 import { formatDistanceToNow } from 'date-fns'
 import { ko } from 'date-fns/locale'
@@ -34,9 +35,19 @@ export default function CommunityPage() {
   return (
     <main className="container py-12">
       <div className="flex justify-between items-center mb-12">
-        <div>
-          <h1 className="text-4xl font-black tracking-tight mb-2">Community</h1>
-          <p className="text-slate-500 font-medium">자유로운 정보 공유와 소통의 공간입니다.</p>
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-16">
+            <Image 
+              src="/images/pingu-announce.png" 
+              alt="Announce Pingu" 
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h1 className="text-4xl font-black tracking-tight mb-2">커뮤니티</h1>
+            <p className="text-slate-500 font-medium">자유로운 정보 공유와 소통의 공간입니다.</p>
+          </div>
         </div>
         {user && (
           <Link 
