@@ -1,9 +1,10 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { LayoutGrid, Shirt, Utensils, Sparkles, Home as HomeIcon, Smartphone, Gamepad2, Ticket, MapPin } from 'lucide-react'
+import { LayoutGrid, Flame, Shirt, Utensils, Sparkles, Home as HomeIcon, Smartphone, Gamepad2, Ticket, MapPin } from 'lucide-react'
 
 const categories = [
   { id: 'all', name: '전체', icon: LayoutGrid },
+  { id: 'popular', name: '인기', icon: Flame },
   { id: 'fashion', name: '패션', icon: Shirt },
   { id: 'beauty', name: '뷰티', icon: Sparkles },
   { id: 'food', name: '식품', icon: Utensils },

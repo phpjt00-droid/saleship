@@ -12,8 +12,15 @@ import { ko } from 'date-fns/locale'
 export default function CommunityPage() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-
   const [user, setUser] = useState<any>(null)
+
+  const boardCategories = [
+    { id: 'notice', name: '공지사항' },
+    { id: 'free', name: '자유게시판' },
+    { id: 'review', name: '리뷰게시판' },
+    { id: 'market', name: '장터게시판' },
+  ]
+  const [currentBoard, setCurrentBoard] = useState('free')
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -33,13 +40,13 @@ export default function CommunityPage() {
   }, [])
 
   return (
-    <main className="container py-12">
-      <div className="flex justify-between items-center mb-12">
+    <main className="container py-8 md:py-12">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16">
             <Image 
               src="/images/pingu-announce.png" 
-              alt="Announce Pingu" 
+              alt="핫딜펭귄 소식" 
               fill
               className="object-contain"
             />
@@ -52,11 +59,27 @@ export default function CommunityPage() {
         {user && (
           <Link 
             href="/community/write" 
-            className="px-6 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
+            className="w-full md:w-auto px-8 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
           >
             <Plus size={20} /> 글쓰기
           </Link>
         )}
+      </div>
+
+      <div className="flex items-center gap-3 overflow-x-auto pb-8 scrollbar-hide no-scrollbar">
+        {boardCategories.map((board) => (
+          <button
+            key={board.id}
+            onClick={() => setCurrentBoard(board.id)}
+            className={`px-6 py-3 rounded-2xl whitespace-nowrap font-black text-sm transition-all active:scale-95 ${
+              currentBoard === board.id
+                ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 dark:shadow-none'
+                : 'bg-white dark:bg-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-100 dark:border-slate-800'
+            }`}
+          >
+            {board.name}
+          </button>
+        ))}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
