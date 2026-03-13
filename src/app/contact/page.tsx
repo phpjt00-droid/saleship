@@ -6,16 +6,26 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, CheckCircle2, AlertCircle } from 'lucide-react';
+import { toast } from 'sonner';
 
 export default function ContactPage() {
-  const [state, handleSubmit] = useForm("xpwwjlvq"); // 임시 ID, 나중에 환경변수 처리가 권장됨
-  const [formData, setFormData] = useState({
-    email: '',
-    title: '',
-    message: ''
-  });
+  const [state, handleSubmit] = useForm("xpwwjlvq");
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  if (state.succeeded) {
+  // Formspree state change effect
+  React.useEffect(() => {
+    if (state.succeeded) {
+      setIsSuccess(true);
+      toast.success('문의가 성공적으로 전송되었습니다!', {
+        description: '최대한 빨리 답변해 드릴게요 🐧'
+      });
+    }
+    if (state.errors) {
+      toast.error('문의 발송 중 오류가 발생했습니다.');
+    }
+  }, [state.succeeded, state.errors]);
+
+  if (isSuccess) {
     return (
       <div className="container mx-auto px-4 py-24 flex justify-center">
         <div className="w-full max-w-md border-none shadow-2xl bg-white rounded-[2.5rem] p-8 text-center animate-in zoom-in duration-500">

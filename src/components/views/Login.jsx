@@ -5,6 +5,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { Anchor, ArrowRight, RefreshCw, UserEdit } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { toast } from 'sonner'
 
 export default function Login() {
   const [loading, setLoading] = useState(false)
@@ -146,8 +147,9 @@ export default function Login() {
 
       // 최종 단계: 성공 축하 모달 노출
       setShowWelcomeModal(true)
+      toast.success('프로필 설정이 완료되었습니다!')
     } catch (err) {
-      alert(`가입 처리 중 오류가 발생했습니다: ${err.message}`)
+      toast.error(`오류가 발생했습니다: ${err.message}`)
     } finally {
       setLoading(false)
     }
@@ -155,7 +157,7 @@ export default function Login() {
 
   const handleSocialLogin = async (provider) => {
     if (provider === 'naver' || provider === 'kakao') {
-      alert(`${provider === 'naver' ? '네이버' : '카카오'} 로그인은 현재 준비 중입니다. 구글 로그인을 이용해주세요!`)
+      toast.info(`${provider === 'naver' ? '네이버' : '카카오'} 로그인은 현재 준비 중입니다.`)
       return
     }
 
@@ -167,7 +169,7 @@ export default function Login() {
       })
       if (error) throw error
     } catch (err) {
-      alert(`로그인 오류: ${err.message}`)
+      toast.error(`로그인 중 오류가 발생했습니다: ${err.message}`)
       setLoading(false)
     }
   }

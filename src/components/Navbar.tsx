@@ -132,10 +132,20 @@ function NavbarContent() {
           </button>
 
           {user ? (
-            <div className="flex items-center gap-3">
-              <Link href="/login" className="text-sm font-bold text-blue-600 truncate max-w-[100px]">@{user.nickname}</Link>
-              <button onClick={handleLogout} className="p-2 text-slate-500 hover:text-rose-500 transition-colors">
-                <LogOut size={20} />
+            <div className="flex items-center gap-2">
+              <div className="hidden sm:flex flex-col items-end -gap-0.5">
+                <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Welcome</span>
+                <Link href="/profile" className="text-sm font-black text-slate-900 dark:text-white hover:text-blue-600 transition-colors">
+                  {user.nickname}님
+                </Link>
+              </div>
+              <div className="h-8 w-[1px] bg-slate-100 dark:bg-slate-800 mx-2 hidden sm:block" />
+              <button 
+                onClick={handleLogout} 
+                className="p-2.5 text-slate-500 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 rounded-xl transition-all active:scale-90"
+                title="로그아웃"
+              >
+                <LogOut size={18} />
               </button>
             </div>
           ) : (

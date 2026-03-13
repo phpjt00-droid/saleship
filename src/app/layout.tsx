@@ -44,6 +44,8 @@ export const metadata = {
   }
 }
 
+import { Toaster } from 'sonner'
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko" suppressHydrationWarning>
@@ -82,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           `}
         </Script>
         <ThemeProvider>
+          <Toaster position="top-center" richColors />
           <Navbar />
           <main className="min-h-screen">
             {children}
