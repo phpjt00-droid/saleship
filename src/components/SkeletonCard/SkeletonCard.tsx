@@ -8,7 +8,7 @@ export default function SkeletonCard({ isListForm = false }) {
       <div className="relative overflow-hidden bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 p-0 flex h-44 w-full shadow-sm">
         <Shimmer />
         {/* Thumbnail Skeleton */}
-        <div className="w-52 h-full bg-slate-50 dark:bg-slate-900 shrink-0"></div>
+        <div className="w-64 h-full aspect-video bg-slate-50 dark:bg-slate-900 shrink-0"></div>
         
         {/* Content Skeleton */}
         <div className="flex-1 flex flex-col justify-between p-5 md:p-6 min-w-0">
@@ -38,7 +38,7 @@ export default function SkeletonCard({ isListForm = false }) {
     <div className="relative overflow-hidden flex flex-col bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 h-full shadow-sm">
       <Shimmer />
       {/* Thumbnail Skeleton */}
-      <div className="w-full h-56 bg-slate-50 dark:bg-slate-900 shrink-0"></div>
+      <div className="w-full aspect-video bg-slate-50 dark:bg-slate-900 shrink-0"></div>
       
       {/* Content Skeleton */}
       <div className="p-5 md:p-6 flex flex-col flex-1">

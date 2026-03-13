@@ -121,7 +121,10 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
         </div>
 
         {/* 게시글 목록 */}
-        <div className={`board__posts ${viewMode === 'list' ? 'board__posts--list' : 'board__posts--grid'}`}>
+        <div className={viewMode === 'list' 
+          ? "flex flex-col gap-6" 
+          : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        }>
           {loading ? (
               Array(8).fill(0).map((_, idx) => <SkeletonCard key={idx} isListForm={viewMode === 'list'} />)
           ) : sortedAndFilteredPosts.length > 0 ? (

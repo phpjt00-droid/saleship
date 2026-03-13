@@ -14,7 +14,7 @@ export default function TrendingDealsClient({ initialDeals }: TrendingDealsClien
   const deals = initialDeals.length > 0 ? initialDeals : [];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
       {deals.map((deal, index) => (
         <div key={deal.id} className="relative group">
           <div className={`absolute -left-2 -top-2 w-10 h-10 flex items-center justify-center rounded-2xl font-black text-lg z-20 transition-transform group-hover:scale-110 shadow-lg
