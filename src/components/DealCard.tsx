@@ -28,69 +28,67 @@ export default function DealCard({
   return (
     <Link 
       href={`/deal/${deal.id}`}
-      className={`group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${isList ? 'flex h-40' : 'flex flex-col h-full'}`}
+      className={`group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] dark:hover:shadow-[0_20px_50px_rgba(0,_0,_0,_0.3)] hover:-translate-y-1.5 ${isList ? 'flex h-44' : 'flex flex-col h-full'}`}
     >
-      <div className={`relative bg-slate-50 dark:bg-slate-900 shrink-0 ${isList ? 'w-48 h-full' : 'w-full h-52'}`}>
+      <div className={`relative bg-slate-50 dark:bg-slate-900 shrink-0 overflow-hidden ${isList ? 'w-52 h-full' : 'w-full h-56'}`}>
         <Image 
           src={deal.image} 
           alt={deal.title} 
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105" 
+          className="object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-110" 
           unoptimized={deal.image?.startsWith('http')}
         />
 
-        {deal.discount && (
-          <div className="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-lg">
-            {deal.discount}%
+        {Number(deal.discount) > 0 && (
+          <div className="absolute top-4 left-4 bg-gradient-to-br from-rose-500 to-orange-600 text-white text-[11px] font-black px-3 py-1 rounded-xl shadow-lg shadow-rose-200 dark:shadow-none z-10">
+            {deal.discount}% OFF
           </div>
         )}
       </div>
 
-      <div className={`flex flex-col flex-1 p-4 md:p-6 ${isList ? 'justify-between' : ''}`}>
+      <div className={`flex flex-col flex-1 p-5 md:p-6 ${isList ? 'justify-between min-w-0' : ''}`}>
         <div>
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-[10px] font-bold text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 rounded uppercase">
-              {deal.store}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-[10px] font-black tracking-widest text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-2.5 py-1 rounded-lg uppercase">
+              {deal.store || '세일쉽'}
             </span>
-            <span className="text-[10px] text-slate-400 flex items-center gap-1">
-              <Clock size={10} /> {deal.createdAt}
+            <span className="text-[10px] font-bold text-slate-400 flex items-center gap-1">
+              <Clock size={12} className="opacity-70" /> {deal.createdAt ? new Date(deal.createdAt).toLocaleDateString() : '방금 전'}
             </span>
           </div>
-          <h3 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors mb-2">
+          <h3 className="font-bold text-slate-800 dark:text-slate-100 line-clamp-2 leading-relaxed group-hover:text-blue-600 transition-colors mb-3 text-base">
             {deal.title}
           </h3>
         </div>
 
         <div className="mt-auto">
-          <div className="flex items-baseline gap-2 mb-4">
+          <div className="flex items-baseline gap-2 mb-5">
             <span className="text-xl font-black text-slate-900 dark:text-white">
               {Number(deal.price).toLocaleString()}원
             </span>
             {Number(deal.originalPrice) > 0 && (
-              <span className="text-xs text-slate-400 line-through">
+              <span className="text-xs font-bold text-slate-300 line-through">
                 {Number(deal.originalPrice).toLocaleString()}원
               </span>
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-slate-50 dark:border-slate-700/50">
-            <div className="flex items-center gap-4 text-[11px] text-slate-400 font-bold">
-              <span className="flex items-center gap-1.5"><Eye size={12} /> {deal.views}</span>
-              <div className="flex items-center gap-1.5 transition-colors hover:text-blue-600">
-                <ThumbsUp size={12} />
-                <span className="font-bold text-slate-700 dark:text-slate-300">
-                  {deal.likes}
-                </span>
+          <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-700/30">
+            <div className="flex items-center gap-4 text-[11px] text-slate-400 font-black">
+              <span className="flex items-center gap-1.5 hover:text-slate-600 transition-colors"><Eye size={14} className="opacity-70" /> {deal.views}</span>
+              <div className="flex items-center gap-1.5 transition-colors hover:text-rose-500">
+                <ThumbsUp size={14} className="opacity-70" />
+                <span>{deal.likes}</span>
               </div>
-              <span className="flex items-center gap-1.5 cursor-default"><MessageSquare size={12} /> {deal.comments}</span>
+              <span className="flex items-center gap-1.5 hover:text-blue-500 transition-colors"><MessageSquare size={14} className="opacity-70" /> {deal.comments}</span>
             </div>
             
             <button 
               onClick={(e) => onBookmarkToggle?.(e, deal.id)}
-              className={`p-1.5 rounded-full transition-colors ${isBookmarked ? 'text-amber-500 bg-amber-50' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-50'}`}
+              className={`p-2 rounded-xl transition-all duration-300 ${isBookmarked ? 'text-amber-500 bg-amber-50 shadow-inner' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-50'}`}
             >
-              <Bookmark size={16} fill={isBookmarked ? "currentColor" : "none"} />
+              <Bookmark size={18} fill={isBookmarked ? "currentColor" : "none"} strokeWidth={2.5} />
             </button>
           </div>
         </div>

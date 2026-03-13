@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import { 
@@ -85,9 +86,20 @@ function NavbarContent() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'}`}>
       <div className="container flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <LinkIcon className="text-blue-600" size={28} />
-          <span className="text-xl font-black tracking-tighter">세일쉽</span>
+        <Link href="/" className="flex items-center gap-3">
+          <div className="relative w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 dark:shadow-none -rotate-6 group-hover:rotate-0 transition-transform duration-300">
+            <Image 
+              src="/images/mascot-hero.png" 
+              alt="Saleship Mascot" 
+              width={40} 
+              height={40}
+              className="object-cover scale-150 translate-y-2"
+            />
+          </div>
+          <div className="flex flex-col -gap-1">
+            <span className="text-2xl font-black tracking-tighter text-slate-900 dark:text-white leading-none">세일쉽</span>
+            <span className="text-[10px] font-black text-blue-600 tracking-widest uppercase opacity-80">Saleship</span>
+          </div>
         </Link>
 
         {/* Desktop Menu */}

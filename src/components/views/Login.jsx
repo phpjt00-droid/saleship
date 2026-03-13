@@ -74,35 +74,8 @@ export default function Login() {
 
   // 3. 확장된 펭귄 닉네임 생성기
   const generateUniqueNickname = async () => {
-    const modifiers = ['매우', '가장', '어느', '지치지않는', '얼음위의', '잠들지않는', '반짝이는', '자유로운', '기다려온', '신비로운']
-    const adjectives = ['똑똑한', '귀여운', '멋진', '빠른', '용감한', '수줍은', '다정한', '활기찬']
-    const penguins = ['황제펭귄', '아델리펭귄', '젠투펭귄', '턱끈펭귄', '마카로니펭귄', '꼬마펭귄', '바위뛰기펭귄']
-
-    const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
-    
-    // 유니크한 닉네임이 생성될 때까지 시도
-    let isUnique = false
-    let finalNick = ''
-    let attempts = 0
-
-    while (!isUnique && attempts < 5) {
-      let baseNick = `${pick(modifiers)}${pick(adjectives)}${pick(penguins)}`
-      if (attempts > 0) baseNick += Math.floor(Math.random() * 9000) + 1000
-
-      const { data } = await supabase
-        .from('profiles')
-        .select('nickname')
-        .eq('nickname', baseNick)
-        .maybeSingle()
-
-      if (!data) {
-        finalNick = baseNick
-        isUnique = true
-      }
-      attempts++
-    }
-
-    return finalNick || `길잃은꼬마펭귄${Math.floor(Math.random() * 9000) + 1000}`
+    const { authService } = await import('@/lib/auth')
+    return await authService.generateUniqueNickname()
   }
 
   // 4. SNS 데이터 정규화 함수 (성별, 연령대 수집)

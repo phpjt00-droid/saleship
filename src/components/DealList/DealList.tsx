@@ -2,6 +2,7 @@
 import { useState, useMemo, useEffect, Suspense } from 'react'
 import { useSearchParams, usePathname } from 'next/navigation'
 import { Search, Filter, Grid, List, ChevronLeft, ChevronRight, TrendingUp, Users, Flame, ShoppingBag, Coffee, Home as HomeIcon, Cloud, Sparkles, Smartphone, Shirt, Utensils, Anchor, Gamepad2, Ticket, MapPin } from 'lucide-react'
+import Image from 'next/image'
 import DealCard from '@/components/DealCard'
 import HighlightText from '@/components/HighlightText/HighlightText'
 import SkeletonCard from '@/components/SkeletonCard/SkeletonCard'
@@ -137,8 +138,31 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
               />
             ))
           ) : (
-            <div className="board__no-results">
-              검색 결과가 없습니다.
+            <div className="col-span-full flex flex-col items-center justify-center py-32 text-center animate-in fade-in zoom-in duration-700">
+              <div className="relative w-64 h-64 mb-8 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center">
+                <div className="absolute inset-0 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-full animate-[spin_30s_linear_infinite]"></div>
+                <Image 
+                  src="/images/mascot-empty.png" 
+                  alt="결과 없음" 
+                  width={200}
+                  height={200}
+                  className="object-contain drop-shadow-lg"
+                />
+              </div>
+              <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">검색 결과가 없어요 🐧</h3>
+              <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm mx-auto">
+                펭귄이 열심히 찾아봤지만 찾지 못했습니다.<br />
+                다른 검색어나 카테고리를 시도해보세요.
+              </p>
+              <button 
+                onClick={() => {
+                  setSearchQuery('');
+                  setActiveCategory('');
+                }}
+                className="mt-8 px-8 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl"
+              >
+                전체 목록으로 돌아가기
+              </button>
             </div>
           )}
         </div>

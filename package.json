@@ -11,6 +11,7 @@
     "pages:deploy": "powershell -Command \"Remove-Item -Recurse -Force .next, out -ErrorAction SilentlyContinue\"; npm run build && wrangler pages deploy ./out --project-name=saleship-web --commit-dirty=true"
   },
   "dependencies": {
+    "@formspree/react": "^3.0.0",
     "@next/third-parties": "^16.1.6",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-slot": "^1.2.4",
