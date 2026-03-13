@@ -3,6 +3,39 @@ import { dealService } from '@/features/deals/dealService'
 import DealDetailContent from './DealDetailContent'
 import { supabase } from '@/lib/supabaseClient'
 
+import { Metadata } from 'next'
+
+// 동적 메타데이터 생성
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const deal = await dealService.getDealBySlug(slug);
+    if (!deal) return { title: '존재하지 않는 핫딜 | Saleship' };
+
+    const title = `${deal.title} | 세일쉽(Saleship)`;
+    const description = `${deal.store} 특가! ${Number(deal.price).toLocaleString()}원 (${deal.discount}% 할인). 세일쉽에서 더 많은 정보를 확인하세요.`;
+    
+    return {
+      title,
+      description,
+      openGraph: {
+        title,
+        description,
+        images: [deal.image],
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [deal.image],
+      }
+    };
+  } catch (error) {
+    return { title: '핫딜 상세 정보 | Saleship' };
+  }
+}
+
 // 정적 빌드를 위한 슬러그 생성
 export async function generateStaticParams() {
   return [

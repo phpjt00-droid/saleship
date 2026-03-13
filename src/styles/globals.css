@@ -63,7 +63,18 @@
   body {
     @apply bg-background text-foreground;
     font-family: 'Noto Sans KR', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
   }
+
+  ::selection {
+    @apply bg-blue-100 text-blue-900 dark:bg-blue-900 dark:text-blue-100;
+  }
+}
+
+/* ===== Premium Transitions ===== */
+.transition-premium {
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ===== 기존 디자인 토큰 & 유틸리티 복원 ===== */

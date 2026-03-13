@@ -28,7 +28,7 @@ export default function DealCard({
   return (
     <Link 
       href={`/deal/${deal.id}`}
-      className={`group relative bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700/60 overflow-hidden transition-all duration-300 hover:shadow-[0_20px_50px_rgba(8,_112,_184,_0.1)] dark:hover:shadow-[0_20px_50px_rgba(0,_0,_0,_0.3)] hover:-translate-y-1.5 ${isList ? 'flex h-44' : 'flex flex-col h-full'}`}
+      className={`group relative bg-white dark:bg-slate-800 rounded-2xl border border-slate-100 dark:border-slate-700/60 overflow-hidden transition-all duration-500 hover:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.5)] hover:scale-[1.02] hover:-translate-y-1 ${isList ? 'flex h-44' : 'flex flex-col h-full'}`}
     >
       <div className={`relative bg-slate-50 dark:bg-slate-900 shrink-0 overflow-hidden ${isList ? 'w-52 h-full' : 'w-full h-56'}`}>
         <Image 
@@ -36,13 +36,13 @@ export default function DealCard({
           alt={deal.title} 
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-110" 
+          className="object-contain p-4 transition-transform duration-700 cubic-bezier(0.4, 0, 0.2, 1) group-hover:scale-110" 
           unoptimized={deal.image?.startsWith('http')}
           loading="lazy"
         />
 
         {Number(deal.discount) > 0 && (
-          <div className="absolute top-4 left-4 bg-gradient-to-br from-rose-500 to-orange-600 text-white text-[11px] font-black px-3 py-1 rounded-xl shadow-lg shadow-rose-200 dark:shadow-none z-10">
+          <div className="absolute top-4 left-4 bg-gradient-to-r from-[#FF4D00] to-[#FF8A00] text-white text-[11px] font-extrabold px-3 py-1.5 rounded-lg shadow-xl shadow-orange-500/20 z-10 animate-in fade-in zoom-in duration-500">
             {deal.discount}% OFF
           </div>
         )}
