@@ -1,7 +1,7 @@
 import React from 'react'
 import { Inter, Outfit } from 'next/font/google'
 import '@/styles/globals.css'
-import Header from '@/components/Header'
+import { Header } from '@/components/layout/Header'
 import Footer from '@/components/Footer/Footer'
 import ThemeProvider from '@/components/ThemeProvider/ThemeProvider'
 import { GoogleAnalytics } from '@next/third-parties/google'
