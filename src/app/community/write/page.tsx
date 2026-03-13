@@ -8,7 +8,7 @@ import { toast } from 'sonner'
 import { validateContent } from '@/lib/security'
 import '@/components/WritePost/WritePost.css'
 
-const categories = ['자유', 'Q&A', '팁 & 노하우', '트렌드']
+const categories = ['공지사항', '자유게시판', '리뷰게시판', '장터게시판']
 
 export default function WritePost() {
   const router = useRouter()

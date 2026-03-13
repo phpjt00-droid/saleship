@@ -34,14 +34,6 @@ export default function DealsPage() {
             <p className="text-slate-500 font-medium">새롭게 올라오는 최저가 정보를 확인하세요.</p>
           </div>
         </div>
-        {user && (
-          <Link
-            href="/community/write"
-            className="px-6 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
-          >
-            <Plus size={20} /> 핫딜 등록
-          </Link>
-        )}
       </div>
 
       <div className="mb-10">

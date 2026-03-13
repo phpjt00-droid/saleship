@@ -10,7 +10,7 @@ const categories = [
   { id: 'living', name: '리빙', icon: HomeIcon },
   { id: 'tech', name: '테크', icon: Smartphone },
   { id: 'game', name: '게임', icon: Gamepad2 },
-  { id: 'ticket', name: '이용권', icon: Ticket },
+  { id: 'ticket', name: '상품권/이용권', icon: Ticket },
   { id: 'offline', name: '오프라인', icon: MapPin },
 ]
 
