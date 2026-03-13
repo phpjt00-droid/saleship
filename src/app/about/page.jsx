@@ -2,19 +2,19 @@ import React from 'react'
 import '../privacy/policy.css'
 
 export const metadata = {
-  title: '소개 | 세일쉽 - 핫딜 큐레이션 커뮤니티',
-  description: '세일쉽이 추구하는 최고의 핫딜 큐레이션 가치를 소개합니다.',
+  title: '소개 | Saleship - 핫딜 큐레이션 커뮤니티',
+  description: 'Saleship이 추구하는 최고의 핫딜 큐레이션 가치를 소개합니다.',
 }
 
 export default function AboutPage() {
   return (
     <div className="policy-container">
-      <h1>세일쉽(Saleship) 소개</h1>
+      <h1>Saleship(Saleship) 소개</h1>
       <p className="brand-intro">"소비자를 위한 스마트한 핫딜 큐레이션"</p>
       
       <section>
         <h2>⚓ 우리의 비전</h2>
-        <p>세일쉽은 무분별하게 쏟아지는 정보 속에서 소비자들에게 정말 가치 있는 **'양질의 핫딜'**만을 선별하여 공유하는 커뮤니티입니다. 단순히 싼 물건을 찾는 것을 넘어, 합리적인 소비 생활을 정착시키고 즐거운 쇼핑 경험을 나누는 항구가 되고자 합니다.</p>
+        <p>Saleship은 무분별하게 쏟아지는 정보 속에서 소비자들에게 정말 가치 있는 **'양질의 핫딜'**만을 선별하여 공유하는 커뮤니티입니다. 단순히 싼 물건을 찾는 것을 넘어, 합리적인 소비 생활을 정착시키고 즐거운 쇼핑 경험을 나누는 항구가 되고자 합니다.</p>
       </section>
 
       <section>

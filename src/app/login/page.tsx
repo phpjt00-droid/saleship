@@ -30,7 +30,7 @@ export default function LoginPage() {
         <div>
           <h2 className="mt-6 text-center text-4xl font-black text-slate-900">Welcome Back</h2>
           <p className="mt-2 text-center text-sm font-bold text-slate-500">
-            세일쉽에 다시 오신 것을 환영합니다.
+            Saleship에 다시 오신 것을 환영합니다.
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>

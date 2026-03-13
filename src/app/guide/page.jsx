@@ -2,15 +2,15 @@ import React from 'react'
 import '../privacy/policy.css'
 
 export const metadata = {
-  title: '이용 가이드 | 세일쉽 - 커뮤니티 활용법',
-  description: '세일쉽 커뮤니티를 200% 활용하는 방법을 안내해 드립니다.',
+  title: '이용 가이드 | Saleship - 커뮤니티 활용법',
+  description: 'Saleship 커뮤니티를 200% 활용하는 방법을 안내해 드립니다.',
 }
 
 export default function GuidePage() {
   return (
     <div className="policy-container">
-      <h1>⚓ 세일쉽 이용 가이드</h1>
-      <p className="brand-intro">"처음 오셨나요? 세일쉽은 이렇게 이용하세요!"</p>
+      <h1>⚓ Saleship 이용 가이드</h1>
+      <p className="brand-intro">"처음 오셨나요? Saleship은 이렇게 이용하세요!"</p>
       
       <section>
         <h2>1. 핫딜 정보 확인</h2>

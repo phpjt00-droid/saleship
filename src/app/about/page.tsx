@@ -8,7 +8,7 @@ export default function AboutPage() {
 
       <div className="prose prose-slate max-w-none font-medium text-lg leading-relaxed text-slate-700">
         <p className="mb-8">
-          세일쉽은 넘쳐나는 정보 속에서 진짜 가치 있는 할인을 찾기 위해 시작되었습니다. 
+          Saleship은 넘쳐나는 정보 속에서 진짜 가치 있는 할인을 찾기 위해 시작되었습니다. 
           우리는 단순히 싼 물건을 찾는 것을 넘어, 똑똑하고 즐거운 쇼핑 경험을 지향합니다.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 not-prose mt-16 text-center">

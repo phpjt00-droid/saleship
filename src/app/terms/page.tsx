@@ -5,7 +5,7 @@ export default function TermsPage() {
       <div className="bg-white p-12 rounded-[3rem] border shadow-sm space-y-8 font-medium text-slate-600 leading-relaxed">
         <section>
           <h2 className="text-xl font-black text-slate-900 mb-4">제 1 조 (목적)</h2>
-          <p>이 약관은 세일쉽 커뮤니티(이하 "회사")가 제공하는 서비스의 이용조건 및 절차 등에 관한 사항을 규정함을 목적으로 합니다.</p>
+          <p>이 약관은 Saleship 커뮤니티(이하 "회사")가 제공하는 서비스의 이용조건 및 절차 등에 관한 사항을 규정함을 목적으로 합니다.</p>
         </section>
         <section>
           <h2 className="text-xl font-black text-slate-900 mb-4">제 2 조 (이용자의 의무)</h2>

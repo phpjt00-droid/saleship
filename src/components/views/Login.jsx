@@ -204,7 +204,7 @@ export default function Login() {
             </CardHeader>
             <CardContent className="p-0">
               <p className="text-slate-500 font-medium mb-8 leading-relaxed">
-                이제 세일쉽에서 양질의 핫딜을<br />
+                이제 Saleship에서 양질의 핫딜을<br />
                 마음껏 즐겨보세요 🐧
               </p>
               <Button 
@@ -234,7 +234,7 @@ export default function Login() {
             </Link>
           </div>
           <div className="space-y-2">
-            <CardTitle className="text-3xl font-bold tracking-tight text-slate-900">세일쉽</CardTitle>
+            <CardTitle className="text-3xl font-bold tracking-tight text-slate-900">Saleship</CardTitle>
             <CardDescription className="text-slate-500 text-base font-medium">
               간편하게 로그인하고 세상을 연결하세요
             </CardDescription>
@@ -362,7 +362,7 @@ export default function Login() {
 
         <div className="pt-8 text-center">
           <p className="text-xs text-slate-400">
-            로그인 시 세일쉽의 <Link href="/terms" className="underline hover:text-slate-600 transition-colors">이용약관</Link> 및 <Link href="/privacy" className="underline hover:text-slate-600 transition-colors">개인정보처리방침</Link>에 동의하게 됩니다.
+            로그인 시 Saleship의 <Link href="/terms" className="underline hover:text-slate-600 transition-colors">이용약관</Link> 및 <Link href="/privacy" className="underline hover:text-slate-600 transition-colors">개인정보처리방침</Link>에 동의하게 됩니다.
           </p>
         </div>
       </Card>

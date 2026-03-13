@@ -23,7 +23,7 @@ export default function Hero() {
             </div>
             
             <h1 className="text-5xl lg:text-[5rem] font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[1.05] animate-in fade-in duration-1000 delay-100 italic">
-              취향과 가치를 담은 핫딜, <span className="text-blue-600">세일쉽(Saleship)</span>
+              취향과 가치를 담은 핫딜, <span className="text-blue-600">Saleship(Saleship)</span>
             </h1>
             
             <p className="text-lg md:text-2xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-[1.6] animate-in fade-in duration-1000 delay-200">

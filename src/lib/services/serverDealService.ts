@@ -124,7 +124,7 @@ function mapPostToDeal(post: any): Deal {
     title: post.title,
     content: post.content,
     category: post.category,
-    store: post.store || '세일쉽',
+    store: post.store || 'Saleship',
     image: post.image || '',
     url: post.link || '',
     price: parseNum(priceInfo.currentPrice) || 0,
@@ -136,7 +136,7 @@ function mapPostToDeal(post: any): Deal {
     createdAt: post.created_at || post.date,
     authorId: post.user_id || '',
     shipping: '배송 정보 확인',
-    author: '세일쉽',
+    author: 'Saleship',
     avatar: '/images/pingu-hello.png.jpg',
     // 확장 필드 매핑
     brand_name: post.brand_name || post.store || '',

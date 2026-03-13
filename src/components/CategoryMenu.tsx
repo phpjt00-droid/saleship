@@ -33,13 +33,12 @@ export default function CategoryMenu() {
         <button
           key={cat.id}
           onClick={() => handleCategoryClick(cat.id)}
-          className={`flex items-center gap-2 px-6 py-3 rounded-2xl whitespace-nowrap font-black text-sm transition-all active:scale-95 ${
+          className={`px-6 py-3 rounded-2xl whitespace-nowrap font-black text-sm transition-all active:scale-95 ${
             currentCat === cat.id
               ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 dark:shadow-none'
               : 'bg-white dark:bg-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-100 dark:border-slate-800'
           }`}
         >
-          <cat.icon size={18} />
           {cat.name}
         </button>
       ))}

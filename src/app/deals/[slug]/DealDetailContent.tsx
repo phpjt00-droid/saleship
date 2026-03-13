@@ -65,7 +65,7 @@ export default function DealDetailContent({ deal }: DealDetailContentProps) {
           <div className="lg:col-span-7 flex flex-col">
             <div className="mb-2 flex items-center gap-3">
               <span className="px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-600 text-xs font-black rounded-lg uppercase tracking-wider">
-                {deal.store || '세일쉽'}
+                {deal.store || 'Saleship'}
               </span>
               <span className="text-slate-300 dark:text-slate-600">|</span>
               <span className="text-sm font-medium text-slate-400">{deal.category || '전체'}</span>

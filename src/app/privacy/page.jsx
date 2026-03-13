@@ -2,8 +2,8 @@ import React from 'react'
 import './policy.css'
 
 export const metadata = {
-  title: '개인정보처리방침 | 세일쉽 - 핫딜 큐레이션 커뮤니티',
-  description: '세일쉽의 개인정보 처리 방침을 안내해 드립니다.',
+  title: '개인정보처리방침 | Saleship - 핫딜 큐레이션 커뮤니티',
+  description: 'Saleship의 개인정보 처리 방침을 안내해 드립니다.',
 }
 
 export default function PrivacyPolicy() {
@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
       
       <section>
         <h2>1. 수집하는 개인정보 항목</h2>
-        <p>'세일쉽'은 사용자의 서비스 이용 과정에서 다음과 같은 정보가 자동으로 생성되어 수집될 수 있습니다.</p>
+        <p>'Saleship'은 사용자의 서비스 이용 과정에서 다음과 같은 정보가 자동으로 생성되어 수집될 수 있습니다.</p>
         <ul>
           <li>IP 주소, 쿠키, 방문 일시, 서비스 이용 기록, 불량 이용 기록</li>
           <li>Google Analytics 및 Microsoft Clarity를 통한 익명의 행동 분석 데이터</li>
@@ -38,7 +38,7 @@ export default function PrivacyPolicy() {
 
       <section>
         <h2>4. 제3자에게의 정보 제공</h2>
-        <p>'세일쉽'은 사용자의 동의 없이 개인정보를 외부에 제공하지 않습니다. 다만, 구글(Google) 및 마이크로소프트(Microsoft)와 같은 서비스 제공업체에 데이터 분석을 위한 익명화된 정보가 제공될 수 있습니다.</p>
+        <p>'Saleship'은 사용자의 동의 없이 개인정보를 외부에 제공하지 않습니다. 다만, 구글(Google) 및 마이크로소프트(Microsoft)와 같은 서비스 제공업체에 데이터 분석을 위한 익명화된 정보가 제공될 수 있습니다.</p>
       </section>
 
       <section>

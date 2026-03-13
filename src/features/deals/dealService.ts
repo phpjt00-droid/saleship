@@ -57,7 +57,7 @@ export const dealService = {
         title: post.title,
         content: post.content,
         category: post.category,
-        store: post.store || '세일쉽',
+        store: post.store || 'Saleship',
         image: post.image || '',
         url: post.link || '',
         price: parseNum(priceInfo.currentPrice) || 0,
@@ -69,7 +69,7 @@ export const dealService = {
         createdAt: post.created_at || post.date,
         authorId: post.user_id || '',
         shipping: '배송 정보 확인',
-        author: '세일쉽',
+        author: 'Saleship',
         avatar: '/images/pingu-hello.png.jpg',
         // 확장 필드
         brand_name: post.brand_name || post.store || '',
@@ -141,7 +141,7 @@ export const dealService = {
       price: Number(deal.price) || 0,
       originalPrice: Number(deal.original_price) || 0,
       discount: Number(deal.discount) || 0,
-      store: deal.store || '세일쉽',
+      store: deal.store || 'Saleship',
       shipping: deal.shipping || '무료배송',
       likes: deal.likes || 0,
       comments: deal.comments_count || deal.comments || 0,
@@ -150,7 +150,7 @@ export const dealService = {
       authorId: deal.user_id || '',
       category: deal.category,
       content: deal.content,
-      author: deal.author || '세일쉽',
+      author: deal.author || 'Saleship',
       avatar: deal.avatar || '/images/pingu-hello.png.jpg',
       summary: deal.summary || ''
     };

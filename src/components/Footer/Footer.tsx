@@ -17,7 +17,7 @@ const Footer = () => {
                   className="object-cover scale-150 translate-y-2"
                 />
               </div>
-              <span className="text-2xl font-black tracking-tighter text-white">세일쉽</span>
+              <span className="text-2xl font-black tracking-tighter text-white">Saleship</span>
             </Link>
             <p className="text-slate-400 max-w-sm font-medium leading-relaxed">
               운영자가 직접 선별한 최고의 할인 정보와 라이프스타일 큐레이션을 제공하는 핫딜 커뮤니티입니다. 허위 정보 없는 클린한 쇼핑 환경을 지향합니다.

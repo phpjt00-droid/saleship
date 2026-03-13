@@ -132,7 +132,7 @@ function Profile() {
                 <h1 className="profile__name">@{profile?.nickname || '펭귄'}</h1>
                 <div className="profile__role">스마트 큐레이터</div>
                 <p className="profile__bio">
-                  {profile?.bio || '반가워요! 세일쉽에서 양질의 핫딜 정보를 함께 나누는 펭귄입니다.'}
+                  {profile?.bio || '반가워요! Saleship에서 양질의 핫딜 정보를 함께 나누는 펭귄입니다.'}
                 </p>
 
                 <div className="profile__join">

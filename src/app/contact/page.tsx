@@ -10,7 +10,7 @@ export default function ContactPage() {
       <div className="max-w-3xl mx-auto text-center">
         <div className="mb-16">
           <h1 className="text-5xl font-black mb-6 tracking-tight">Contact Us</h1>
-          <p className="text-xl text-slate-500 font-medium">세일쉽에 궁금한 점이나 제안하고 싶은 내용이 있으신가요?</p>
+          <p className="text-xl text-slate-500 font-medium">Saleship에 궁금한 점이나 제안하고 싶은 내용이 있으신가요?</p>
         </div>
 
         <div className="bg-white dark:bg-slate-900 p-10 md:p-16 rounded-[3rem] border border-slate-100 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none text-left">
