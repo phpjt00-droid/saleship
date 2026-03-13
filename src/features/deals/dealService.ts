@@ -4,18 +4,29 @@ import { sortDeals as sortDealsUtil } from './dealUtils';
 
 export const dealService = {
   /**
-   * 전체 핫딜 목록을 가져옵니다. (페이지네이션 적용)
+   * 전체 핫딜 목록을 가져옵니다. (페이지네이션, 카테고리 필터, 정렬 적용)
    */
-  async getDeals(page: number = 1, limit: number = 20): Promise<Deal[]> {
+  async getDeals(page: number = 1, limit: number = 20, category?: string, sort: string = 'latest'): Promise<Deal[]> {
     const from = (page - 1) * limit;
     const to = from + limit - 1;
 
-    // 'posts' 테이블에서 최신순으로 가져오기
-    const { data, error } = await supabase
+    let query = supabase
       .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(from, to);
+      .select('*');
+
+    // 카테고리 필터
+    if (category) {
+      query = query.eq('category', category);
+    }
+
+    // 정렬 로직
+    if (sort === 'popular') {
+      query = query.order('views', { ascending: false });
+    } else {
+      query = query.order('created_at', { ascending: false });
+    }
+
+    const { data, error } = await query.range(from, to);
 
     if (error) throw error;
 
@@ -48,7 +59,13 @@ export const dealService = {
         authorId: post.user_id || '',
         shipping: '배송 정보 확인',
         author: '세일쉽',
-        avatar: '🐧'
+        avatar: '🐧',
+        // 확장 필드
+        brand_name: post.brand_name || post.store || '',
+        deal_link: post.link || post.url || '',
+        promo_code: post.promo_code || '',
+        end_date: post.end_date,
+        upvote_count: post.upvote_count || post.likes || 0
       };
     });
   },

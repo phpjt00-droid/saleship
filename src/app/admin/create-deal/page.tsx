@@ -11,31 +11,36 @@ export default function AdminCreateDeal() {
   const [submitting, setSubmitting] = useState(false)
   const [user, setUser] = useState<any>(null)
   
-  // 성공 여부 피드백
   const [success, setSuccess] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
-  // 폼 상태
+  // 폼 상태 (네이버 블로그 스타일 + 확장 필드)
   const [formData, setFormData] = useState({
     title: '',
+    brand_name: '',
     price: '',
     original_price: '',
     discount_rate: '',
     category: '핫딜',
     store: '',
-    deal_url: '',
+    deal_link: '',
+    promo_code: '',
+    end_date: '',
     thumbnail: '',
     content: ''
   })
 
-  // 어드민 검증 (간단히 로그인된 사용자 기준으로 제한. 필요시 role 체크 확장 가능)
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession()
+      
+      // 관리자 권한 체크 (여기서는 특정 이메일로 제한하거나 프로필의 role 필드 확인)
+      // 시연을 위해 세션 존재 여부만 체크하되, 실제로는 이메일 등 추가 검증 필요
       if (!session) {
-        // 인증되지 않은 사용자 차단
         router.push('/login?redirect=/admin/create-deal')
       } else {
+        // [임시] 관리자 이메일 화이트리스트 예시
+        // if (session.user.email !== 'admin@example.com') { alert('권한이 없습니다.'); router.push('/'); return; }
         setUser(session.user)
       }
       setLoading(false)
@@ -55,7 +60,6 @@ export default function AdminCreateDeal() {
     setSuccess(false)
 
     try {
-      // price_info jsonb 매핑
       const price_info = {
         currentPrice: formData.price,
         originalPrice: formData.original_price,
@@ -67,281 +71,190 @@ export default function AdminCreateDeal() {
         .insert([
           {
             title: formData.title,
+            brand_name: formData.brand_name,
             category: formData.category,
-            store: formData.store,
-            link: formData.deal_url,
+            store: formData.store || formData.brand_name,
+            link: formData.deal_link,
+            deal_link: formData.deal_link,
+            promo_code: formData.promo_code,
+            end_date: formData.end_date || null,
             image: formData.thumbnail,
             content: formData.content,
             price_info: price_info,
-            authorId: user.id // 현재 로그인된 관리자 UID
+            authorId: user.id
           }
         ])
         .select()
 
       if (error) {
-        if (error.code === '23505') {
-          throw new Error('이미 등록된 핫딜 URL 링크입니다.')
-        }
+        if (error.code === '23505') throw new Error('이미 등록된 링크입니다.')
         throw error
       }
 
       setSuccess(true)
-      // 폼 초기화
       setFormData({
-        title: '',
-        price: '',
-        original_price: '',
-        discount_rate: '',
-        category: '핫딜',
-        store: '',
-        deal_url: '',
-        thumbnail: '',
-        content: ''
+        title: '', brand_name: '', price: '', original_price: '', discount_rate: '',
+        category: '핫딜', store: '', deal_link: '', promo_code: '', end_date: '',
+        thumbnail: '', content: ''
       })
       
-      // 등록 완료 후 1.5초 뒤 메인으로 이동
-      setTimeout(() => {
-        router.push('/')
-      }, 1500)
+      setTimeout(() => router.push('/'), 1500)
 
-    } catch (error) {
-      console.error('Error creating deal:', error)
-      setErrorMsg(error.message || '핫딜 등록에 실패했습니다.')
+    } catch (error: any) {
+      console.error('Error:', error)
+      setErrorMsg(error.message || '등록에 실패했습니다.')
     } finally {
       setSubmitting(false)
     }
   }
 
-  if (loading) {
-    return <div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div></div>
-  }
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center bg-white">
+      <div className="w-10 h-10 border-4 border-emerald-500 border-t-transparent rounded-full animate-spin"></div>
+    </div>
+  )
 
-  if (!user) return null; // 라우팅 전 깜빡임 방지
+  if (!user) return null
 
   return (
-    <div className="min-h-screen bg-slate-50/50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <div className="mb-8">
-          <Link href="/" className="inline-flex items-center text-sm text-slate-500 hover:text-blue-600 font-medium mb-4 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            홈으로 돌아가기
+    <div className="min-h-screen bg-[#f4f7f6] dark:bg-slate-950 py-12 px-4 sm:px-6">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex items-center justify-between mb-8">
+          <Link href="/" className="group flex items-center gap-2 text-slate-500 hover:text-emerald-600 font-bold transition-all">
+            <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            메인으로
           </Link>
-          <h1 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-3">
-            <PlusCircle className="w-8 h-8 text-blue-600" />
-            새 핫딜 등록 (관리자)
-          </h1>
-          <p className="mt-2 text-slate-500">커뮤니티에 새로운 특가 정보를 공유하세요.</p>
+          <div className="px-4 py-1.5 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 text-xs font-black rounded-full uppercase tracking-widest">
+            Admin Dashboard
+          </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white shadow-xl shadow-slate-200/40 rounded-3xl p-6 sm:p-10 border border-slate-100">
-          
-          {success && (
-            <div className="mb-8 p-4 bg-emerald-50 border border-emerald-200 rounded-2xl flex items-start gap-3 text-emerald-700 animate-fadeInUp">
-              <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" />
-              <div>
-                <h3 className="font-bold">성공적으로 등록되었습니다!</h3>
-                <p className="text-sm text-emerald-600 mt-1">잠시 후 메인 화면으로 이동합니다...</p>
-              </div>
-            </div>
-          )}
-
-          {errorMsg && (
-            <div className="mb-8 p-4 bg-rose-50 border border-rose-200 rounded-2xl flex items-start gap-3 text-rose-700 animate-fadeInUp">
-              <AlertCircle className="w-5 h-5 mt-0.5 shrink-0" />
-              <div>
-                <h3 className="font-bold">등록 실패</h3>
-                <p className="text-sm text-rose-600 mt-1">{errorMsg}</p>
-              </div>
-            </div>
-          )}
-
-          <div className="space-y-8">
-            {/* 기본 정보 섹션 */}
-            <div className="space-y-6">
-              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2">기본 정보</h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="md:col-span-2">
-                  <label htmlFor="title" className="block text-sm font-bold text-slate-700 mb-2">게시글 제목 *</label>
-                  <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    value={formData.title}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                    placeholder="[쇼핑몰명] 상품명 가격"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="category" className="block text-sm font-bold text-slate-700 mb-2">카테고리</label>
-                  <select
-                    id="category"
-                    name="category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors font-medium text-slate-700"
-                  >
-                    <option value="핫딜">핫딜</option>
-                    <option value="PC/하드웨어">PC/하드웨어</option>
-                    <option value="디지털/가전">디지털/가전</option>
-                    <option value="패션/잡화">패션/잡화</option>
-                    <option value="식품/건강">식품/건강</option>
-                    <option value="생활용품">생활용품</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label htmlFor="store" className="block text-sm font-bold text-slate-700 mb-2">쇼핑몰명 *</label>
-                  <input
-                    type="text"
-                    id="store"
-                    name="store"
-                    required
-                    value={formData.store}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                    placeholder="예: 쿠팡, 네이버플러스"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 가격 정보 섹션 */}
-            <div className="space-y-6 pt-2">
-              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-slate-400" />
-                가격 정보
-              </h3>
-              
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div>
-                  <label htmlFor="price" className="block text-sm font-bold text-slate-700 mb-2">현재 할인가 (숫자 또는 텍스트) *</label>
-                  <input
-                    type="text"
-                    id="price"
-                    name="price"
-                    required
-                    value={formData.price}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-blue-600 font-bold"
-                    placeholder="예: 45,000원"
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="original_price" className="block text-sm font-bold text-slate-700 mb-2">정상가 (선택)</label>
-                  <input
-                    type="text"
-                    id="original_price"
-                    name="original_price"
-                    value={formData.original_price}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors"
-                    placeholder="예: 89,000원"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="discount_rate" className="block text-sm font-bold text-slate-700 mb-2">할인율/부가정보 (선택)</label>
-                  <input
-                    type="text"
-                    id="discount_rate"
-                    name="discount_rate"
-                    value={formData.discount_rate}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors text-rose-500 font-bold"
-                    placeholder="예: 역대급 50%"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* 미디어 및 링크 섹션 */}
-            <div className="space-y-6 pt-2">
-              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2 flex items-center gap-2">
-                <LinkIcon className="w-5 h-5 text-slate-400" />
-                미디어 및 외부 링크
-              </h3>
-              
-              <div>
-                <label htmlFor="deal_url" className="block text-sm font-bold text-slate-700 mb-2">실제 구매 링크 (URL) *</label>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Main Content Area (Blog Style) */}
+          <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] shadow-xl shadow-slate-200/50 dark:shadow-none border border-slate-100 dark:border-slate-800 overflow-hidden">
+            <div className="p-8 sm:p-12 space-y-8">
+              {/* Title Section */}
+              <div className="space-y-4">
                 <input
-                  type="url"
-                  id="deal_url"
-                  name="deal_url"
+                  type="text"
+                  name="title"
                   required
-                  value={formData.deal_url}
+                  value={formData.title}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors font-mono text-sm"
-                  placeholder="https://..."
+                  placeholder="제목을 입력하세요"
+                  className="w-full text-3xl sm:text-4xl font-black bg-transparent border-none outline-none placeholder:text-slate-200 dark:placeholder:text-slate-700 tracking-tighter"
                 />
+                <div className="h-px bg-slate-100 dark:bg-slate-800 w-full" />
               </div>
 
-              <div>
-                <label htmlFor="thumbnail" className="block text-sm font-bold text-slate-700 mb-2 flex items-center gap-2">
-                  <ImageIcon className="w-4 h-4" /> 썸네일 이미지 링크 (URL) *
-                </label>
-                <input
-                  type="url"
-                  id="thumbnail"
-                  name="thumbnail"
-                  required
-                  value={formData.thumbnail}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors font-mono text-sm"
-                  placeholder="https://... (.jpg, .png)"
-                />
-                {formData.thumbnail && (
-                  <div className="mt-4 p-2 bg-slate-50 border border-slate-200 rounded-xl w-32 h-32 relative overflow-hidden">
-                    <img src={formData.thumbnail} alt="미리보기" className="w-full h-full object-cover rounded-lg" onError={(e: any) => e.target.style.display = 'none'} />
+              {/* Summary / Meta Info Section */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Brand / Store</label>
+                    <div className="relative">
+                      <Tag className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input
+                        type="text"
+                        name="brand_name"
+                        required
+                        value={formData.brand_name}
+                        onChange={handleChange}
+                        placeholder="예: 나이키, 쿠팡"
+                        className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-emerald-500/50 transition-all font-bold"
+                      />
+                    </div>
                   </div>
-                )}
-              </div>
-            </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Direct Link</label>
+                    <div className="relative">
+                      <LinkIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input
+                        type="url"
+                        name="deal_link"
+                        required
+                        value={formData.deal_link}
+                        onChange={handleChange}
+                        placeholder="https://..."
+                        className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-emerald-500/50 transition-all font-medium text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
 
-            {/* 본문 섹션 */}
-            <div className="space-y-6 pt-2">
-              <h3 className="text-lg font-bold text-slate-800 border-b border-slate-100 pb-2">상세 설명 *</h3>
-              <div>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Final Price</label>
+                      <input
+                        type="text"
+                        name="price"
+                        required
+                        value={formData.price}
+                        onChange={handleChange}
+                        placeholder="45,000"
+                        className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-emerald-500/50 transition-all font-black text-emerald-600"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Promo Code</label>
+                      <input
+                        type="text"
+                        name="promo_code"
+                        value={formData.promo_code}
+                        onChange={handleChange}
+                        placeholder="SALE20"
+                        className="w-full px-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-emerald-500/50 transition-all font-bold text-blue-600"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-3">Thumbnail Image URL</label>
+                    <div className="relative">
+                      <ImageIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      <input
+                        type="url"
+                        name="thumbnail"
+                        required
+                        value={formData.thumbnail}
+                        onChange={handleChange}
+                        placeholder="이미지 주소 붙여넣기"
+                        className="w-full pl-11 pr-4 py-3.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-emerald-500/50 transition-all font-medium text-sm"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Text Content */}
+              <div className="pt-4">
+                <label className="block text-[11px] font-black text-slate-400 uppercase tracking-widest mb-4">Content Body</label>
                 <textarea
-                  id="content"
                   name="content"
                   required
-                  rows={8}
+                  rows={12}
                   value={formData.content}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors resize-y text-slate-700"
-                  placeholder="본문 내용을 입력하세요. (마크다운 사용 가능)"
-                ></textarea>
+                  placeholder="상품에 대한 상세한 설명을 적어주세요..."
+                  className="w-full p-0 bg-transparent border-none outline-none resize-none text-lg leading-relaxed text-slate-700 dark:text-slate-300 placeholder:text-slate-300 dark:placeholder:text-slate-700 font-medium"
+                />
               </div>
             </div>
-
-          </div>
-
-          <div className="mt-10 pt-6 border-t border-slate-100 flex items-center justify-end gap-4">
-            <Link 
-              href="/"
-              className="px-6 py-3 rounded-xl font-bold text-slate-500 hover:bg-slate-100 transition-colors"
-            >
-              취소
-            </Link>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-8 py-3 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-600/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 shadow-lg shadow-blue-600/20 shrink-0"
-            >
-              {submitting ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  등록 중...
-                </>
-              ) : (
-                '핫딜 등록하기'
-              )}
-            </button>
+            
+            {/* Action Bar */}
+            <div className="p-8 bg-slate-50 dark:bg-slate-800/50 border-t dark:border-slate-800 flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                 {success && <span className="text-emerald-500 font-black animate-bounce">등록 완료! 🎉</span>}
+                 {errorMsg && <span className="text-rose-500 font-bold text-sm">에러: {errorMsg}</span>}
+              </div>
+              <button
+                type="submit"
+                disabled={submitting}
+                className="px-10 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black rounded-2xl shadow-xl shadow-emerald-200 dark:shadow-none transition-all hover:-translate-y-1 active:scale-95 disabled:opacity-50"
+              >
+                {submitting ? '등록 중...' : '포스팅 발행하기'}
+              </button>
+            </div>
           </div>
         </form>
       </div>

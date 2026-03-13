@@ -77,16 +77,38 @@ function NavbarContent() {
     router.push(`/deal?${params.toString()}`)
   }
 
-  const menuItems = [
-    { name: '핫딜', path: '/deal' },
-    { name: '커뮤니티', path: '/community' },
-    { name: '글쓰기', path: '/write' },
+  const menuGroups = [
+    { 
+      name: '핫딜', 
+      items: [
+        { name: '전체', path: '/deal' },
+        { name: '인기', path: '/deal?sort=popular' },
+        { name: '테크', path: '/deal?cat=tech' },
+        { name: '게임', path: '/deal?cat=game' },
+        { name: '패션', path: '/deal?cat=fashion' },
+      ]
+    },
+    { 
+      name: '커뮤니티', 
+      items: [
+        { name: '자유게시판', path: '/community' },
+        { name: '구매후기', path: '/community/reviews' },
+        { name: '중고장터', path: '/community/market' },
+      ]
+    },
+    { 
+      name: '고객지원', 
+      items: [
+        { name: '문의하기', path: '/contact' },
+        { name: '북마크', path: '/bookmark' },
+      ]
+    },
   ]
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'}`}>
       <div className="container flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 dark:shadow-none -rotate-6 group-hover:rotate-0 transition-transform duration-300">
             <Image 
               src="/images/mascot-hero.png" 
@@ -103,16 +125,30 @@ function NavbarContent() {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
-          {menuItems.map((item) => (
-            <Link 
-              key={item.path} 
-              href={item.path} 
-              className={`text-sm font-bold transition-colors ${pathname === item.path ? 'text-blue-600' : 'text-slate-600 dark:text-slate-400 hover:text-blue-600'}`}
-            >
-              {item.name}
-            </Link>
+        <div className="hidden lg:flex items-center gap-6">
+          {menuGroups.map((group) => (
+            <div key={group.name} className="relative group/menu">
+              <button className="flex items-center gap-1 text-sm font-black text-slate-700 dark:text-slate-300 hover:text-blue-600 py-2 transition-colors">
+                {group.name}
+              </button>
+              <div className="absolute top-full left-0 pt-2 opacity-0 invisible group-hover/menu:opacity-100 group-hover/menu:visible transition-all duration-200 translate-y-2 group-hover/menu:translate-y-0">
+                <div className="bg-white dark:bg-slate-800 border dark:border-slate-700 rounded-2xl shadow-xl p-2 min-w-[140px]">
+                  {group.items.map((item) => (
+                    <Link 
+                      key={item.path} 
+                      href={item.path} 
+                      className={`block px-4 py-2 text-[13px] font-bold rounded-xl transition-colors ${pathname === item.path ? 'bg-blue-50 text-blue-600' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 hover:text-blue-600'}`}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
           ))}
+          <Link href="/write" className="text-sm font-black text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all">
+            글쓰기
+          </Link>
         </div>
 
         <div className="flex items-center gap-4">
@@ -162,12 +198,29 @@ function NavbarContent() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-slate-900 border-t dark:border-slate-800 p-4 animate-in slide-in-from-top duration-300">
-          <div className="flex flex-col gap-4">
-            {menuItems.map((item) => (
-              <Link key={item.path} href={item.path} onClick={() => setMobileOpen(false)} className="text-lg font-bold p-2">{item.name}</Link>
+        <div className="md:hidden absolute top-full left-0 right-0 bg-white dark:bg-slate-900 border-t dark:border-slate-800 p-6 animate-in slide-in-from-top duration-300 shadow-2xl">
+          <div className="flex flex-col gap-6">
+            {menuGroups.map((group) => (
+              <div key={group.name} className="flex flex-col gap-3">
+                <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">{group.name}</span>
+                <div className="grid grid-cols-2 gap-2">
+                  {group.items.map((item) => (
+                    <Link 
+                      key={item.path} 
+                      href={item.path} 
+                      onClick={() => setMobileOpen(false)} 
+                      className="text-sm font-bold p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl hover:text-blue-600 transition-colors"
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </div>
             ))}
-            <div className="h-px bg-slate-100 dark:bg-slate-800 my-2" />
+            <Link href="/write" onClick={() => setMobileOpen(false)} className="bg-blue-600 text-white text-center py-4 rounded-xl font-black shadow-lg shadow-blue-200">
+              글쓰기
+            </Link>
+            <div className="h-px bg-slate-100 dark:bg-slate-800" />
             <form onSubmit={handleSearch} className="relative flex items-center">
               <Search size={18} className="absolute left-3 text-slate-400" />
               <input 
@@ -175,7 +228,7 @@ function NavbarContent() {
                 placeholder="검색어 입력..." 
                 value={localSearch}
                 onChange={(e) => setLocalSearch(e.target.value)}
-                className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-3 pl-10 pr-4 outline-none"
+                className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-4 pl-10 pr-4 outline-none font-bold"
               />
             </form>
           </div>

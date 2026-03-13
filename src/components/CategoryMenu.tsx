@@ -3,13 +3,14 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 const categories = [
   { id: '', name: '전체' },
+  { id: 'popular', name: '실적/인기' },
   { id: 'fashion', name: '패션' },
-  { id: 'food', name: '푸드' },
   { id: 'beauty', name: '뷰티' },
-  { id: 'home', name: '리빙' },
-  { id: 'electronics', name: '가전' },
+  { id: 'food', name: '푸드' },
+  { id: 'living', name: '리빙' },
+  { id: 'tech', name: '테크' },
   { id: 'game', name: '게임' },
-  { id: 'ticket', name: '이용권' },
+  { id: 'voucher', name: '상품권' },
   { id: 'offline', name: '오프라인' },
 ]
 

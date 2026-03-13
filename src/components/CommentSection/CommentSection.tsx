@@ -43,6 +43,14 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
       alert('로그인이 필요한 서비스입니다.')
       return
     }
+    
+    // 링크 차단 필터 (정규표현식)
+    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co))/gi;
+    if (urlRegex.test(content)) {
+      alert('스팸 방지를 위해 댓글에 링크(URL)를 포함할 수 없습니다.');
+      return;
+    }
+
     if (!content.trim()) return
 
     try {

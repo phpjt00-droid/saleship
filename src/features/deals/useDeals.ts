@@ -24,22 +24,29 @@ export function useDeals() {
   }, [])
 
   // 무한 스크롤 / 더보기를 위한 SWR Infinite
+  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
+  const currentCat = searchParams.get('cat') || ''
+  const currentSort = searchParams.get('sort') || 'latest'
+
   const PAGE_SIZE = 20
   const getKey = (pageIndex: number, previousPageData: Deal[]) => {
     if (previousPageData && !previousPageData.length) return null // 끝에 도달
-    return `/api/deals?page=${pageIndex + 1}&limit=${PAGE_SIZE}` // 실제 API가 아니더라도 swr 키로 유효
+    // 카테고리 및 정렬 정보를 키에 포함
+    return `/api/deals?page=${pageIndex + 1}&limit=${PAGE_SIZE}&cat=${currentCat}&sort=${currentSort}`
   }
 
   const fetcher = async (url: string) => {
-    const urlObj = new URL(url, 'http://localhost') // dummy origin for parsing
+    const urlObj = new URL(url, 'http://localhost')
     const page = parseInt(urlObj.searchParams.get('page') || '1')
     const limit = parseInt(urlObj.searchParams.get('limit') || '20')
-    return await dealService.getDeals(page, limit)
+    const category = urlObj.searchParams.get('cat') || undefined
+    const sort = urlObj.searchParams.get('sort') || 'latest'
+    return await dealService.getDeals(page, limit, category, sort)
   }
 
   const { data, error, size, setSize, isValidating, mutate } = useSWRInfinite(getKey, fetcher, {
     revalidateFirstPage: false,
-    revalidateOnFocus: false // 포커스시 백그라운드 재페칭 방지로 성능 최적화
+    revalidateOnFocus: false
   })
 
   // 트렌딩 핫딜 (Trending)

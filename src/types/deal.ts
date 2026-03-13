@@ -19,6 +19,13 @@ export interface Deal {
   author?: string;
   avatar?: string;
   isHot?: boolean;
+  
+  // 확장 필드
+  brand_name?: string;
+  deal_link?: string;
+  promo_code?: string;
+  end_date?: string;
+  upvote_count?: number;
 }
 
 export interface DealComment {

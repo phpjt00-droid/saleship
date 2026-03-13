@@ -8,29 +8,41 @@ import { unstable_cache } from 'next/cache';
  * Next.js의 cache 및 revalidate 기능을 활용하여 성능을 최적화합니다.
  */
 
-// 전체 딜 조회 (캐싱 적용)
-export const getDeals = unstable_cache(
-  async (page: number = 1, limit: number = 20): Promise<Deal[]> => {
-    const supabase = await createClient();
-    const from = (page - 1) * limit;
-    const to = from + limit - 1;
+// 전체 딜 조회 (캐싱 적용 + 카테고리 필터링 + 정렬)
+export const getDeals = (page: number = 1, limit: number = 20, category?: string, sort: string = 'latest'): Promise<Deal[]> => {
+  return unstable_cache(
+    async (): Promise<Deal[]> => {
+      const supabase = await createClient();
+      const from = (page - 1) * limit;
+      const to = from + limit - 1;
 
-    const { data, error } = await supabase
-      .from('posts')
-      .select('*')
-      .order('created_at', { ascending: false })
-      .range(from, to);
+      let query = supabase
+        .from('posts')
+        .select('*');
 
-    if (error) {
-      console.error('Error fetching deals:', error);
-      throw new Error('데이터를 불러오는데 실패했습니다.');
-    }
+      if (category) {
+        query = query.eq('category', category);
+      }
 
-    return (data || []).map(mapPostToDeal);
-  },
-  ['deals-list'],
-  { revalidate: 60, tags: ['deals'] } // 60초마다 재검증
-);
+      if (sort === 'popular') {
+        query = query.order('views', { ascending: false });
+      } else {
+        query = query.order('created_at', { ascending: false });
+      }
+
+      const { data, error } = await query.range(from, to);
+
+      if (error) {
+        console.error('Error fetching deals:', error);
+        throw new Error('데이터를 불러오는데 실패했습니다.');
+      }
+
+      return (data || []).map(mapPostToDeal);
+    },
+    [`deals-list-${category || 'all'}-${sort}-${page}`],
+    { revalidate: 60, tags: ['deals', category ? `deals-${category}` : 'deals-all'] }
+  )();
+};
 
 // 트렌딩 딜 조회 (캐싱 적용)
 export const getTrendingDeals = unstable_cache(
@@ -125,6 +137,12 @@ function mapPostToDeal(post: any): Deal {
     authorId: post.user_id || '',
     shipping: '배송 정보 확인',
     author: '세일쉽',
-    avatar: '🐧'
+    avatar: '🐧',
+    // 확장 필드 매핑
+    brand_name: post.brand_name || post.store || '',
+    deal_link: post.link || post.url || '',
+    promo_code: post.promo_code || '',
+    end_date: post.end_date,
+    upvote_count: post.upvote_count || post.likes || 0
   };
 }
