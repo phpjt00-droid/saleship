@@ -4,6 +4,7 @@ import { supabase } from '@/lib/supabaseClient'
 import { dealService } from '@/features/deals/dealService'
 import { DealComment } from '@/types/deal'
 import { Send, User, Trash2, MessageCircle } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface CommentSectionProps {
   postId: string;
@@ -40,14 +41,16 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!user) {
-      alert('로그인이 필요한 서비스입니다.')
+      toast.error('로그인이 필요한 서비스입니다.')
       return
     }
     
-    // 링크 차단 필터 (정규표현식)
-    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co))/gi;
+    // 링크 차단 필터 (정규표현식: http, https, www, .com, .net 등 광범위 감지)
+    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
     if (urlRegex.test(content)) {
-      alert('스팸 방지를 위해 댓글에 링크(URL)를 포함할 수 없습니다.');
+      toast.warning('링크 입력이 제한됩니다.', {
+        description: '스팸 방지를 위해 댓글에 URL을 포함할 수 없습니다.'
+      });
       return;
     }
 
@@ -57,10 +60,11 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
       setSubmitting(true)
       await dealService.addComment(postId, content, user.id)
       setContent('')
+      toast.success('댓글이 성공적으로 등록되었습니다.')
       await fetchComments()
     } catch (error) {
       console.error('Error adding comment:', error)
-      alert('댓글 등록에 실패했습니다.')
+      toast.error('댓글 등록에 실패했습니다.')
     } finally {
       setSubmitting(false)
     }

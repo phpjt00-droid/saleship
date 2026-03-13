@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { MessageSquare, Eye, Clock, ThumbsUp, ThumbsDown, Bookmark } from 'lucide-react'
 import { Deal, DealViewMode } from '@/types/deal'
+import VoteControl from './VoteControl'
 
 interface DealCardProps {
   deal: Deal;
@@ -100,22 +101,31 @@ export default function DealCard({
           </div>
 
           <div className="flex items-center justify-between pt-4 border-t border-slate-50 dark:border-slate-800/50">
-            <div className="flex items-center gap-4 text-[11px] text-slate-400 font-bold">
-              <span className="flex items-center gap-1.5"><Eye size={14} /> {deal.views}</span>
-              <span className="flex items-center gap-1.5 text-rose-500"><ThumbsUp size={14} /> {deal.likes}</span>
-              <span className="flex items-center gap-1.5"><MessageSquare size={14} /> {deal.comments}</span>
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-bold">
+                <Eye size={14} /> {deal.views}
+              </span>
+              <span className="flex items-center gap-1.5 text-[11px] text-slate-400 font-bold">
+                <MessageSquare size={14} /> {deal.comments}
+              </span>
             </div>
             
-            <button 
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onBookmarkToggle?.(e, deal.id);
-              }}
-              className={`p-2.5 rounded-xl transition-all ${isBookmarked ? 'text-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-inner' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
-            >
-              <Bookmark size={18} fill={isBookmarked ? "currentColor" : "none"} />
-            </button>
+            <div className="flex items-center gap-2">
+              {/* 실시간 투표 컨트롤 (Up/Down) */}
+              <VoteControl postId={String(deal.id)} />
+
+              <button 
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onBookmarkToggle?.(e, deal.id);
+                }}
+                className={`p-2 rounded-xl transition-all ${isBookmarked ? 'text-amber-500 bg-amber-50 dark:bg-amber-900/20 shadow-inner' : 'text-slate-300 hover:text-amber-500 hover:bg-slate-50 dark:hover:bg-slate-800'}`}
+                title="북마크 저장"
+              >
+                <Bookmark size={16} fill={isBookmarked ? "currentColor" : "none"} />
+              </button>
+            </div>
           </div>
         </div>
       </div>

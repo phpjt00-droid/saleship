@@ -65,7 +65,8 @@ export const dealService = {
         deal_link: post.link || post.url || '',
         promo_code: post.promo_code || '',
         end_date: post.end_date,
-        upvote_count: post.upvote_count || post.likes || 0
+        upvote_count: post.upvote_count || post.likes || 0,
+        summary: post.summary || ''
       };
     });
   },
@@ -139,7 +140,8 @@ export const dealService = {
       category: deal.category,
       content: deal.content,
       author: deal.author || '세일쉽',
-      avatar: deal.avatar || '🐧'
+      avatar: deal.avatar || '🐧',
+      summary: deal.summary || ''
     };
   },
 

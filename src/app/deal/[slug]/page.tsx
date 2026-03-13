@@ -12,8 +12,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const deal = await dealService.getDealBySlug(slug);
     if (!deal) return { title: '존재하지 않는 핫딜 | Saleship' };
 
-    const title = `${deal.title} | 세일쉽(Saleship)`;
-    const description = `${deal.store} 특가! ${Number(deal.price).toLocaleString()}원 (${deal.discount}% 할인). 세일쉽에서 더 많은 정보를 확인하세요.`;
+    const title = `[${deal.brand_name}] ${deal.title} | 세일쉽(Saleship)`;
+    const description = `${deal.store} 특가! ${Number(deal.price).toLocaleString()}원 (${deal.discount}% 할인). ${deal.summary || '세일쉽에서 엄선한 최신 핫딜 정보를 지금 바로 확인해 보세요.'}`;
     
     return {
       title,
@@ -23,6 +23,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         description,
         images: [deal.image],
         type: 'article',
+        siteName: '세일쉽(Saleship)',
+        locale: 'ko_KR',
       },
       twitter: {
         card: 'summary_large_image',

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import { dealService } from '@/features/deals/dealService'
 import { ThumbsUp, ThumbsDown } from 'lucide-react'
+import { toast } from 'sonner'
 
 interface VoteControlProps {
   postId: string;
@@ -78,13 +79,14 @@ export default function VoteControl({ postId }: VoteControlProps) {
 
     try {
       await dealService.vote(postId, user.id, newVoteType)
+      toast.success(newVoteType === 'up' ? '추천했습니다! 👍' : newVoteType === 'down' ? '비추천했습니다. 👎' : '투표를 취소했습니다.')
     } catch (error) {
       console.error('Error voting:', error)
       // 실패 시 복구
       setUserVote(prevVote)
       setUpVotes(prevUp)
       setDownVotes(prevDown)
-      alert('투표 처리 중 오류가 발생했습니다.')
+      toast.error('투표 처리 중 오류가 발생했습니다.')
     }
   }
 

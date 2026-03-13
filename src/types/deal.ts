@@ -26,6 +26,7 @@ export interface Deal {
   promo_code?: string;
   end_date?: string;
   upvote_count?: number;
+  summary?: string;
 }
 
 export interface DealComment {

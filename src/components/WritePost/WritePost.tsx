@@ -39,10 +39,10 @@ function WritePost() {
     }
 
     // 링크 차단 필터 (정규표현식)
-    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co))/gi;
+    const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
     if (urlRegex.test(title) || urlRegex.test(content)) {
-      toast.error('스팸 방지를 위해 자유게시판에는 링크(URL)를 포함할 수 없습니다.', {
-        description: '핫딜 정보는 관리자 대시보드를 통해 등록해 주세요.'
+      toast.warning('링크 입력이 제한됩니다.', {
+        description: '스팸 방지를 위해 자유게시판에는 URL을 포함할 수 없습니다.'
       });
       return;
     }
