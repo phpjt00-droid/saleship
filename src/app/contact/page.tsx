@@ -18,60 +18,61 @@ export default function ContactPage() {
   if (state.succeeded) {
     return (
       <div className="container mx-auto px-4 py-24 flex justify-center">
-        <Card className="w-full max-w-md border-none shadow-2xl rounded-[2.5rem] p-8 text-center animate-in zoom-in duration-500">
+        <div className="w-full max-w-md border-none shadow-2xl bg-white rounded-[2.5rem] p-8 text-center animate-in zoom-in duration-500">
           <div className="inline-block p-5 bg-green-50 rounded-full mb-6">
             <CheckCircle2 size={48} className="text-green-500" />
           </div>
-          <CardHeader className="p-0 mb-6">
-            <CardTitle className="text-2xl font-black text-slate-800">문의가 접수되었습니다!</CardTitle>
-            <CardDescription className="text-lg font-medium text-slate-500 mt-2">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-slate-800">문의가 접수되었습니다!</h2>
+            <p className="text-lg font-medium text-slate-500 mt-2">
               최대한 빨리 답변해 드릴게요 🐧
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="p-0">
-            <Button 
+            </p>
+          </div>
+          <div>
+            <button 
               onClick={() => window.location.href = '/'}
-              className="w-full h-14 bg-slate-900 hover:bg-blue-600 text-white text-lg font-bold rounded-2xl shadow-lg transition-all"
+              className="inline-flex items-center justify-center whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full h-14 bg-slate-900 hover:bg-blue-600 text-white text-lg font-bold rounded-2xl shadow-lg transition-all"
             >
               홈으로 이동
-            </Button>
-          </CardContent>
-        </Card>
+            </button>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="container mx-auto px-4 py-16 flex justify-center">
-      <Card className="w-full max-w-xl border-none shadow-2xl bg-white/90 backdrop-blur-md rounded-[2.5rem] overflow-hidden">
+      <div className="w-full max-w-xl border-none shadow-2xl bg-white/90 backdrop-blur-md rounded-[2.5rem] overflow-hidden">
         <div className="bg-blue-600 p-8 text-white text-center">
           <h1 className="text-3xl font-black mb-2">고객 문의</h1>
           <p className="font-medium opacity-90 text-blue-50">어떤 점이 궁금하신가요? 아래 폼을 작성해 주세요.</p>
         </div>
         
-        <CardContent className="p-8 md:p-12">
+        <div className="p-8 md:p-12">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-black text-slate-700 ml-1">이메일 주소</label>
-              <Input
+              <input
                 id="email"
                 type="email" 
                 name="email"
                 placeholder="답변 받을 이메일을 입력하세요"
                 required
-                className="h-14 rounded-2xl border-slate-100 bg-slate-50/50 focus:bg-white transition-all text-base font-medium"
+                className="flex h-14 w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 focus:bg-white transition-all font-medium"
               />
               <ValidationError prefix="Email" field="email" errors={state.errors} />
             </div>
 
             <div className="space-y-2">
               <label htmlFor="title" className="text-sm font-black text-slate-700 ml-1">문의 제목</label>
-              <Input
+              <input
                 id="title"
                 name="title"
+                type="text"
                 placeholder="문의 제목을 입력하세요"
                 required
-                className="h-14 rounded-2xl border-slate-100 bg-slate-50/50 focus:bg-white transition-all text-base font-medium"
+                className="flex h-14 w-full rounded-2xl border border-slate-100 bg-slate-50/50 px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 focus:bg-white transition-all font-medium"
               />
             </div>
 
@@ -87,10 +88,10 @@ export default function ContactPage() {
               <ValidationError prefix="Message" field="message" errors={state.errors} />
             </div>
 
-            <Button 
+            <button 
               type="submit" 
               disabled={state.submitting}
-              className="w-full h-16 bg-blue-600 hover:bg-blue-700 text-white text-xl font-black rounded-2xl shadow-xl shadow-blue-100 transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-3"
+              className="inline-flex items-center justify-center whitespace-nowrap text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 w-full h-16 bg-blue-600 hover:bg-blue-700 text-white text-xl font-black rounded-2xl shadow-xl shadow-blue-100 transition-all hover:-translate-y-1 active:scale-95 gap-3"
             >
               {state.submitting ? (
                 <>
@@ -103,7 +104,7 @@ export default function ContactPage() {
                   문의 발송하기
                 </>
               )}
-            </Button>
+            </button>
             
             {state.errors && (
               <div className="p-4 bg-rose-50 text-rose-500 rounded-2xl flex items-center gap-3 text-sm font-bold border border-rose-100">
@@ -112,8 +113,8 @@ export default function ContactPage() {
               </div>
             )}
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
