@@ -2,7 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { Search } from 'lucide-react';
+import { Search, Award } from 'lucide-react';
 
 export default function Hero() {
   return (
@@ -23,8 +23,8 @@ export default function Hero() {
             </div>
             
             <h1 className="text-5xl md:text-7xl font-black tracking-tighter text-slate-900 dark:text-white mb-8 leading-[1.1]">
-              취향과 가치를 담은<br />
-              <span className="text-blue-600 underline decoration-blue-200 dark:decoration-blue-900/50 decoration-8 underline-offset-4">프리미엄 핫딜</span>
+              취향과 가치를 담은 핫딜,<br />
+              <span className="text-blue-600 underline decoration-blue-200 dark:decoration-blue-900/50 decoration-8 underline-offset-4">세일쉽(Saleship)</span>
             </h1>
             
             <p className="text-lg md:text-xl text-slate-500 dark:text-slate-400 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium leading-relaxed">
@@ -75,11 +75,11 @@ export default function Hero() {
               <div className="absolute -bottom-8 -left-8 bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-700">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-200">
-                    <Search className="text-white" size={24} />
+                    <Award className="text-white" size={24} />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Real-time</div>
-                    <div className="text-sm font-black text-slate-900 dark:text-white">실시간 핫딜 24h</div>
+                    <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Editors Pick</div>
+                    <div className="text-sm font-black text-slate-900 dark:text-white">엄선된 추천 핫딜</div>
                   </div>
                 </div>
               </div>

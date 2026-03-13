@@ -27,7 +27,7 @@ export default function PopularDealsSidebar() {
         <div className="w-10 h-10 bg-amber-400 rounded-2xl flex items-center justify-center shadow-lg shadow-amber-100">
           <Award className="text-white" size={20} />
         </div>
-        <h3 className="text-xl font-black text-slate-900 dark:text-white">실시간 베스트</h3>
+        <h3 className="text-xl font-black text-slate-900 dark:text-white">인기 베스트</h3>
       </div>
 
       <div className="space-y-6">

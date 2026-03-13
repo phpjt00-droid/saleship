@@ -1,0 +1,82 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 4.9s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/features/deals/u
+seDeals.ts:44:45
+Type error: Expected 0
+-1 arguments, but got 
+4.
+
+[0m [90m 42 |[39m  
+   [36mconst[39m cat
+egory [33m=[39m urlO
+bj[33m.[39msearchPar
+ams[33m.[39m[36mget
+[39m([32m'cat'[39m)
+ [33m||[39m undefine
+d
+ [90m 43 |[39m     
+[36mconst[39m sort [
+33m=[39m urlObj[33m.
+[39msearchParams[33m
+.[39m[36mget[39m([
+32m'sort'[39m) [33m|
+|[39m [32m'latest'[
+39m
+[31m[1m>[22m[39m[
+90m 44 |[39m     [36
+mreturn[39m [36mawai
+t[39m dealService[33
+m.[39mgetDeals(page[
+33m,[39m limit[33m,
+[39m category[33m,[3
+9m sort)
+ [90m    |[39m      
+                      
+                 [31m
+[1m^[22m[39m
+ [90m 45 |[39m   }
+ [90m 46 |[39m
+ [90m 47 |[39m   [3
+6mconst[39m { data[3
+3m,[39m error[33m,[
+39m size[33m,[39m se
+tSize[33m,[39m isVal
+idating[33m,[39m mut
+ate } [33m=[39m useS
+WRInfinite(getKey[33m
+,[39m fetcher[33m,[
+39m {[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

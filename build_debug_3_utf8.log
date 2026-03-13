@@ -1,0 +1,100 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : <w> [webpac
+k.cache.PackFileCacheS
+trategy] Serializing b
+ig strings (140kiB) im
+pacts deserialization 
+performance (consider 
+using Buffer instead a
+nd decode when needed)
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (<w> [webpa   
+ ck.ca...de when n    
+eeded):String) []    ,
+ RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ ??Compiled successfully in 15.9s
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+
+./src/app/admin/page.t
+sx:89:36
+Type error: Property '
+thumbnail' does not ex
+ist on type 'Deal'.
+
+[0m [90m 87 |[39m  
+               [33m<
+[39m[33mtd[39m class
+Name[33m=[39m[32m"p
+x-6 py-6"[39m[33m>[
+39m
+ [90m 88 |[39m      
+             [33m<[3
+9m[33mdiv[39m classN
+ame[33m=[39m[32m"fl
+ex items-center gap-4"
+[39m[33m>[39m
+[31m[1m>[22m[39m[
+90m 89 |[39m         
+            [33m<[39
+m[33mimg[39m src[33
+m=[39m{deal[33m.[39
+mthumbnail} className
+[33m=[39m[32m"w-16 h
+-16 rounded-xl object-
+cover"[39m [33m/[39
+m[33m>[39m
+ [90m    |[39m      
+                      
+        [31m[1m^[22
+m[39m
+ [90m 90 |[39m      
+               [33m<
+[39m[33mdiv[39m[33m
+>[39m
+ [90m 91 |[39m      
+                 [33m
+<[39m[33mdiv[39m cl
+assName[33m=[39m[32
+m"font-black text-slat
+e-900 dark:text-white 
+mb-1 line-clamp-1"[39
+m[33m>[39m{deal[33m
+.[39mtitle}[33m<[39
+m[33m/[39m[33mdiv[
+39m[33m>[39m
+ [90m 92 |[39m      
+                 [33m
+<[39m[33mdiv[39m cl
+assName[33m=[39m[32
+m"text-xs text-slate-4
+00 font-bold"[39m[33
+m>[39m{deal[33m.[39
+mbrand_name}[33m<[39
+m[33m/[39m[33mdiv[
+39m[33m>[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

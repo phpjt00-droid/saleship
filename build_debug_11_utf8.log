@@ -1,0 +1,77 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 3.9s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/DealL
+ist/DealList.tsx:24:49
+Type error: Argument o
+f type '{ category: st
+ring; sort: string; qu
+ery: string; }' is not
+ assignable to paramet
+er of type 'number'.
+
+[0m [90m 22 |[39m  
+       [36mconst[39m
+ query [33m=[39m sea
+rchParams[33m.[39m[
+36mget[39m([32m'q'[
+39m) [33m||[39m [32
+m''[39m
+ [90m 23 |[39m      
+   
+[31m[1m>[22m[39m[
+90m 24 |[39m         
+[36mconst[39m data 
+[33m=[39m [36mawait
+[39m dealService[33m.
+[39mgetDeals({ catego
+ry[33m:[39m cat[33m
+,[39m sort[33m,[39m
+ query })
+ [90m    |[39m      
+                      
+                     
+[31m[1m^[22m[39m
+ [90m 25 |[39m      
+   setDeals(data)
+ [90m 26 |[39m      
+ } [36mcatch[39m (er
+ror) {
+ [90m 27 |[39m      
+   console[33m.[39me
+rror([32m'Failed to f
+etch deals:'[39m[33m
+,[39m error)[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

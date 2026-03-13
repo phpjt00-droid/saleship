@@ -1,0 +1,134 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to co
+mpile.
+위치 줄:1 문자:1
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to com   
+ pile.:String) [],     
+RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./src/components/Commen
+tSection/CommentSection
+.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\component
+s\CommentSection\Commen
+tSection.tsx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/components/Commen
+tSection/CommentSection
+.tsx
+./src/app/deals/[slug]/
+DealDetailContent.tsx
+
+./src/components/DealLi
+st/DealList.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\component
+s\DealList\DealList.tsx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/components/DealLi
+st/DealList.tsx
+./src/app/deals/page.ts
+x
+
+./src/components/VoteCo
+ntrol.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\component
+s\VoteControl.tsx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/components/VoteCo
+ntrol.tsx
+./src/app/deals/[slug]/
+DealDetailContent.tsx
+
+./src/components/WriteP
+ost/WritePost.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\component
+s\WritePost\WritePost.t
+sx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/components/WriteP
+ost/WritePost.tsx
+./src/app/community/wri
+te/page.tsx
+
+./src/app/bookmarks/pag
+e.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\app\bookm
+arks\page.tsx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/app/bookmarks/pag
+e.tsx
+
+
+> Build failed because 
+of webpack errors

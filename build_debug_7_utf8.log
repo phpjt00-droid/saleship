@@ -1,0 +1,93 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 6.4s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/Comme
+ntSection/CommentSecti
+on.tsx:105:96
+Type error: Property '
+author_email' does not
+ exist on type 'DealCo
+mment'.
+
+[0m [90m 103 |[39m 
+            [33m<[39
+m[33m/[39m[33mdiv[
+39m[33m>[39m
+ [90m 104 |[39m     
+        [33m<[39m[3
+3mdiv[39m className[
+33m=[39m[32m"flex-1"
+[39m[33m>[39m
+[31m[1m>[22m[39m[
+90m 105 |[39m        
+       [33m<[39m[33
+mdiv[39m className[3
+3m=[39m[32m"font-bla
+ck text-sm text-slate-
+900 dark:text-white mb
+-2"[39m[33m>[39m{co
+mment[33m.[39mauthor
+_email[33m?[39m[33m
+.[39msplit([32m'@'[
+39m)[[35m0[39m]}[33
+m<[39m[33m/[39m[33
+mdiv[39m[33m>[39m
+ [90m     |[39m     
+                      
+                      
+                      
+                      
+   [31m[1m^[22m[39
+m
+ [90m 106 |[39m     
+          [33m<[39m
+[33mdiv[39m className
+[33m=[39m[32m"text-
+slate-500 dark:text-sl
+ate-400 font-medium le
+ading-relaxed"[39m[3
+3m>[39m{comment[33m.
+[39mcontent}[33m<[3
+9m[33m/[39m[33mdiv
+[39m[33m>[39m
+ [90m 107 |[39m     
+        [33m<[39m[3
+3m/[39m[33mdiv[39m
+[33m>[39m
+ [90m 108 |[39m     
+      [33m<[39m[33m
+/[39m[33mdiv[39m[3
+3m>[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

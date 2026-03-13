@@ -1,0 +1,36 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to compil
+e.
+위치 줄:1 문자:1
++ & "C:\Program Files\nodej
+s/node.exe" "C:\Program Fil
+es\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~
+    + CategoryInfo         
+     : NotSpecified: (Fai  
+  led to compile.:String   
+ ) [], RemoteException
+    + FullyQualifiedErrorI 
+   d : NativeCommandError
+ 
+
+./src/app/community/write/p
+age.tsx
+Module not found: Can't res
+olve './WritePost.css'
+
+https://nextjs.org/docs/mes
+sages/module-not-found
+
+
+> Build failed because of w
+ebpack errors

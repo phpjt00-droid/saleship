@@ -1,0 +1,80 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 3.6s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/app/admin/page.t
+sx:114:51
+Type error: Argument o
+f type 'string | numbe
+r' is not assignable t
+o parameter of type 'n
+umber'.
+  Type 'string' is not
+ assignable to type 'n
+umber'.
+
+[0m [90m 112 |[39m 
+                    [
+33m<[39m[33m/[39m[
+33mbutton[39m[33m>[
+39m
+ [90m 113 |[39m     
+                [33m<
+[39m[33mbutton[39m 
+[31m[1m>[22m[39m[
+90m 114 |[39m        
+               onClick
+[33m=[39m{() [33m=>
+[39m handleDelete(dea
+l[33m.[39mid)}
+ [90m     |[39m     
+                      
+                      
+  [31m[1m^[22m[39m
+ [90m 115 |[39m     
+                  clas
+sName[33m=[39m[32m"
+p-2 text-slate-400 hov
+er:text-rose-600 trans
+ition-colors"[39m
+ [90m 116 |[39m     
+                [33m>
+[39m
+ [90m 117 |[39m     
+                  [33
+m<[39m[33mTrash2[39
+m size[33m=[39m{[35
+m18[39m} [33m/[39m
+[33m>[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

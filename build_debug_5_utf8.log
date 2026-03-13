@@ -1,0 +1,70 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 4.6s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/app/bookmarks/pa
+ge.tsx:7:22
+Type error: Property '
+isLoading' does not ex
+ist on type '{ bookmar
+ks: Deal[]; toggleBook
+mark: (deal: Deal) => 
+void; isBookmarked: (i
+d: string | number) =>
+ boolean; }'.
+
+[0m [90m  5 |[39m
+ [90m  6 |[39m [36m
+export[39m [36mdefau
+lt[39m [36mfunction
+[39m [33mBookmarksPag
+e[39m() {
+[31m[1m>[22m[39m[
+90m  7 |[39m   [36mc
+onst[39m { bookmarks
+[33m,[39m isLoading }
+ [33m=[39m useBookma
+rks()
+ [90m    |[39m      
+                [31m
+[1m^[22m[39m
+ [90m  8 |[39m
+ [90m  9 |[39m   [3
+6mreturn[39m (
+ [90m 10 |[39m     
+[33m<[39m[33mmain[3
+9m className[33m=[39
+m[32m"container py-8"
+[39m[33m>[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

@@ -1,0 +1,81 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 4.8s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/Popul
+arDeals/TrendingDealsS
+ection.tsx:19:14
+Type error: JSX elemen
+t 'p' has no correspon
+ding closing tag.
+
+[0m [90m 17 |[39m  
+             [33m?[3
+9m占쎌떆占?[33m?[39m[33m
+?[39m占쎄린 [33m?[39m占
+쎈뵜
+ [90m 18 |[39m      
+       [33m<[39m[33
+m/[39m[33mh2[39m[3
+3m>[39m
+[31m[1m>[22m[39m[
+90m 19 |[39m         
+    [33m<[39m[33mp
+[39m className[33m=[
+39m[32m"text-sm text-
+slate-500 font-medium"
+[39m[33m>[39m吏占?[3
+3m?[39m媛[33m?[39m
+[33m?[39m[33m?[39m占
+쎄굅[33m?[39m[33m?[3
+9m諛섏쓳[33m?[39m[33m?
+[39m[33m?[39m占쎄퀬 [
+33m?[39m占쎈뒗 異붿쿇 [33m
+?[39m占쏀뭹[33m?[39m[
+33m?[39m[33m/[39mp
+[33m>[39m
+ [90m    |[39m      
+        [31m[1m^[22
+m[39m
+ [90m 20 |[39m      
+     [33m<[39m[33m/
+[39m[33mdiv[39m[33
+m>[39m
+ [90m 21 |[39m      
+   [33m<[39m[33m/[
+39m[33mdiv[39m[33m>
+[39m
+ [90m 22 |[39m      
+   [0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

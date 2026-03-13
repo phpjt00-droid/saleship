@@ -1,0 +1,75 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 4.0s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/Daily
+Widgets/DailyWidgets_f
+ix.tsx:34:68
+Type error: Unterminat
+ed string literal.
+
+[0m [90m 32 |[39m  
+       
+ [90m 33 |[39m      
+   document[33m.[39m
+getElementById([32m't
+emperature'[39m)[33m
+.[39minnerText [33m=
+[39m [32m`${temp}째C`
+[39m[33m;[39m
+[31m[1m>[22m[39m[
+90m 34 |[39m         
+document[33m.[39mget
+ElementById([32m'city
+'[39m)[33m.[39minne
+rText [33m=[39m [32
+m'?占쎌슱, ?占?占쏙옙?占?;[39
+m
+ [90m    |[39m      
+                      
+                      
+                  [31
+m[1m^[22m[39m
+ [90m 35 |[39m      
+   
+ [90m 36 |[39m      
+   [36mconst[39m ico
+nMap [33m=[39m {
+ [90m 37 |[39m      
+     [32m"113"[39m[
+33m:[39m [32m"https:
+//img.icons8.com/fluen
+cy/96/sun.png"[39m[3
+3m,[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

@@ -17,7 +17,7 @@ export default function HomePage() {
               <div className="flex items-center justify-between mb-8">
                 <h2 className="text-3xl font-black tracking-tight flex items-center gap-3">
                   <span className="w-2 h-8 bg-blue-600 rounded-full" />
-                  실시간 핫딜
+                  최신 핫딜
                 </h2>
               </div>
               <Suspense fallback={<div className="grid grid-cols-1 md:grid-cols-2 gap-6"><div className="h-64 bg-slate-100 animate-pulse rounded-[2.5rem]" /><div className="h-64 bg-slate-100 animate-pulse rounded-[2.5rem]" /></div>}>

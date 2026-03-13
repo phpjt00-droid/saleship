@@ -1,0 +1,75 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 3.8s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/Popul
+arDeals/TrendingDealsS
+ection.tsx:23:30
+Type error: Type '{ in
+itialDeals: Deal[]; }'
+ is not assignable to 
+type 'IntrinsicAttribu
+tes'.
+  Property 'initialDea
+ls' does not exist on 
+type 'IntrinsicAttribu
+tes'.
+
+[0m [90m 21 |[39m  
+       [33m<[39m[33
+m/[39m[33mdiv[39m[
+33m>[39m
+ [90m 22 |[39m      
+   
+[31m[1m>[22m[39m[
+90m 23 |[39m         
+[33m<[39m[33mTrendi
+ngDealsClient[39m ini
+tialDeals[33m=[39m{d
+eals} [33m/[39m[33m
+>[39m
+ [90m    |[39m      
+                      
+  [31m[1m^[22m[39m
+ [90m 24 |[39m      
+ [33m<[39m[33m/[39
+m[33mdiv[39m[33m>[
+39m
+ [90m 25 |[39m     
+[33m<[39m[33m/[39m
+[33mdiv[39m[33m>[39
+m
+ [90m 26 |[39m   )[
+33m;[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

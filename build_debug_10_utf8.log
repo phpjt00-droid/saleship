@@ -1,0 +1,89 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ??Compiled successfully in 3.9s
+   Skipping linting
+   Checking validity of types ...
+node.exe : Failed to c
+ompile.
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (Failed to    
+ compile.:String)     
+[], RemoteExcepti    o
+n
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+
+./src/components/DealC
+ard.tsx:39:27
+Type error: Property '
+discountRate' does not
+ exist on type '{ curr
+entPrice: string | num
+ber; originalPrice?: s
+tring | number; discou
+nt?: string | number; 
+}'. Did you mean 'disc
+ount'?
+
+[0m [90m 37 |[39m  
+         [33m<[39m[
+33mHeart[39m size[33
+m=[39m{[35m20[39m} 
+fill[33m=[39m{bookma
+rked [33m?[39m [32m
+'currentColor'[39m [
+33m:[39m [32m'none'
+[39m} [33m/[39m[33m
+>[39m
+ [90m 38 |[39m      
+   [33m<[39m[33m/[
+39m[33mbutton[39m[3
+3m>[39m
+[31m[1m>[22m[39m[
+90m 39 |[39m         
+{deal[33m.[39mprice_
+info[33m?[39m[33m.
+[39mdiscountRate [33m
+&&[39m (
+ [90m    |[39m      
+                     
+[31m[1m^[22m[39m
+ [90m 40 |[39m      
+     [33m<[39m[33md
+iv[39m className[33m
+=[39m[32m"absolute b
+ottom-6 left-6 px-4 py
+-2 bg-rose-600 text-wh
+ite text-xs font-black
+ rounded-xl shadow-lg"
+[39m[33m>[39m
+ [90m 41 |[39m      
+       {deal[33m.[39
+mprice_info[33m.[39m
+discountRate} [33mOFF
+[39m
+ [90m 42 |[39m      
+     [33m<[39m[33m/
+[39m[33mdiv[39m[33
+m>[39m[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

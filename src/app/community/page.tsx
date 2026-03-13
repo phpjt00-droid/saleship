@@ -12,7 +12,13 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
 
+  const [user, setUser] = useState<any>(null)
+
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null)
+    })
+
     async function fetchPosts() {
       const { data, error } = await supabase
         .from('community_posts')
@@ -32,12 +38,14 @@ export default function CommunityPage() {
           <h1 className="text-4xl font-black tracking-tight mb-2">Community</h1>
           <p className="text-slate-500 font-medium">자유로운 정보 공유와 소통의 공간입니다.</p>
         </div>
-        <Link 
-          href="/community/write" 
-          className="px-6 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
-        >
-          <Plus size={20} /> 글쓰기
-        </Link>
+        {user && (
+          <Link 
+            href="/community/write" 
+            className="px-6 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
+          >
+            <Plus size={20} /> 글쓰기
+          </Link>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

@@ -1,0 +1,89 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : Failed to co
+mpile.
+위치 줄:1 문자:1
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Failed to com   
+ pile.:String) [],     
+RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+
+./src/app/community/pag
+e.tsx
+Module not found: Can't
+ resolve 'date-fns'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/community/pag
+e.tsx
+Module not found: Can't
+ resolve 'date-fns/loca
+le'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/community/wri
+te/page.tsx
+Module not found: Can't
+ resolve './WritePost.c
+ss'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/deals/[slug]/
+DealDetailContent.tsx
+Module not found: Can't
+ resolve '@/components/
+VoteControl'
+
+https://nextjs.org/docs
+/messages/module-not-fo
+und
+
+./src/app/community/mar
+ket/page.tsx
+Error: 
+
+Caused by:
+    0: Failed to read s
+ource code from C:\User
+s\源?명삎\Desktop\create_
+community\src\app\commu
+nity\market\page.tsx
+    1: stream did not c
+ontain valid UTF-8
+
+Import trace for reques
+ted module:
+./src/app/community/mar
+ket/page.tsx
+
+
+> Build failed because 
+of webpack errors

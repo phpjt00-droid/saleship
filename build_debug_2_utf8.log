@@ -1,0 +1,92 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : <w> [webpac
+k.cache.PackFileCacheS
+trategy] Serializing b
+ig strings (140kiB) im
+pacts deserialization 
+performance (consider 
+using Buffer instead a
+nd decode when needed)
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (<w> [webpa   
+ ck.ca...de when n    
+eeded):String) []    ,
+ RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ ??Compiled successfully in 12.5s
+   Skipping linting
+   Checking validity of types ...
+Failed to compile.
+
+.next/types/app/deals/
+[slug/]/page.ts:34:29
+Type error: Type 'Page
+Props' does not satisf
+y the constraint 'impo
+rt("C:/dev/create_comm
+unity/.next/types/app/
+deals/[slug/]/page").P
+ageProps'.
+  Types of property 'p
+arams' are incompatibl
+e.
+    Type '{ slug: stri
+ng; }' is missing the 
+following properties f
+rom type 'Promise<any>
+': then, catch, finall
+y, [Symbol.toStringTag
+]
+
+[0m [90m 32 |[39m
+ [90m 33 |[39m [90m
+// Check the prop type
+ of the entry function
+[39m
+[31m[1m>[22m[39m[
+90m 34 |[39m checkFie
+lds[33m<[39m[33mDif
+f[39m[33m<[39m[33m
+PageProps[39m[33m,[
+39m [33mFirstArg[39m
+[33m<[39m[33mTEntry
+[39m[[32m'default'[
+39m][33m>[39m[33m,
+[39m [32m'default'[3
+9m[33m>>[39m()
+ [90m    |[39m      
+                      
+ [31m[1m^[22m[39m
+ [90m 35 |[39m
+ [90m 36 |[39m [90m
+// Check the arguments
+ and return type of th
+e generateMetadata fun
+ction[39m
+ [90m 37 |[39m [36m
+if[39m ([32m'generat
+eMetadata'[39m [36mi
+n[39m entry) {[0m
+Next.js build worker e
+xited with code: 1 and
+ signal: null

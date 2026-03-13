@@ -1,0 +1,115 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : <w> [webpac
+k.cache.PackFileCacheS
+trategy] Serializing b
+ig strings (140kiB) im
+pacts deserialization 
+performance (consider 
+using Buffer instead a
+nd decode when needed)
+위치 줄:1 문자:1
++ & "C:\Program Files\
+nodejs/node.exe" "C:\P
+rogram Files\nodejs/no
+de_mo ...
++ ~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
+~~~~~
+    + CategoryInfo    
+          : NotSpeci  
+  fied: (<w> [webpa   
+ ck.ca...de when n    
+eeded):String) []    ,
+ RemoteException
+    + FullyQualifiedE 
+   rrorId : NativeCo  
+  mmandError
+ 
+ ??Compiled successfully in 13.4s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/23) ...
+   Generating static pages (5/23) 
+   Generating static pages (11/23) 
+   Generating static pages (17/23) 
+Error fetching deal in
+ server component: {
+  code: 'PGRST205',
+  details: null,
+  hint: null,
+  message: "Could not 
+find the table 'public
+.deals' in the schema 
+cache"
+}
+ ??Generating static pages (23/23)
+   Finalizing page optimization ...
+   Collecting build traces ...
+ ??Statically exportin
+g a Next.js applicatio
+n via `next export` di
+sables API routes and 
+middleware.
+This command is meant 
+for static-only hosts,
+ and is not necessary 
+to make your applicati
+on static.
+Pages in your applicat
+ion without server-sid
+e data dependencies wi
+ll be automatically st
+atically exported by `
+next build`, including
+ pages powered by `get
+StaticProps`.
+Learn more: https://ne
+xtjs.org/docs/messages
+/api-routes-static-exp
+ort
+   Exporting (0/2) ...
+ ??Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+????/                                    13.6 kB         188 kB
+????/_not-found                            994 B         103 kB
+????/about                                 145 B         102 kB
+????/admin                               2.56 kB         169 kB
+????/admin/create-deal                   2.46 kB         172 kB
+????/admin/post                          4.11 kB         174 kB
+????/bookmarks                           2.54 kB         117 kB
+????/community                           6.62 kB         167 kB
+????/community/market                      958 B         103 kB
+????/community/write                     2.69 kB         169 kB
+????/contact                             1.88 kB         113 kB
+????/deals                               6.46 kB         181 kB
+????/deals/[slug]                        6.85 kB         178 kB
+??  ??/deals/test-deal
+????/faq                                   145 B         102 kB
+????/guide                                 145 B         102 kB
+????/login                                1.3 kB         167 kB
+????/privacy                               145 B         102 kB
+????/profile                             3.32 kB         160 kB
+????/robots.txt                            145 B         102 kB
+????/sitemap.xml                           145 B         102 kB
+????/terms                                 145 B         102 kB
++ First Load JS shared by all             102 kB
+  ??chunks/493-d1aae7c749dd130d.js         46 kB
+  ??chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  ??other shared chunks (total)          2.01 kB
+
+
+? Middleware                             82.4 kB
+
+?? (Static)  prerendered as static content
+?? (SSG)     prerendered as static HTML (uses generateStaticParams)
+
