@@ -12,17 +12,16 @@ import { dealService } from '@/features/deals/dealService'
 import { filterDeals } from '@/features/deals/dealUtils'
 import { Deal } from '@/types/deal'
 
-// UI 렌더링에 필요한 카테고리 탭 정보
 const categoryTabs = [
-  { key: '', label: '전체핫딜', icon: Grid },
-  { key: 'fashion', label: '패션', icon: Shirt },
-  { key: 'food', label: '푸드', icon: Utensils },
-  { key: 'beauty', label: '뷰티', icon: Sparkles },
-  { key: 'home', label: '리빙', icon: HomeIcon },
-  { key: 'electronics', label: '가전', icon: Smartphone },
-  { key: 'game', label: '게임', icon: Gamepad2 },
-  { key: 'ticket', label: '상품권/이용권', icon: Ticket },
-  { key: 'offline', label: '오프라인', icon: MapPin },
+  { key: '', label: 'All', icon: Grid },
+  { key: 'fashion', label: 'Fashion', icon: Shirt },
+  { key: 'beauty', label: 'Beauty', icon: Sparkles },
+  { key: 'food', label: 'Food', icon: Utensils },
+  { key: 'living', label: 'Living', icon: HomeIcon },
+  { key: 'tech', label: 'Tech', icon: Smartphone },
+  { key: 'game', label: 'Game', icon: Gamepad2 },
+  { key: 'ticket', label: 'Voucher', icon: Ticket },
+  { key: 'offline', label: 'Offline', icon: MapPin },
 ]
 
 interface DealListProps {
@@ -145,14 +144,14 @@ function BoardContent({ posts, loading, userLikes, bookmarks, onLikeToggle, onBo
               <div className="relative w-64 h-64 mb-8 bg-slate-50 dark:bg-slate-800/50 rounded-full flex items-center justify-center">
                 <div className="absolute inset-0 border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-full animate-[spin_30s_linear_infinite]"></div>
                 <Image 
-                  src="/images/mascot-empty.png" 
+                  src="/images/pingu-search.png.jpg" 
                   alt="결과 없음" 
                   width={200}
                   height={200}
                   className="object-contain drop-shadow-lg"
                 />
               </div>
-              <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">검색 결과가 없어요 <img src="/images/mascot.png" alt="" className="inline-block w-8 h-8 mb-1" /></h3>
+              <h3 className="text-2xl font-black text-slate-800 dark:text-white mb-3">검색 결과가 없어요 <img src="/images/pingu-question.png.jpg" alt="" className="inline-block w-8 h-8 mb-1" /></h3>
               <p className="text-slate-500 dark:text-slate-400 font-medium max-w-sm mx-auto">
                 펭귄이 열심히 찾아봤지만 찾지 못했습니다.<br />
                 다른 검색어나 카테고리를 시도해보세요.

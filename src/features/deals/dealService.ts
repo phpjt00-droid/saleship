@@ -59,7 +59,7 @@ export const dealService = {
         authorId: post.user_id || '',
         shipping: '배송 정보 확인',
         author: '세일쉽',
-        avatar: '/images/mascot.png',
+        avatar: '/images/pingu-hello.png.jpg',
         // 확장 필드
         brand_name: post.brand_name || post.store || '',
         deal_link: post.link || post.url || '',
@@ -140,7 +140,7 @@ export const dealService = {
       category: deal.category,
       content: deal.content,
       author: deal.author || '세일쉽',
-      avatar: deal.avatar || '/images/mascot.png',
+      avatar: deal.avatar || '/images/pingu-hello.png.jpg',
       summary: deal.summary || ''
     };
   },
@@ -162,7 +162,7 @@ export const dealService = {
       post_id: comment.post_id,
       user_id: comment.user_id,
       user_name: comment.profiles?.nickname || '익명 사용자',
-      user_avatar: comment.profiles?.avatar_url || '/images/mascot.png',
+      user_avatar: comment.profiles?.avatar_url || '/images/pingu-hello.png.jpg',
       content: comment.content,
       likes: comment.likes || 0,
       created_at: comment.created_at

@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { Search } from 'lucide-react';
@@ -34,14 +36,25 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
-              <div className="relative w-full sm:w-[400px] group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-600 transition-colors" size={20} />
+              <form 
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const val = (e.currentTarget.elements.namedItem('q') as HTMLInputElement).value;
+                  if (val) window.location.href = `/deal?q=${encodeURIComponent(val)}`;
+                }}
+                className="relative w-full sm:w-[450px] group flex"
+              >
                 <input 
                   type="text" 
+                  name="q"
                   placeholder="원하는 상품을 검색해보세요"
-                  className="w-full h-16 pl-12 pr-6 bg-slate-100 dark:bg-slate-800 border-2 border-transparent focus:border-blue-600 focus:bg-white dark:focus:bg-slate-900 rounded-2xl outline-none transition-all font-bold text-lg"
+                  className="w-full h-16 pl-6 pr-4 bg-slate-100 dark:bg-slate-800 border-none rounded-l-2xl outline-none transition-all font-bold text-lg focus:bg-white dark:focus:bg-slate-700 focus:ring-4 focus:ring-blue-500/20"
                 />
-              </div>
+                <button type="submit" className="h-16 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-r-2xl transition-colors font-black flex items-center justify-center gap-2">
+                  <Search size={20} />
+                  <span className="hidden sm:inline">Search</span>
+                </button>
+              </form>
             </div>
           </div>
 
@@ -53,7 +66,7 @@ export default function Hero() {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[85%] h-[85%] border-2 border-slate-100 dark:border-slate-800 border-dashed rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
               
               <Image 
-                src="/images/mascot-hero.png" 
+                src="/images/pingu-hello.png.jpg" 
                 alt="세일쉽 펭귄 마스코트" 
                 fill
                 priority

@@ -1,0 +1,89 @@
+﻿
+> saleship-community@1.0.0 build
+> next build
+
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+   ??Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+node.exe : 
+위치 줄:1 문자:1
++ & "C:\Program Files\n
+odejs/node.exe" "C:\Pro
+gram Files\nodejs/node_
+mo ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
+~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (:String) [],    
+ RemoteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+warn
+ - The class `duration-
+[3000ms]` is ambiguous 
+and matches multiple ut
+ilities.
+warn
+ - If this is content a
+nd not a class, replace
+ it with `duration-&lsq
+b;3000ms&rsqb;` to sile
+nce this warning.
+
+warn
+ - The class `duration-
+[4000ms]` is ambiguous 
+and matches multiple ut
+ilities.
+warn
+ - If this is content a
+nd not a class, replace
+ it with `duration-&lsq
+b;4000ms&rsqb;` to sile
+nce this warning.
+ ??Compiled successfully in 4.0s
+   Skipping linting
+   Checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/24) ...
+   Generating static pages (6/24) 
+   Generating static pages (12/24) 
+Error occurred prerende
+ring page "/". Read mor
+e: https://nextjs.org/d
+ocs/messages/prerender-
+error
+Error: Event handlers c
+annot be passed to Clie
+nt Component props.
+  {onSubmit: function o
+nSubmit, className: ...
+, children: ...}
+             ^^^^^^^^^^
+^^^^^^^
+If you need interactivi
+ty, consider converting
+ part of this to a Clie
+nt Component.
+    at stringify (<anon
+ymous>) {
+  digest: '2770269456'
+}
+Export encountered an e
+rror on /page: /, exiti
+ng the build.
+   Generating static pages (18/24) 
+ 殊?Next.js build worker
+ exited with code: 1 an
+d signal: null

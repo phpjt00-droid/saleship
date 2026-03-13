@@ -137,7 +137,7 @@ function mapPostToDeal(post: any): Deal {
     authorId: post.user_id || '',
     shipping: '배송 정보 확인',
     author: '세일쉽',
-    avatar: '/images/mascot.png',
+    avatar: '/images/pingu-hello.png.jpg',
     // 확장 필드 매핑
     brand_name: post.brand_name || post.store || '',
     deal_link: post.link || post.url || '',

@@ -174,10 +174,13 @@ export default function AdminPostPage() {
                       className="w-full pl-11 pr-4 py-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800 rounded-2xl outline-none focus:border-rose-500 transition-all font-bold appearance-none cursor-pointer"
                     >
                       <option value="Fashion">Fashion</option>
-                      <option value="Tech">Tech</option>
-                      <option value="Food">Food</option>
                       <option value="Beauty">Beauty</option>
+                      <option value="Food">Food</option>
                       <option value="Living">Living</option>
+                      <option value="Tech">Tech</option>
+                      <option value="Game">Game</option>
+                      <option value="Voucher">Voucher</option>
+                      <option value="Offline">Offline</option>
                     </select>
                   </div>
                 </div>

@@ -41,8 +41,8 @@ function WritePost() {
     // 링크 차단 필터 (정규표현식)
     const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
     if (urlRegex.test(title) || urlRegex.test(content)) {
-      toast.warning('링크 입력이 제한됩니다.', {
-        description: '스팸 방지를 위해 자유게시판에는 URL을 포함할 수 없습니다.'
+      toast.warning('Links are not permitted to ensure a clean community.', {
+        description: 'URL inclusion is restricted to prevent spam.'
       });
       return;
     }
@@ -88,7 +88,7 @@ function WritePost() {
           {/* Warning Banner */}
           <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-800 rounded-2xl flex items-start gap-3 text-amber-700 dark:text-amber-400 mb-6 font-medium text-sm">
             <AlertTriangle className="w-5 h-5 shrink-0" />
-            <p>깨끗한 커뮤니티 환경을 위해 **외부 링크(URL) 포함 시 게시글 등록이 제한**됩니다. 스팸 방지에 동참해 주세요! <img src="/images/mascot.png" alt="" className="inline-block w-4 h-4 mb-1" /></p>
+            <p>깨끗한 커뮤니티 환경을 위해 **외부 링크(URL) 포함 시 게시글 등록이 제한**됩니다. 스팸 방지에 동참해 주세요! <img src="/images/pingu-announce.png.jpg" alt="" className="inline-block w-4 h-4 mb-1" /></p>
           </div>
 
           <div className="write-post__field">

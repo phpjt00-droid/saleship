@@ -79,31 +79,43 @@ function NavbarContent() {
 
   const menuGroups = [
     { 
-      name: '핫딜', 
+      name: 'Hot Deals', 
       items: [
-        { name: '전체', path: '/deal' },
-        { name: '인기', path: '/deal?sort=popular' },
-        { name: '테크', path: '/deal?cat=tech' },
-        { name: '게임', path: '/deal?cat=game' },
-        { name: '패션', path: '/deal?cat=fashion' },
+        { name: 'All', path: '/deal' },
+        { name: 'Popular', path: '/deal?sort=popular' },
+        { name: 'Fashion', path: '/deal?cat=fashion' },
+        { name: 'Beauty', path: '/deal?cat=beauty' },
+        { name: 'Food', path: '/deal?cat=food' },
+        { name: 'Living', path: '/deal?cat=living' },
+        { name: 'Tech', path: '/deal?cat=tech' },
+        { name: 'Game', path: '/deal?cat=game' },
+        { name: 'Voucher', path: '/deal?cat=ticket' },
+        { name: 'Offline', path: '/deal?cat=offline' },
       ]
     },
     { 
-      name: '커뮤니티', 
+      name: 'Community', 
       items: [
-        { name: '자유게시판', path: '/community' },
-        { name: '구매후기', path: '/community/reviews' },
-        { name: '중고장터', path: '/community/market' },
+        { name: 'Free Board', path: '/community' },
+        { name: 'Review', path: '/community/reviews' },
+        { name: 'Market', path: '/community/market' },
       ]
     },
     { 
-      name: '고객지원', 
+      name: 'Bookmarks', 
       items: [
-        { name: '문의하기', path: '/contact' },
-        { name: '북마크', path: '/bookmark' },
+        { name: 'My Bookmarks', path: '/bookmark' },
+      ]
+    },
+    { 
+      name: 'Contact', 
+      items: [
+        { name: 'Support', path: '/contact' },
       ]
     },
   ]
+
+  const isAdmin = user?.email && ['admin@saleship.com', 'ksy@example.com'].includes(user.email);
 
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm py-2' : 'bg-transparent py-4'}`}>
@@ -111,7 +123,7 @@ function NavbarContent() {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center overflow-hidden shadow-lg shadow-blue-200 dark:shadow-none -rotate-6 group-hover:rotate-0 transition-transform duration-300">
             <Image 
-              src="/images/mascot-hero.png" 
+              src="/images/pingu-hello.png.jpg" 
               alt="Saleship Mascot" 
               width={40} 
               height={40}
@@ -146,21 +158,25 @@ function NavbarContent() {
               </div>
             </div>
           ))}
-          <Link href="/write" className="text-sm font-black text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all">
-            글쓰기
-          </Link>
+          {isAdmin && (
+            <Link href="/admin/post" className="text-sm font-black text-blue-600 bg-blue-50 dark:bg-blue-900/30 px-4 py-2 rounded-full hover:bg-blue-600 hover:text-white transition-all flex items-center gap-1">
+              Admin Post
+            </Link>
+          )}
         </div>
 
         <div className="flex items-center gap-4">
           <form onSubmit={handleSearch} className="hidden sm:relative sm:flex items-center group">
-            <Search size={16} className="absolute left-3 text-slate-400 group-focus-within:text-blue-500 transition-colors" />
             <input 
               type="text" 
-              placeholder="검색..." 
+              placeholder="Search..." 
               value={localSearch}
               onChange={(e) => setLocalSearch(e.target.value)}
-              className="bg-slate-100 dark:bg-slate-800 border-none rounded-full py-2 pl-9 pr-4 text-sm w-40 focus:w-60 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none"
+              className="bg-slate-100 dark:bg-slate-800 border-none rounded-l-full py-2 pl-4 pr-2 text-sm w-40 focus:w-56 focus:bg-white dark:focus:bg-slate-700 transition-all outline-none"
             />
+            <button type="submit" className="bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 text-slate-400 py-2 pr-4 pl-2 rounded-r-full transition-colors group-focus-within:bg-blue-600 group-focus-within:text-white">
+              <Search size={16} />
+            </button>
           </form>
 
           <button onClick={toggleTheme} className="p-2 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
@@ -172,7 +188,7 @@ function NavbarContent() {
               <div className="hidden sm:flex flex-col items-end -gap-0.5">
                 <span className="text-[10px] font-black text-slate-400 uppercase tracking-tighter">Welcome</span>
                 <Link href="/profile" className="text-sm font-black text-slate-900 dark:text-white hover:text-blue-600 transition-colors flex items-center gap-1">
-                  {user.nickname}님 <img src="/images/mascot.png" alt="" className="w-4 h-4" />
+                  {user.nickname}님 <img src="/images/pingu-hello.png.jpg" alt="" className="w-4 h-4" />
                 </Link>
               </div>
               <div className="h-8 w-[1px] bg-slate-100 dark:bg-slate-800 mx-2 hidden sm:block" />
@@ -217,19 +233,23 @@ function NavbarContent() {
                 </div>
               </div>
             ))}
-            <Link href="/write" onClick={() => setMobileOpen(false)} className="bg-blue-600 text-white text-center py-4 rounded-xl font-black shadow-lg shadow-blue-200">
-              글쓰기
-            </Link>
+            {isAdmin && (
+              <Link href="/admin/post" onClick={() => setMobileOpen(false)} className="bg-blue-600 text-white text-center py-4 rounded-xl font-black shadow-lg shadow-blue-200">
+                Admin Post
+              </Link>
+            )}
             <div className="h-px bg-slate-100 dark:bg-slate-800" />
             <form onSubmit={handleSearch} className="relative flex items-center">
-              <Search size={18} className="absolute left-3 text-slate-400" />
               <input 
                 type="text" 
-                placeholder="검색어 입력..." 
+                placeholder="Search..." 
                 value={localSearch}
                 onChange={(e) => setLocalSearch(e.target.value)}
-                className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-xl py-4 pl-10 pr-4 outline-none font-bold"
+                className="w-full bg-slate-100 dark:bg-slate-800 border-none rounded-l-xl py-4 pl-4 pr-2 outline-none font-bold"
               />
+              <button type="submit" className="bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white text-slate-400 py-4 pr-4 pl-2 rounded-r-xl transition-colors">
+                <Search size={18} />
+              </button>
             </form>
           </div>
         </div>

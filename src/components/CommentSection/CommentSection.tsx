@@ -48,8 +48,8 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
     // 링크 차단 필터 (정규표현식: http, https, www, .com, .net 등 광범위 감지)
     const urlRegex = /(https?:\/\/|www\.|[\w-]+\.(com|net|org|kr|io|me|gov|edu|co|biz|info))/gi;
     if (urlRegex.test(content)) {
-      toast.warning('링크 입력이 제한됩니다.', {
-        description: '스팸 방지를 위해 댓글에 URL을 포함할 수 없습니다.'
+      toast.warning('Links are not permitted to ensure a clean community.', {
+        description: 'URL inclusion is restricted to prevent spam.'
       });
       return;
     }
@@ -107,7 +107,7 @@ export default function CommentSection({ postId, initialCount = 0 }: CommentSect
           </div>
         ) : comments.length === 0 ? (
           <div className="py-20 text-center bg-slate-50/50 dark:bg-slate-800/30 rounded-[2rem] border border-dashed border-slate-200 dark:border-slate-800">
-            <p className="text-slate-400 font-bold">첫 번째 댓글을 남겨보세요! <img src="/images/mascot.png" alt="" className="inline-block w-5 h-5 mb-1 opacity-60" /></p>
+            <p className="text-slate-400 font-bold">첫 번째 댓글을 남겨보세요! <img src="/images/pingu-hello.png.jpg" alt="" className="inline-block w-5 h-5 mb-1 opacity-60" /></p>
           </div>
         ) : (
           comments.map((comment) => (
