@@ -21,6 +21,7 @@ export const generateNickname = () => {
     // 00~99 숫자 생성
     const num = Math.floor(Math.random() * 100).toString().padStart(2, '0');
 
-    // [부사] + [형용사] + [펭귄] + [숫자]
-    return `${a}${b}${c}${num}`;
+    // 띄어쓰기를 추가하여 가독성을 극대화한 형태
+    // 예: "행복하고 파란 펭귄 07"
+    return `${a} ${b} ${c} ${num}`;
 };
