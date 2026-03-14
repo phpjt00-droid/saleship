@@ -23,22 +23,16 @@ export default function HomePage() {
         return;
       }
 
-      console.log("현재 로그인된 유저 ID:", user.id);
-
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('nickname, gender, age')
         .eq('id', user.id)
         .single();
 
-      console.log("DB 조회 결과:", { profile, error });
-
-      // 프로필이 없거나 gender/age가 비어있으면 모달 표시
+      // 에러가 발생했거나(데이터가 없거나), 필수 항목이 비어있을 때 모달 표시
       if (error || !profile?.gender || !profile?.age) {
-        console.log("데이터 미흡 -> 모달 표시");
         setShowOnboarding(true);
       } else {
-        console.log("데이터 정상 -> 모달 숨김");
         setShowOnboarding(false);
       }
       setIsChecking(false);
@@ -48,18 +42,19 @@ export default function HomePage() {
   }, [user, authLoading]);
 
   const handleOnboardingComplete = async (data: any) => {
+    // upsert를 사용하여 데이터가 없으면 삽입, 있으면 수정
     const { error } = await supabase
       .from('profiles')
-      .update({
+      .upsert({
+        id: user?.id,
         nickname: data.nickname,
         gender: data.gender,
         age: data.age
-      })
-      .eq('id', user?.id);
+      });
 
     if (error) {
-      console.error('저장 에러:', error);
-      alert('저장 중 오류가 발생했습니다.');
+      console.error('저장 에러 상세:', error);
+      alert('저장 중 오류가 발생했습니다: ' + error.message);
       return;
     }
 
