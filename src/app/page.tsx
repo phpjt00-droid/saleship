@@ -10,36 +10,43 @@ import TrendingDealsClient from '@/components/PopularDeals/TrendingDealsClient';
 import PopularDealsSidebar from '@/components/PopularDeals/PopularDealsSidebar';
 
 export default function HomePage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const [isChecking, setIsChecking] = useState(true); // 체크 중임을 나타내는 상태 추가
 
   useEffect(() => {
     async function checkProfile() {
-      if (loading || !user) return;
+      // 1. 인증 로딩 중이거나 유저가 없으면 체크 종료
+      if (authLoading) return;
+      if (!user) {
+        setIsChecking(false);
+        return;
+      }
 
       console.log("현재 로그인된 유저 ID:", user.id);
 
-      // 데이터 조회: RLS 정책에 의해 id가 일치하는 행만 가져옴
+      // 2. 데이터 조회
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('*')
+        .select('nickname, gender, age') // 필요한 필드만 명시적 조회
         .eq('id', user.id)
         .single();
 
       console.log("DB 조회 결과:", { profile, error });
 
-      // 로직: 에러가 없고, 데이터가 확실히 존재할 때만 모달을 숨김
-      if (error || !profile) {
-        console.log("데이터 없음 혹은 에러 발생 -> 모달 표시");
+      // 3. 로직: 프로필 정보가 불완전하면(null이거나 비어있으면) 모달 표시
+      if (error || !profile?.gender || !profile?.age) {
+        console.log("데이터 미흡 -> 모달 표시");
         setShowOnboarding(true);
       } else {
-        console.log("데이터 정상 조회됨 -> 모달 숨김");
+        console.log("데이터 정상 -> 모달 숨김");
         setShowOnboarding(false);
       }
+      setIsChecking(false); // 체크 완료
     }
 
     checkProfile();
-  }, [user, loading]);
+  }, [user, authLoading]);
 
   const handleOnboardingComplete = async (data: any) => {
     const { error } = await supabase
@@ -58,8 +65,11 @@ export default function HomePage() {
     }
 
     setShowOnboarding(false);
-    window.location.reload();
+    window.location.reload(); // 데이터 동기화 확실성을 위해 리로드
   };
+
+  // 체크 중일 때는 모달을 띄우지 않음 (깜빡임 방지)
+  if (isChecking) return <main className="min-h-screen bg-[#f8fafc]" />;
 
   return (
     <main className="min-h-screen bg-[#f8fafc] dark:bg-slate-950 pb-20">
