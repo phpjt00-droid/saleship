@@ -2,7 +2,7 @@ import React from 'react'
 import '@/styles/globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/Footer/Footer'
-import ThemeProvider from '@/components/ThemeProvider/ThemeProvider'
+import { ThemeProvider } from 'next-themes' // 수정: next-themes 사용
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Toaster } from 'sonner'
 
@@ -23,6 +23,7 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
+    // suppressHydrationWarning: 다크모드/라이트모드 전환 시 깜빡임 방지
     <html lang="ko" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -31,7 +32,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <GoogleAnalytics gaId="G-G00CNYVM0H" />
-        <ThemeProvider>
+
+        {/* 다크모드 설정을 위한 ThemeProvider 적용 */}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <Toaster position="top-center" richColors />
           <Header />
           <main className="min-h-screen">
