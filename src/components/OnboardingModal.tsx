@@ -22,12 +22,16 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
             console.log("저장 시작, 데이터:", { nickname, gender, age });
             await onComplete({ nickname, gender, age });
         } catch (error: any) {
-            // 2. 에러 상세 로깅 및 사용자 알림
-            console.error("저장 에러 상세:", error);
+            // 2. 에러 상세 로깅 (터미널/브라우저 콘솔에서 확인 가능)
+            console.log("--- 에러 상세 분석 시작 ---");
+            console.log("에러 메시지:", error?.message);
+            console.log("에러 상세 정보:", error?.details);
+            console.log("에러 힌트:", error?.hint);
+            console.log("전체 에러 객체:", JSON.stringify(error, null, 2));
+            console.log("--- 에러 상세 분석 끝 ---");
 
-            // Supabase 에러 메시지 구조가 { message: '...' } 형태인 경우가 많음
-            const errorMessage = error?.message || error?.error_description || JSON.stringify(error) || "알 수 없는 오류가 발생했습니다.";
-            alert(`저장 중 오류가 발생했습니다: ${errorMessage}`);
+            // 사용자에게는 알림창으로 즉시 알림
+            alert("저장 실패! 브라우저 개발자 도구(F12) 콘솔창을 확인해주세요.");
         } finally {
             setLoading(false);
         }
