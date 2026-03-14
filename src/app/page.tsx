@@ -17,15 +17,23 @@ export default function HomePage() {
     async function checkProfile() {
       if (loading || !user) return;
 
+      // 디버깅: 현재 로그인된 유저 ID와 DB 조회를 시도할 ID를 출력
+      console.log("로그인된 유저 ID:", user.id);
+
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('gender, age')
         .eq('id', user.id)
         .single();
 
+      // 디버깅: DB에서 받아온 결과 출력
+      console.log("DB 조회 결과:", { profile, error });
+
       if (error || !profile?.gender || !profile?.age) {
+        console.log("온보딩 모달 출력 조건 만족 (데이터 미비/에러)");
         setShowOnboarding(true);
       } else {
+        console.log("온보딩 완료됨, 모달 숨김");
         setShowOnboarding(false);
       }
     }
