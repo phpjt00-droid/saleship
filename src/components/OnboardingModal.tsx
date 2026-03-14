@@ -22,7 +22,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
             console.log("저장 시작, 데이터:", { nickname, gender, age });
             await onComplete({ nickname, gender, age });
         } catch (error: any) {
-            // 2. 에러 상세 로깅 (터미널/브라우저 콘솔에서 확인 가능)
+            // 2. 에러 상세 로깅
             console.log("--- 에러 상세 분석 시작 ---");
             console.log("에러 메시지:", error?.message);
             console.log("에러 상세 정보:", error?.details);
@@ -30,7 +30,6 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
             console.log("전체 에러 객체:", JSON.stringify(error, null, 2));
             console.log("--- 에러 상세 분석 끝 ---");
 
-            // 사용자에게는 알림창으로 즉시 알림
             alert("저장 실패! 브라우저 개발자 도구(F12) 콘솔창을 확인해주세요.");
         } finally {
             setLoading(false);
@@ -72,8 +71,8 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
                                 className="w-full border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none appearance-none cursor-pointer"
                             >
                                 <option value="">성별</option>
-                                <option value="male">남성</option>
-                                <option value="female">여성</option>
+                                <option value="남성">남성</option>
+                                <option value="여성">여성</option>
                             </select>
                             <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-[10px]">▼</div>
                         </div>
