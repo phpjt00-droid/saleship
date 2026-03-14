@@ -15,17 +15,14 @@ export default function HomePage() {
 
   useEffect(() => {
     async function checkProfile() {
-      // 로딩 중이거나 유저 정보가 없으면 체크하지 않음
       if (loading || !user) return;
 
-      // DB에서 직접 해당 유저의 프로필 데이터를 조회
       const { data: profile, error } = await supabase
         .from('profiles')
         .select('gender, age')
         .eq('id', user.id)
         .single();
 
-      // 에러가 발생하거나 데이터가 부족하면 모달을 띄움
       if (error || !profile?.gender || !profile?.age) {
         setShowOnboarding(true);
       } else {
@@ -37,7 +34,6 @@ export default function HomePage() {
   }, [user, loading]);
 
   const handleOnboardingComplete = async (data: any) => {
-    // Supabase profiles 테이블 업데이트
     const { error } = await supabase
       .from('profiles')
       .update({
@@ -54,12 +50,11 @@ export default function HomePage() {
     }
 
     setShowOnboarding(false);
-    window.location.reload(); // 성공 시 새로고침
+    window.location.reload();
   };
 
   return (
     <main className="min-h-screen bg-[#f8fafc] dark:bg-slate-950 pb-20">
-      {/* 신규 회원 온보딩 모달 */}
       <OnboardingModal isOpen={showOnboarding} onComplete={handleOnboardingComplete} />
 
       <Hero />
@@ -90,4 +85,13 @@ export default function HomePage() {
 
           <aside className="space-y-8">
             <div className="sticky top-24">
-              <Suspense fallback={<div className="h-[600px] bg-slate-
+              <Suspense fallback={<div className="h-[600px] bg-slate-100 animate-pulse rounded-[2.5rem]" />}>
+                <PopularDealsSidebar />
+              </Suspense>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </main>
+  );
+}
