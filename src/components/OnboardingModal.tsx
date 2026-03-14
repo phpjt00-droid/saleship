@@ -21,7 +21,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
                 </div>
 
                 <div className="space-y-4">
-                    {/* 1. 닉네임 입력 + 리롤 버튼 (한 줄 정렬) */}
+                    {/* 1. 닉네임 입력 + 리롤 버튼 */}
                     <div className="flex gap-2">
                         <input
                             value={nickname}
@@ -36,26 +36,32 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
                         </button>
                     </div>
 
-                    {/* 2. 성별 & 연령대 선택 (한 줄 정렬, 50:50 비율) */}
+                    {/* 2. 성별 & 연령대 선택 (화살표 직접 배치) */}
                     <div className="flex gap-2">
-                        <select
-                            onChange={(e) => setGender(e.target.value)}
-                            className="flex-1 border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none"
-                        >
-                            <option value="">성별</option>
-                            <option value="male">남성</option>
-                            <option value="female">여성</option>
-                        </select>
+                        <div className="relative flex-1">
+                            <select
+                                onChange={(e) => setGender(e.target.value)}
+                                className="w-full border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none appearance-none cursor-pointer"
+                            >
+                                <option value="">성별</option>
+                                <option value="male">남성</option>
+                                <option value="female">여성</option>
+                            </select>
+                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs">▼</div>
+                        </div>
 
-                        <select
-                            onChange={(e) => setAge(e.target.value)}
-                            className="flex-1 border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none"
-                        >
-                            <option value="">연령대</option>
-                            {['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대'].map((a) => (
-                                <option key={a} value={a}>{a}</option>
-                            ))}
-                        </select>
+                        <div className="relative flex-1">
+                            <select
+                                onChange={(e) => setAge(e.target.value)}
+                                className="w-full border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none appearance-none cursor-pointer"
+                            >
+                                <option value="">연령대</option>
+                                {['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대'].map((a) => (
+                                    <option key={a} value={a}>{a}</option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 text-xs">▼</div>
+                        </div>
                     </div>
                 </div>
 
