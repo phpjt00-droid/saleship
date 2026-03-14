@@ -18,13 +18,14 @@ export default function DealsPage() {
   }, [])
 
   return (
-    <main className="container py-8">
-      <div className="flex justify-between items-center mb-12">
+    <main className="container py-8 md:py-12">
+      {/* 커뮤니티 페이지와 동일한 반응형 헤더 구조 적용 */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16">
-            <Image 
-              src="/images/pingu-shopping.png" 
-              alt="Shopping Pingu" 
+            <Image
+              src="/images/pingu-shopping.png"
+              alt="Shopping Pingu"
               fill
               className="object-contain"
             />
@@ -37,7 +38,7 @@ export default function DealsPage() {
         {user && (user.email === 'phpjt00@gmail.com' || user.app_metadata?.role === 'admin') && (
           <Link
             href="/admin/create-deal"
-            className="px-6 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
+            className="w-full md:w-auto px-8 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
           >
             <Plus size={20} /> 핫딜 등록
           </Link>
