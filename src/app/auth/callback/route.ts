@@ -1,20 +1,36 @@
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 
-// Cloudflare Edge Runtime 강제 설정
 export const runtime = 'edge';
 
 export async function GET(request: Request) {
     const requestUrl = new URL(request.url);
     const code = requestUrl.searchParams.get('code');
+    const origin = requestUrl.origin;
 
     if (code) {
-        const cookieStore = cookies();
-        const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
+        const cookieStore = await cookies();
+        const supabase = createServerClient(
+            process.env.NEXT_PUBLIC_SUPABASE_URL!,
+            process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+            {
+                cookies: {
+                    get(name: string) {
+                        return cookieStore.get(name)?.value;
+                    },
+                    set(name: string, value: string, options: any) {
+                        cookieStore.set({ name, value, ...options });
+                    },
+                    remove(name: string, options: any) {
+                        cookieStore.set({ name, value: '', ...options });
+                    },
+                },
+            }
+        );
+
         await supabase.auth.exchangeCodeForSession(code);
     }
 
-    // URL을 절대 경로로 생성하여 리다이렉트
-    return NextResponse.redirect(new URL('/', request.url));
+    return NextResponse.redirect(`${origin}/`);
 }
