@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
 import DealCard from '@/components/DealCard'
+import Image from 'next/image'
 
 export default function BookmarksPage() {
   const router = useRouter()
@@ -21,16 +22,29 @@ export default function BookmarksPage() {
   const isLoading = authLoading || bookmarksLoading
 
   return (
-    <main className="container py-8">
-      <div className="mb-12">
-        <h1 className="text-4xl font-black tracking-tight mb-4">My Bookmarks</h1>
-        <p className="text-slate-500 font-medium">내가 찜한 핫딜을 한눈에 확인하세요.</p>
+    <main className="container py-8 md:py-12">
+      {/* 통일된 헤더 레이아웃 */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+        <div className="flex items-center gap-4">
+          <div className="relative w-16 h-16">
+            <Image
+              src="/images/pingu-heart.png"
+              alt="북마크 펭귄"
+              fill
+              className="object-contain"
+            />
+          </div>
+          <div>
+            <h1 className="text-4xl font-black tracking-tight mb-2 dark:text-white">북마크</h1>
+            <p className="text-slate-500 dark:text-slate-400 font-medium">찜해둔 핫딜을 한눈에 확인하세요.</p>
+          </div>
+        </div>
       </div>
 
       {isLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3].map(i => (
-            <div key={i} className="h-[400px] bg-slate-100 animate-pulse rounded-[2.5rem]" />
+            <div key={i} className="h-[400px] bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2.5rem]" />
           ))}
         </div>
       ) : bookmarks.length > 0 ? (
@@ -42,8 +56,10 @@ export default function BookmarksPage() {
       ) : (
         <div className="py-20 text-center">
           <div className="text-6xl mb-6">🔖</div>
-          <h3 className="text-xl font-black text-slate-900 mb-2">북마크가 비어있습니다.</h3>
-          <p className="text-slate-500 font-bold">마음에 드는 핫딜을 북마크에 추가해보세요.</p>
+          <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">북마크가 비어있습니다.</h3>
+          <p className="text-slate-500 dark:text-slate-400 font-bold">
+            아직 북마크한 핫딜이 없습니다. 마음에 드는 핫딜을 추가해보세요.
+          </p>
         </div>
       )}
     </main>
