@@ -1,12 +1,15 @@
 export const runtime = 'edge';
 
-import DealDetailContent from './DealDetailContent'; // 실제 파일 위치에 맞게 수정 필요 시 확인
+import DealDetailContent from './DealDetailContent';
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  // 페이지 로직
+// Next.js 15+ 방식에 맞춰 params를 Promise로 처리
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  // await를 사용하여 slug 값을 가져옴
+  const { slug } = await params;
+
   return (
     <div>
-      <DealDetailContent slug={params.slug} />
+      <DealDetailContent slug={slug} />
     </div>
   );
 }
