@@ -19,9 +19,10 @@ export default function Header() {
     router.refresh();
   };
 
+  // 검색 로직을 인코딩 처리하여 안전하게 수정했습니다.
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      router.push(`/search?q=${searchTerm}`);
+      router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
     }
   };
 
@@ -32,13 +33,11 @@ export default function Header() {
   return (
     <header className="border-b bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-        {/* 로고 영역 */}
         <Link href="/" className="flex items-center gap-2">
           <Image src="/anchor-logo.png" alt="Saleship Logo" width={32} height={32} />
           <span className="text-xl font-bold text-gray-900">세일쉽</span>
         </Link>
 
-        {/* 내비게이션 영역 */}
         <nav className="flex items-center gap-8">
           <Link href="/deals" className="text-gray-600 font-medium">핫딜</Link>
           <Link href="/community" className="text-gray-600 font-medium">커뮤니티</Link>
@@ -46,7 +45,6 @@ export default function Header() {
           <Link href="/support" className="text-gray-600 font-medium">문의하기</Link>
         </nav>
 
-        {/* 우측 유틸리티 영역 */}
         <div className="flex items-center gap-4">
           <div className="relative flex items-center border rounded-full px-3 py-1 bg-gray-50 focus-within:border-blue-500">
             <input
