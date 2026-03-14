@@ -31,7 +31,13 @@ export const Header = () => {
           <input type="search" placeholder="검색..." className="hidden md:block border rounded-md px-3 py-1 text-sm" />
           <ThemeToggle />
           <div className="text-sm font-medium">
-            {loading ? '...' : user ? user.nickname : <Link href="/login">로그인</Link>}
+            {loading ? (
+              " 확인 중..."
+            ) : user ? (
+              <span className="text-blue-600 font-bold">{user.nickname}님</span>
+            ) : (
+              <Link href="/login" className="hover:text-primary underline">로그인 필요</Link>
+            )}
           </div>
         </div>
       </div>

@@ -1,10 +1,24 @@
 'use client'
 
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/hooks/useAuth'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
 import DealCard from '@/components/DealCard'
 
 export default function BookmarksPage() {
-  const { bookmarks, isLoading } = useBookmarks()
+  const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
+  const { bookmarks, isLoading: bookmarksLoading } = useBookmarks()
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      alert("로그인이 필요한 서비스입니다.");
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+
+  const isLoading = authLoading || bookmarksLoading
 
   return (
     <main className="container py-8">

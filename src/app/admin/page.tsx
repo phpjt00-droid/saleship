@@ -6,25 +6,25 @@ import { Deal } from '@/types/deal';
 import { BadgeCheck, Plus, Trash2, Edit2, Save, X, ExternalLink, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
 import { isAdmin } from '@/lib/security';
 
 export default function AdminPage() {
+  const router = useRouter();
+  const { user, loading: authLoading } = useAuth();
   const [deals, setDeals] = useState<Deal[]>([]);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session || !isAdmin(session.user.email)) {
-        toast.error('권한이 없습니다.');
+    if (!authLoading) {
+      if (!user || !isAdmin(user.email)) {
+        toast.error('관리자 권한이 없습니다.');
         router.push('/');
         return;
       }
       fetchDeals();
-    };
-    checkAuth();
-  }, [router]);
+    }
+  }, [user, authLoading, router]);
 
   const fetchDeals = async () => {
     try {

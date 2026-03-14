@@ -1,8 +1,9 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabaseClient'
+import { useAuth } from '@/hooks/useAuth'
+import { supabase } from '@/lib/supabase'
 import { ArrowLeft, Type, AlignLeft, Tag, Send, AlertTriangle } from 'lucide-react'
 import { toast } from 'sonner'
 import { validateContent } from '@/lib/security'
@@ -12,7 +13,16 @@ const categories = ['공지사항', '자유게시판', '리뷰게시판', '장�
 
 export default function WritePost() {
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      alert("로그인이 필요한 서비스입니다.");
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+
   const [formData, setFormData] = useState({
     title: '',
     content: '',
@@ -39,9 +49,15 @@ export default function WritePost() {
     setLoading(true)
 
     try {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session) {
+      if (!user) {
         toast.error('로그인이 필요합니다.')
+        router.push('/login')
+        return
+      }
+
+      const { data: { session } } = await (await import('@/lib/supabase')).supabase.auth.getSession()
+      if (!session) {
+        toast.error('세션이 만료되었습니다. 다시 로그인해주세요.')
         router.push('/login')
         return
       }

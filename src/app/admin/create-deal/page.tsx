@@ -6,10 +6,12 @@ import { supabase } from '@/lib/supabaseClient'
 import { toast } from 'sonner'
 import { BadgeCheck, Send, ArrowLeft, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
+import { useAuth } from '@/hooks/useAuth'
 import { isAdmin } from '@/lib/security'
 
 export default function CreateDealPage() {
   const router = useRouter()
+  const { user, loading: authLoading } = useAuth()
   const [loading, setLoading] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
@@ -21,15 +23,13 @@ export default function CreateDealPage() {
   })
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession()
-      if (!session || !isAdmin(session.user.email)) {
+    if (!authLoading) {
+      if (!user || !isAdmin(user.email)) {
         toast.error('권한이 없습니다.')
         router.push('/')
       }
     }
-    checkAuth()
-  }, [router])
+  }, [user, authLoading, router])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

@@ -6,13 +6,13 @@ import { useRouter } from 'next/navigation'
 import { BadgeCheck, Send, Link as LinkIcon, Calendar, Hash, Type, AlignLeft, Info, ArrowLeft, Image as ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from 'sonner'
+import { useAuth } from '@/hooks/useAuth'
 import { isAdmin } from '@/lib/security'
 
 export default function AdminPostPage() {
   const router = useRouter()
-  const [loading, setLoading] = useState(true)
+  const { user, loading: authLoading } = useAuth()
   const [submitting, setSubmitting] = useState(false)
-  const [user, setUser] = useState<any>(null)
 
   // 폼 데이터 상태
   const [formData, setFormData] = useState({
@@ -29,20 +29,15 @@ export default function AdminPostPage() {
   })
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (!session || !isAdmin(session.user.email)) {
+    if (!authLoading) {
+      if (!user || !isAdmin(user.email)) {
         toast.error('관리자 권한이 없습니다.');
         router.push('/');
-        return;
       }
+    }
+  }, [user, authLoading, router]);
 
-      setUser(session.user);
-      setLoading(false);
-    };
-    checkAuth();
-  }, [router]);
+  const loading = authLoading
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target
