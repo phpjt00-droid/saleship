@@ -6,18 +6,38 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
-import { useTheme } from 'next-themes'; // 추가
-import { Moon, Sun, User, Search } from 'lucide-react'; // Sun 아이콘 추가
+import { useTheme } from 'next-themes';
+import { Moon, Sun, User, Search } from 'lucide-react';
 
 export default function Header() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
-  const { theme, setTheme } = useTheme(); // 테마 상태 관리
-  const [mounted, setMounted] = useState(false); // Hydration 방지
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
-  // 컴포넌트가 마운트된 후 테마 사용 가능
+  // 닉네임 상태 추가
+  const [nickname, setNickname] = useState<string | null>(null);
+
   useEffect(() => setMounted(true), []);
+
+  // 닉네임 조회 로직
+  useEffect(() => {
+    async function fetchNickname() {
+      if (!user) return;
+
+      const { data } = await supabase
+        .from('profiles')
+        .select('nickname')
+        .eq('id', user.id)
+        .single();
+
+      if (data?.nickname) {
+        setNickname(data.nickname);
+      }
+    }
+    fetchNickname();
+  }, [user]);
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -51,6 +71,7 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
+          {/* ... 검색창 및 테마 버튼 코드는 동일 ... */}
           <div className="relative flex items-center border rounded-full px-3 py-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
             <input
               value={searchTerm}
@@ -64,7 +85,6 @@ export default function Header() {
             </button>
           </div>
 
-          {/* 다크모드 버튼 실제 동작 */}
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
@@ -79,7 +99,10 @@ export default function Header() {
               <Link href="/profile" className="p-2 text-gray-600 dark:text-gray-300">
                 <User size={20} />
               </Link>
-              <span className="text-sm font-semibold dark:text-white">{user.nickname || '회원'}님</span>
+              {/* 수정된 닉네임 표시 부분 */}
+              <span className="text-sm font-semibold dark:text-white">
+                {nickname || '회원'}님
+              </span>
               <button onClick={handleLogout} className="text-xs underline text-gray-500 dark:text-gray-400">
                 로그아웃
               </button>
