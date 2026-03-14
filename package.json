@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
-    "build": "npx @cloudflare/next-on-pages",
+    "build": "next build",
     "start": "next start",
     "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:deploy": "npm run build && wrangler pages deploy .vercel/output/static --project-name=saleship-web"
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static --project-name=saleship-web"
   },
   "dependencies": {
     "@formspree/react": "^3.0.0",
