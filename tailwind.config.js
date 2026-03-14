@@ -2,6 +2,7 @@ import tailwindcssAnimate from "tailwindcss-animate"
 
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class', // <--- 여기에 한 줄 추가했습니다.
   content: [
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
