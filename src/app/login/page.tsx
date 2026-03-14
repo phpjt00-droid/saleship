@@ -1,73 +1,41 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import { supabase } from '@/lib/supabaseClient'
-import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
-import Link from 'next/link'
+import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [loading, setLoading] = useState(false)
+  const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) toast.error(error.message)
-    else {
-      toast.success('로그인 성공!')
-      router.push('/')
+  const handleGoogleLogin = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        // 로그인 성공 후 돌아올 주소
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+
+    if (error) {
+      alert('로그인 중 오류가 발생했습니다: ' + error.message);
     }
-    setLoading(false)
-  }
+  };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-[2.5rem] shadow-xl border border-slate-100">
-        <div>
-          <h2 className="mt-6 text-center text-4xl font-black text-slate-900">Welcome Back</h2>
-          <p className="mt-2 text-center text-sm font-bold text-slate-500">
-            Saleship에 다시 오신 것을 환영합니다.
-          </p>
-        </div>
-        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <input
-                type="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none rounded-2xl relative block w-full px-6 py-4 border-none bg-slate-50 placeholder-slate-400 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:z-10 sm:text-sm"
-                placeholder="이메일 주소"
-              />
-            </div>
-            <div>
-              <input
-                type="password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none rounded-2xl relative block w-full px-6 py-4 border-none bg-slate-50 placeholder-slate-400 text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:z-10 sm:text-sm"
-                placeholder="비밀번호"
-              />
-            </div>
-          </div>
+    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      <div className="p-10 border rounded-xl shadow-lg bg-white">
+        <h1 className="text-2xl font-bold mb-6 text-center">Saleship 시작하기</h1>
+        <p className="text-gray-600 mb-8 text-center text-sm">
+          비회원은 서비스 이용이 제한됩니다.<br />로그인 후 모든 핫딜을 확인하세요!
+        </p>
 
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-slate-900 hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500 transition-all active:scale-95 shadow-lg"
-            >
-              {loading ? '로그인 중...' : '로그인'}
-            </button>
-          </div>
-        </form>
+        <button
+          onClick={handleGoogleLogin}
+          className="flex items-center justify-center gap-3 w-full px-6 py-3 text-black border border-gray-300 rounded-lg hover:bg-gray-50 transition-all font-medium"
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" width="20" alt="Google" />
+          구글로 1초 로그인
+        </button>
       </div>
     </div>
-  )
+  );
 }
