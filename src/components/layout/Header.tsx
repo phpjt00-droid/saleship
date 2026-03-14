@@ -1,46 +1,59 @@
 'use client';
 
-// src/components/layout/Header.tsx
-import React from 'react';
+import { supabase } from '@/lib/supabase';
+import { useAuth } from '../../hooks/useAuth';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
-import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
-export const Header = () => {
+export default function Header() {
   const { user, loading } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert('로그아웃 중 오류가 발생했습니다.');
+    } else {
+      // 로그아웃 성공 시 로컬 데이터를 날리고 로그인 페이지로 강제 이동
+      router.push('/login');
+      router.refresh(); // 세션 상태를 완전히 새로고침
+    }
+  };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4">
-        {/* 로고 영역 */}
-        <Link href="/" className="flex items-center gap-2">
-          <img src="/assets/anchor.svg" alt="Saleship" className="w-8 h-8" />
-          <span className="font-bold text-xl tracking-tight">Saleship</span>
-        </Link>
+    <header className="flex items-center justify-between p-4 border-b">
+      {/* 로고 영역 */}
+      <Link href="/" className="text-xl font-bold text-primary">
+        Saleship
+      </Link>
 
-        {/* 메뉴 영역 */}
-        <nav className="flex gap-6 text-sm font-medium">
-          <Link href="/deals" className="hover:text-primary">핫딜</Link>
-          <Link href="/community" className="hover:text-primary">커뮤니티</Link>
-          <Link href="/bookmarks" className="hover:text-primary">북마크</Link>
-          <Link href="/contact" className="hover:text-primary">문의하기</Link>
-        </nav>
-
-        {/* 유틸리티 영역 */}
-        <div className="flex items-center gap-4">
-          <input type="search" placeholder="검색..." className="hidden md:block border rounded-md px-3 py-1 text-sm" />
-          <ThemeToggle />
-          <div className="text-sm font-medium">
-            {loading ? (
-              " 확인 중..."
-            ) : user ? (
-              <span className="text-blue-600 font-bold">{user.nickname}님</span>
-            ) : (
-              <Link href="/login" className="hover:text-primary underline">로그인 필요</Link>
-            )}
+      {/* 우측 메뉴 영역 */}
+      <div className="flex items-center gap-4">
+        {loading ? (
+          <span className="text-sm text-gray-400">불러오는 중...</span>
+        ) : user ? (
+          <div className="flex items-center gap-3">
+            {/* 닉네임 표시 */}
+            <span className="text-sm font-semibold text-blue-600">
+              {user.nickname}님
+            </span>
+            {/* 로그아웃 버튼 */}
+            <button
+              onClick={handleLogout}
+              className="px-3 py-1 text-xs border rounded-md hover:bg-gray-100 transition-colors"
+            >
+              로그아웃
+            </button>
           </div>
-        </div>
+        ) : (
+          <Link
+            href="/login"
+            className="px-4 py-2 text-sm bg-primary text-white rounded-lg hover:bg-primary/90"
+          >
+            로그인
+          </Link>
+        )}
       </div>
     </header>
   );
-};
+}
