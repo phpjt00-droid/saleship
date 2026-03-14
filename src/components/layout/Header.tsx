@@ -19,10 +19,10 @@ export default function Header() {
     router.refresh();
   };
 
-  // 검색 로직을 인코딩 처리하여 안전하게 수정했습니다.
+  // [수정된 부분] 검색 경로를 /search가 아닌 /deals로 통일했습니다.
   const handleSearch = () => {
     if (searchTerm.trim()) {
-      router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
+      router.push(`/deals?q=${encodeURIComponent(searchTerm)}`);
     }
   };
 
