@@ -11,6 +11,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
     if (!isOpen) return null;
 
     const handleStart = async () => {
+        // 1. 유효성 검사
         if (!gender || !age) {
             alert("성별과 연령대를 모두 선택해주세요!");
             return;
@@ -18,13 +19,14 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
 
         setLoading(true);
         try {
+            console.log("저장 시작, 데이터:", { nickname, gender, age });
             await onComplete({ nickname, gender, age });
         } catch (error: any) {
-            // 에러 객체를 상세히 로그에 남기고, 사용자에게는 구체적인 메시지를 띄웁니다.
+            // 2. 에러 상세 로깅 및 사용자 알림
             console.error("저장 에러 상세:", error);
 
-            // Supabase 등에서 보내주는 에러 메시지(error.message)를 확인하는 것이 핵심입니다.
-            const errorMessage = error?.message || "알 수 없는 오류가 발생했습니다.";
+            // Supabase 에러 메시지 구조가 { message: '...' } 형태인 경우가 많음
+            const errorMessage = error?.message || error?.error_description || JSON.stringify(error) || "알 수 없는 오류가 발생했습니다.";
             alert(`저장 중 오류가 발생했습니다: ${errorMessage}`);
         } finally {
             setLoading(false);
@@ -42,6 +44,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
                 </div>
 
                 <div className="space-y-4">
+                    {/* 닉네임 */}
                     <div className="flex gap-2">
                         <input
                             value={nickname}
@@ -56,6 +59,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
                         </button>
                     </div>
 
+                    {/* 드롭다운 */}
                     <div className="flex gap-2">
                         <div className="relative flex-1">
                             <select
