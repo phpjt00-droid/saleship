@@ -1,9 +1,17 @@
 'use client';
+
 import { useState } from 'react';
 import { generateNickname } from '@/utils/nicknameGenerator';
 
-export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolean, onComplete: (data: any) => void }) {
-    const [nickname, setNickname] = useState(generateNickname());
+interface OnboardingModalProps {
+    isOpen: boolean;
+    onComplete: (data: any) => void;
+    initialNickname?: string;
+}
+
+export default function OnboardingModal({ isOpen, onComplete, initialNickname }: OnboardingModalProps) {
+    // 전달받은 닉네임이 있으면 사용하고, 없으면 새로 생성
+    const [nickname, setNickname] = useState(initialNickname || generateNickname());
     const [gender, setGender] = useState('');
     const [age, setAge] = useState('');
     const [loading, setLoading] = useState(false);
@@ -11,7 +19,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
     if (!isOpen) return null;
 
     const handleStart = async () => {
-        // 1. 유효성 검사
+        // 유효성 검사
         if (!gender || !age) {
             alert("성별과 연령대를 모두 선택해주세요!");
             return;
@@ -22,14 +30,7 @@ export default function OnboardingModal({ isOpen, onComplete }: { isOpen: boolea
             console.log("저장 시작, 데이터:", { nickname, gender, age });
             await onComplete({ nickname, gender, age });
         } catch (error: any) {
-            // 2. 에러 상세 로깅
-            console.log("--- 에러 상세 분석 시작 ---");
-            console.log("에러 메시지:", error?.message);
-            console.log("에러 상세 정보:", error?.details);
-            console.log("에러 힌트:", error?.hint);
-            console.log("전체 에러 객체:", JSON.stringify(error, null, 2));
-            console.log("--- 에러 상세 분석 끝 ---");
-
+            console.error("저장 에러 상세:", error);
             alert("저장 실패! 브라우저 개발자 도구(F12) 콘솔창을 확인해주세요.");
         } finally {
             setLoading(false);
