@@ -17,23 +17,23 @@ export default function HomePage() {
     async function checkProfile() {
       if (loading || !user) return;
 
-      console.log("로그인된 유저 ID 확인:", user.id);
+      console.log("현재 로그인된 유저 ID:", user.id);
 
+      // 데이터 조회: RLS 정책에 의해 id가 일치하는 행만 가져옴
       const { data: profile, error } = await supabase
         .from('profiles')
-        .select('gender, age')
+        .select('*')
         .eq('id', user.id)
         .single();
 
-      if (error) {
-        // 에러 발생 시 상세 로그 출력
-        console.error("Supabase 에러 객체:", error);
-        setShowOnboarding(true);
-      } else if (!profile?.gender || !profile?.age) {
-        console.log("데이터 미비 (모달 출력):", profile);
+      console.log("DB 조회 결과:", { profile, error });
+
+      // 로직: 에러가 없고, 데이터가 확실히 존재할 때만 모달을 숨김
+      if (error || !profile) {
+        console.log("데이터 없음 혹은 에러 발생 -> 모달 표시");
         setShowOnboarding(true);
       } else {
-        console.log("온보딩 완료됨 (모달 숨김):", profile);
+        console.log("데이터 정상 조회됨 -> 모달 숨김");
         setShowOnboarding(false);
       }
     }
