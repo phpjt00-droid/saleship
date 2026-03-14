@@ -15,26 +15,19 @@ export default function Header() {
   const [searchTerm, setSearchTerm] = useState('');
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
-
-  // 닉네임 상태 추가
   const [nickname, setNickname] = useState<string | null>(null);
 
   useEffect(() => setMounted(true), []);
 
-  // 닉네임 조회 로직
   useEffect(() => {
     async function fetchNickname() {
       if (!user) return;
-
       const { data } = await supabase
         .from('profiles')
         .select('nickname')
         .eq('id', user.id)
         .single();
-
-      if (data?.nickname) {
-        setNickname(data.nickname);
-      }
+      if (data?.nickname) setNickname(data.nickname);
     }
     fetchNickname();
   }, [user]);
@@ -56,59 +49,67 @@ export default function Header() {
   };
 
   return (
-    <header className="border-b bg-white dark:bg-gray-900 dark:border-gray-800 sticky top-0 z-50 transition-colors">
+    <header className="border-b border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+        {/* 로고 부분 - 레이아웃 통일 */}
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/anchor-logo.png" alt="Saleship Logo" width={32} height={32} />
-          <span className="text-xl font-bold text-gray-900 dark:text-white">세일쉽</span>
+          <div className="relative w-8 h-8">
+            <Image src="/images/anchor-logo.png" alt="Saleship Logo" fill className="object-contain" />
+          </div>
+          <span className="text-xl font-black text-slate-900 dark:text-white tracking-tight">세일쉽</span>
         </Link>
 
+        {/* 네비게이션 - 디자인 시스템 반영 */}
         <nav className="flex items-center gap-8">
-          <Link href="/deals" className="text-gray-600 dark:text-gray-300 font-medium">핫딜</Link>
-          <Link href="/community" className="text-gray-600 dark:text-gray-300 font-medium">커뮤니티</Link>
-          <Link href="/bookmarks" className="text-gray-600 dark:text-gray-300 font-medium">북마크</Link>
-          <Link href="/support" className="text-gray-600 dark:text-gray-300 font-medium">문의하기</Link>
+          {['핫딜', '커뮤니티', '북마크', '문의하기'].map((item, i) => (
+            <Link
+              key={item}
+              href={['/deals', '/community', '/bookmarks', '/support'][i]}
+              className="text-slate-600 dark:text-slate-400 font-bold hover:text-blue-600 transition-colors"
+            >
+              {item}
+            </Link>
+          ))}
         </nav>
 
+        {/* 우측 검색 및 유저 영역 */}
         <div className="flex items-center gap-4">
-          {/* ... 검색창 및 테마 버튼 코드는 동일 ... */}
-          <div className="relative flex items-center border rounded-full px-3 py-1 bg-gray-50 dark:bg-gray-800 dark:border-gray-700">
+          <div className="relative flex items-center border border-slate-200 dark:border-slate-700 rounded-full px-3 py-1 bg-slate-50 dark:bg-slate-800">
             <input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="검색..."
-              className="outline-none text-sm w-32 bg-transparent dark:text-white"
+              className="outline-none text-sm w-32 bg-transparent dark:text-white placeholder:text-slate-400"
             />
-            <button onClick={handleSearch} className="ml-1 text-gray-400 hover:text-blue-600">
+            <button onClick={handleSearch} className="ml-1 text-slate-400 hover:text-blue-600">
               <Search size={18} />
             </button>
           </div>
 
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+            className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full"
           >
             {mounted && theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
           {loading ? (
-            <span className="text-sm text-gray-400">...</span>
+            <span className="text-sm text-slate-400">...</span>
           ) : user ? (
             <div className="flex items-center gap-3">
-              <Link href="/profile" className="p-2 text-gray-600 dark:text-gray-300">
+              <Link href="/profile" className="p-2 text-slate-600 dark:text-slate-400">
                 <User size={20} />
               </Link>
-              {/* 수정된 닉네임 표시 부분 */}
-              <span className="text-sm font-semibold dark:text-white">
+              <span className="text-sm font-bold text-slate-900 dark:text-white">
                 {nickname || '회원'}님
               </span>
-              <button onClick={handleLogout} className="text-xs underline text-gray-500 dark:text-gray-400">
+              <button onClick={handleLogout} className="text-xs underline text-slate-500 dark:text-slate-400">
                 로그아웃
               </button>
             </div>
           ) : (
-            <Link href="/login" className="px-4 py-2 text-sm bg-blue-600 text-white rounded-lg">
+            <Link href="/login" className="px-4 py-2 text-sm bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700">
               로그인
             </Link>
           )}
