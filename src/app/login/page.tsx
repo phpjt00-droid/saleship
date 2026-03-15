@@ -43,8 +43,8 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    // items-start와 pl-10을 통해 좌측 정렬 및 여백 확보
-    <div className="flex flex-col items-start justify-start min-h-screen p-6 pt-20 pl-10 bg-slate-50 dark:bg-slate-950">
+    // 중앙 정렬로 롤백
+    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-slate-50 dark:bg-slate-950">
       <Suspense fallback={<div>로딩 중...</div>}>
         <LoginForm />
       </Suspense>
