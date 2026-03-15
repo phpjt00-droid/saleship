@@ -23,13 +23,16 @@ export default function BookmarksPage() {
 
   return (
     <main className="container py-8 md:py-12">
+      {/* 헤더 레이아웃 통일 */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-4">
-          <div className="relative w-16 h-16">
+          <div className="relative w-16 h-16 flex-shrink-0">
             <Image
               src="/images/pingu-heart.png"
               alt="북마크 펭귄"
               fill
+              priority
+              sizes="64px"
               className="object-contain"
             />
           </div>
@@ -54,11 +57,13 @@ export default function BookmarksPage() {
         </div>
       ) : (
         <div className="py-20 text-center">
+          {/* 비어있을 때 이미지 컨테이너 */}
           <div className="relative w-20 h-20 mx-auto mb-6">
             <Image
               src="/images/pingu-heart.png"
               alt="북마크 없음"
               fill
+              sizes="80px"
               className="object-contain opacity-80"
             />
           </div>
