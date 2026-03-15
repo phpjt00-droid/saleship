@@ -4,16 +4,16 @@ import { Send, Mail, User, Tag, MessageSquare, CheckCircle, AlertCircle } from '
 import './Contact.css'
 
 export default function Contact() {
-    const [status, setStatus] = useState(null) // 'loading', 'success', 'error'
+    const [status, setStatus] = useState<'loading' | 'success' | 'error' | null>(null)
 
-    async function handleSubmit(e) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setStatus('loading')
 
-        const formData = new FormData(e.target)
+        const formData = new FormData(e.currentTarget)
 
         try {
-            const response = await fetch('https://formspree.io/f/xnjgpgwp', { // 사용자님의 고유 ID 반영
+            const response = await fetch('https://formspree.io/f/xnjgpgwp', {
                 method: 'POST',
                 body: formData,
                 headers: {
@@ -23,7 +23,7 @@ export default function Contact() {
 
             if (response.ok) {
                 setStatus('success')
-                e.target.reset()
+                e.currentTarget.reset()
             } else {
                 setStatus('error')
             }
@@ -68,7 +68,7 @@ export default function Contact() {
 
                             <div className="form-group">
                                 <label htmlFor="message"><MessageSquare size={16} /> 문의 내용</label>
-                                <textarea id="message" name="message" rows="6" placeholder="자세한 문의 내용을 작성해주세요" required></textarea>
+                                <textarea id="message" name="message" rows={6} placeholder="자세한 문의 내용을 작성해주세요" required></textarea>
                             </div>
 
                             {status === 'error' && (
