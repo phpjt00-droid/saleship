@@ -7,7 +7,8 @@ export const runtime = 'edge';
 export async function GET(request: Request) {
     const requestUrl = new URL(request.url);
     const code = requestUrl.searchParams.get('code');
-    const origin = requestUrl.origin;
+    // 로그인 페이지에서 전달한 next 경로를 가져옵니다.
+    const next = requestUrl.searchParams.get('next') ?? '/';
 
     if (code) {
         const cookieStore = await cookies();
@@ -32,5 +33,6 @@ export async function GET(request: Request) {
         await supabase.auth.exchangeCodeForSession(code);
     }
 
-    return NextResponse.redirect(`${origin}/`);
+    // 가져온 next 경로로 리다이렉트합니다.
+    return NextResponse.redirect(new URL(next, requestUrl.origin));
 }
