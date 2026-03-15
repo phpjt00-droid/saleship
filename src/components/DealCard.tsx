@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Deal, DealViewMode } from '@/types/deal'
 import { Heart, MessageCircle, Clock } from 'lucide-react'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
-import { useAuth } from '@/hooks/useAuth' // 경로 수정 완료
+import { useAuth } from '@/hooks/useAuth' // 절대 경로 확인 완료
 import { toast } from 'sonner'
 
 interface DealCardProps {
@@ -17,7 +17,7 @@ interface DealCardProps {
 export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
   const router = useRouter()
   const { toggleBookmark, isBookmarked } = useBookmarks()
-  const { user } = useAuth() // 이제 정상적으로 작동합니다
+  const { user } = useAuth()
   const bookmarked = isBookmarked(deal.id)
 
   const handleBookmarkClick = (e: React.MouseEvent) => {
