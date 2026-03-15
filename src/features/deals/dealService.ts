@@ -19,44 +19,7 @@ export const dealService = {
     const { data, error } = await query.range(from, to);
     if (error) throw error;
 
-    return data.map(post => {
-      const priceInfo = post.price_info || {};
-      const parseNum = (val: any) => {
-        if (typeof val === 'number') return val;
-        if (typeof val === 'string') {
-          const num = parseInt(val.replace(/[^0-9]/g, ''));
-          return isNaN(num) ? 0 : num;
-        }
-        return 0;
-      };
-
-      return {
-        id: post.id,
-        title: post.title,
-        content: post.content,
-        category: post.category,
-        store: post.store || 'Saleship',
-        image: post.image || '',
-        url: post.link || '',
-        price: parseNum(priceInfo.currentPrice) || 0,
-        originalPrice: parseNum(priceInfo.originalPrice) || 0,
-        discount: parseNum(priceInfo.discount) || 0,
-        likes: post.likes || 0,
-        comments: post.comments || 0,
-        views: parseNum(post.views) || 0,
-        createdAt: post.created_at || post.date,
-        authorId: post.user_id || '',
-        shipping: '배송 정보 확인',
-        author: 'Saleship',
-        avatar: '/images/pingu-hello.png',
-        brand_name: post.brand_name || post.store || '',
-        deal_link: post.link || post.url || '',
-        promo_code: post.promo_code || '',
-        end_date: post.end_date,
-        upvote_count: post.upvote_count || post.likes || 0,
-        summary: post.summary || ''
-      };
-    });
+    return (data || []).map((post: any) => this._mapDealData(post));
   },
 
   async getDealById(id: string | number): Promise<Deal> {
@@ -94,17 +57,71 @@ export const dealService = {
     return data;
   },
 
+  async getTrendingDeals(limit: number = 5): Promise<Deal[]> {
+    const deals = await this.getDeals({ limit: 50 });
+    return this.sortDeals(deals, 'trending').slice(0, limit);
+  },
+
+  async getPopularDeals(limit: number = 8): Promise<Deal[]> {
+    const deals = await this.getDeals({ limit: 100 });
+    return this.sortDeals(deals, 'popular').slice(0, limit);
+  },
+
+  async getLatestDeals(limit: number = 12): Promise<Deal[]> {
+    return await this.getDeals({ limit });
+  },
+
+  sortDeals(deals: Deal[], sortBy: string): Deal[] {
+    return sortDealsUtil(deals, sortBy);
+  },
+
   _mapDealData(post: any): Deal {
+    const priceInfo = post.price_info || {};
+    const parseNum = (val: any) => {
+      if (typeof val === 'number') return val;
+      if (typeof val === 'string') {
+        const num = parseInt(val.replace(/[^0-9]/g, ''));
+        return isNaN(num) ? 0 : num;
+      }
+      return 0;
+    };
     return {
       id: post.id, title: post.title, subtitle: post.subtitle, image: post.image,
-      url: post.link || post.url || '', price: Number(post.price) || 0,
-      originalPrice: Number(post.original_price) || 0, discount: Number(post.discount) || 0,
+      url: post.link || post.url || '', price: parseNum(priceInfo.currentPrice) || Number(post.price) || 0,
+      originalPrice: parseNum(priceInfo.originalPrice) || Number(post.original_price) || 0,
+      discount: parseNum(priceInfo.discount) || Number(post.discount) || 0,
       store: post.store || 'Saleship', shipping: post.shipping || '무료배송',
       likes: post.likes || 0, comments: post.comments_count || post.comments || 0,
-      views: post.views || 0, createdAt: post.created_at, authorId: post.user_id || '',
+      views: parseNum(post.views) || 0, createdAt: post.created_at, authorId: post.user_id || '',
       category: post.category, content: post.content, author: post.author || 'Saleship',
       avatar: post.avatar || '/images/pingu-hello.png', summary: post.summary || ''
     };
   },
-  // ... (나머지 getComments, vote 등 기존 로직 동일)
+
+  async getComments(postId: string | number): Promise<DealComment[]> {
+    const { data, error } = await supabase.from('comments').select('*, profiles:user_id (nickname, avatar_url)').eq('post_id', postId).order('created_at', { ascending: true });
+    if (error) throw error;
+    return (data || []).map(c => ({ id: c.id, post_id: c.post_id, user_id: c.user_id, user_name: c.profiles?.nickname, user_avatar: c.profiles?.avatar_url, content: c.content, likes: c.likes || 0, created_at: c.created_at }));
+  },
+
+  async addComment(postId: string, content: string, userId: string): Promise<void> {
+    const { error } = await supabase.from('comments').insert([{ post_id: postId, user_id: userId, content, post_type: 'deal' }]);
+    if (error) throw error;
+  },
+
+  async vote(postId: string, userId: string, voteType: 'up' | 'down' | null): Promise<void> {
+    if (voteType === null) { await supabase.from('votes').delete().eq('post_id', postId).eq('user_id', userId); return; }
+    const { error } = await supabase.from('votes').upsert({ post_id: postId, user_id: userId, vote_type: voteType, created_at: new Date().toISOString() }, { onConflict: 'post_id,user_id' });
+    if (error) throw error;
+  },
+
+  async getVoteCounts(postId: string): Promise<{ up: number, down: number }> {
+    const { data } = await supabase.from('votes').select('vote_type').eq('post_id', postId);
+    return (data || []).reduce((acc, curr) => { if (curr.vote_type === 'up') acc.up++; else if (curr.vote_type === 'down') acc.down++; return acc; }, { up: 0, down: 0 });
+  },
+
+  async getUserVote(postId: string, userId: string): Promise<'up' | 'down' | null> {
+    const { data } = await supabase.from('votes').select('vote_type').eq('post_id', postId).eq('user_id', userId).maybeSingle();
+    return data?.vote_type || null;
+  }
 };
