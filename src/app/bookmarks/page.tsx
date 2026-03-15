@@ -34,7 +34,7 @@ export default function BookmarksPage() {
           {[1, 2, 3].map(i => <div key={i} className="h-[400px] bg-slate-100 dark:bg-slate-800 animate-pulse rounded-[2.5rem]" />)}
         </div>
       ) : !user ? (
-        // 비회원일 때: 페이지 구조를 유지하며 로그인 안내 표시
+        // 비회원일 때: 리다이렉트 대신 레이아웃 안에서 로그인 안내 카드 표시
         <div className="py-10 flex justify-center">
           <div className="w-full max-w-lg bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-12 rounded-[2.5rem] text-center shadow-sm">
             <div className="relative w-20 h-20 mx-auto mb-6">
