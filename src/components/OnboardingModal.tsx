@@ -10,7 +10,6 @@ interface OnboardingModalProps {
 }
 
 export default function OnboardingModal({ isOpen, onComplete, initialNickname }: OnboardingModalProps) {
-    // 전달받은 닉네임이 있으면 사용하고, 없으면 새로 생성
     const [nickname, setNickname] = useState(initialNickname || generateNickname());
     const [gender, setGender] = useState('');
     const [age, setAge] = useState('');
@@ -19,7 +18,6 @@ export default function OnboardingModal({ isOpen, onComplete, initialNickname }:
     if (!isOpen) return null;
 
     const handleStart = async () => {
-        // 유효성 검사
         if (!gender || !age) {
             alert("성별과 연령대를 모두 선택해주세요!");
             return;
@@ -27,7 +25,6 @@ export default function OnboardingModal({ isOpen, onComplete, initialNickname }:
 
         setLoading(true);
         try {
-            console.log("저장 시작, 데이터:", { nickname, gender, age });
             await onComplete({ nickname, gender, age });
         } catch (error: any) {
             console.error("저장 에러 상세:", error);
@@ -40,7 +37,6 @@ export default function OnboardingModal({ isOpen, onComplete, initialNickname }:
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white dark:bg-gray-900 p-8 rounded-[2rem] w-full max-w-sm shadow-2xl border border-gray-100 dark:border-gray-800 space-y-6">
-
                 <div className="text-center space-y-2">
                     <div className="text-5xl">🐧</div>
                     <h2 className="text-2xl font-black dark:text-white">세일쉽에 오신 걸 환영해요!</h2>
@@ -63,7 +59,7 @@ export default function OnboardingModal({ isOpen, onComplete, initialNickname }:
                         </button>
                     </div>
 
-                    {/* 드롭다운 */}
+                    {/* 드롭다운: 연령대 옵션 수정 완료 */}
                     <div className="flex gap-2">
                         <div className="relative flex-1">
                             <select
@@ -85,7 +81,7 @@ export default function OnboardingModal({ isOpen, onComplete, initialNickname }:
                                 className="w-full border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 p-4 rounded-2xl font-bold dark:text-gray-300 outline-none appearance-none cursor-pointer"
                             >
                                 <option value="">연령대</option>
-                                {['10대', '20대', '30대', '40대', '50대', '60대', '70대', '80대'].map((a) => (
+                                {['10대 이하', '20대', '30대', '40대', '50대', '60대 이상'].map((a) => (
                                     <option key={a} value={a}>{a}</option>
                                 ))}
                             </select>
