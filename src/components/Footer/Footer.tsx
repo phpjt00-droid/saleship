@@ -6,19 +6,20 @@ import Image from 'next/image'
 const Footer = () => {
   return (
     <footer className="bg-slate-900 text-slate-300 py-20 border-t border-slate-800">
-      <div className="container mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
 
-          {/* 브랜드 섹션 */}
+          {/* 브랜드 섹션 - 사용자 요청대로 포인트 박스 제거 및 anchor-logo 적용 */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center gap-3 group mb-8 w-fit">
-              <div className="relative w-10 h-10 bg-blue-600 rounded-2xl flex items-center justify-center -rotate-6 group-hover:rotate-0 transition-transform duration-300 overflow-hidden shadow-lg shadow-blue-500/20">
+              <div className="relative w-12 h-12 transition-transform group-hover:scale-105">
                 <Image
-                  src="/images/saleship-main.png"
+                  src="/images/anchor-logo.png"
                   alt="Saleship Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain scale-125"
+                  fill
+                  sizes="48px"
+                  className="object-contain"
+                  priority
                 />
               </div>
               <span className="text-2xl font-black tracking-tighter text-white">
@@ -30,9 +31,9 @@ const Footer = () => {
             </p>
           </div>
 
-          {/* 서비스 링크 섹션 */}
+          {/* Service 링크 */}
           <div>
-            <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8 opacity-50">Service</h3>
+            <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8 opacity-40">Service</h3>
             <ul className="space-y-4 font-bold text-sm">
               <li><Link href="/deals" className="hover:text-blue-500 transition-colors">핫딜 게시판</Link></li>
               <li><Link href="/community" className="hover:text-blue-500 transition-colors">커뮤니티</Link></li>
@@ -40,9 +41,9 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* 고객지원 링크 섹션 */}
+          {/* Contact 링크 */}
           <div>
-            <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8 opacity-50">Contact</h3>
+            <h3 className="text-white font-black uppercase tracking-widest text-xs mb-8 opacity-40">Contact</h3>
             <ul className="space-y-4 font-bold text-sm">
               <li><Link href="/support" className="hover:text-blue-500 transition-colors">문의하기</Link></li>
               <li><Link href="/guide" className="hover:text-blue-500 transition-colors">이용 안내</Link></li>
@@ -51,12 +52,12 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* 하단 정보 영역 */}
+        {/* 하단 바 */}
         <div className="pt-10 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="text-[10px] md:text-xs font-bold text-slate-500 tracking-tight">
+          <div className="text-xs font-bold text-slate-500 tracking-tight">
             © 2026 Saleship. All rights reserved. Made by ksy with Pingu.
           </div>
-          <div className="flex gap-8 text-[10px] md:text-[11px] font-black uppercase tracking-widest text-slate-500">
+          <div className="flex gap-8 text-[11px] font-black uppercase tracking-widest text-slate-500">
             <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
             <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
           </div>

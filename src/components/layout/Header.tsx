@@ -52,19 +52,19 @@ export default function Header() {
     <header className="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-        {/* 로고 영역: saleship-main.png로 통일 */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="relative w-8 h-8 transition-transform group-hover:scale-110">
+        {/* 로고 영역: anchor-logo.png 적용 및 사이즈 확대 */}
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
             <Image
-              src="/images/saleship-main.png"
+              src="/images/anchor-logo.png"
               alt="Saleship Logo"
               fill
               priority
-              sizes="32px"
+              sizes="40px"
               className="object-contain"
             />
           </div>
-          <span className="text-xl font-black text-slate-900 dark:text-white tracking-tighter">
+          <span className="text-2xl font-black text-slate-900 dark:text-white tracking-tighter">
             Saleship
           </span>
         </Link>
