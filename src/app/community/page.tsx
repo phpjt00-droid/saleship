@@ -2,10 +2,9 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { MessageCircle, LayoutGrid, Award, ShoppingBag, Plus } from 'lucide-react'
+import { MessageCircle, Plus } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { toast } from 'sonner'
 import { formatDistanceToNow } from 'date-fns'
 import { ko } from 'date-fns/locale'
 
@@ -20,7 +19,9 @@ export default function CommunityPage() {
     { id: 'review', name: '리뷰게시판' },
     { id: 'market', name: '장터게시판' },
   ]
-  const [currentBoard, setCurrentBoard] = useState('free')
+
+  // 초기 상태를 'notice'로 설정하여 공지사항 우선 노출
+  const [currentBoard, setCurrentBoard] = useState('notice')
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -32,21 +33,24 @@ export default function CommunityPage() {
         .from('community_posts')
         .select('*')
         .order('id', { ascending: false })
-      
+
       if (!error) setPosts(data || [])
       setLoading(false)
     }
     fetchPosts()
   }, [])
 
+  // 탭에 따른 게시글 필터링
+  const filteredPosts = posts.filter(post => post.category === currentBoard);
+
   return (
     <main className="container py-8 md:py-12">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16">
-            <Image 
-              src="/images/pingu-announce.png" 
-              alt="핫딜펭귄 소식" 
+            <Image
+              src="/images/pingu-announce.png"
+              alt="핫딜펭귄 소식"
               fill
               className="object-contain"
             />
@@ -57,8 +61,8 @@ export default function CommunityPage() {
           </div>
         </div>
         {user && (
-          <Link 
-            href="/community/write" 
+          <Link
+            href="/community/write"
             className="w-full md:w-auto px-8 py-4 bg-slate-900 dark:bg-white dark:text-slate-900 text-white font-black rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-800 transition-all shadow-xl"
           >
             <Plus size={20} /> 글쓰기
@@ -71,11 +75,10 @@ export default function CommunityPage() {
           <button
             key={board.id}
             onClick={() => setCurrentBoard(board.id)}
-            className={`px-6 py-3 rounded-2xl whitespace-nowrap font-black text-sm transition-all active:scale-95 ${
-              currentBoard === board.id
-                ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 dark:shadow-none'
-                : 'bg-white dark:bg-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-100 dark:border-slate-800'
-            }`}
+            className={`px-6 py-3 rounded-2xl whitespace-nowrap font-black text-sm transition-all active:scale-95 ${currentBoard === board.id
+              ? 'bg-blue-600 text-white shadow-xl shadow-blue-200 dark:shadow-none'
+              : 'bg-white dark:bg-slate-800 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-100 dark:border-slate-800'
+              }`}
           >
             {board.name}
           </button>
@@ -86,8 +89,8 @@ export default function CommunityPage() {
         <div className="lg:col-span-2 space-y-4">
           {loading ? (
             [1, 2, 3].map(i => <div key={i} className="h-32 bg-slate-100 animate-pulse rounded-3xl" />)
-          ) : posts.length > 0 ? (
-            posts.map(post => (
+          ) : filteredPosts.length > 0 ? (
+            filteredPosts.map(post => (
               <div key={post.id} className="bg-white dark:bg-slate-900 p-6 rounded-3xl border dark:border-slate-800 hover:shadow-xl transition-all">
                 <div className="flex items-center gap-2 mb-3">
                   <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 rounded-lg uppercase tracking-widest">{post.category}</span>
@@ -105,7 +108,7 @@ export default function CommunityPage() {
               </div>
             ))
           ) : (
-            <div className="py-20 text-center text-slate-400 font-bold">첫 게시글을 남겨보세요!</div>
+            <div className="py-20 text-center text-slate-400 font-bold">등록된 게시글이 없습니다.</div>
           )}
         </div>
 
