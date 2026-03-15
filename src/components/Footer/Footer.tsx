@@ -9,9 +9,9 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
 
-          {/* 브랜드 섹션 - 사용자 요청대로 포인트 박스 제거 및 anchor-logo 적용 */}
+          {/* 브랜드 섹션 - 로고 옆 세일쉽 추가 */}
           <div className="col-span-1 md:col-span-2">
-            <Link href="/" className="flex items-center gap-3 group mb-8 w-fit">
+            <Link href="/" className="flex items-center gap-2 group mb-8 w-fit">
               <div className="relative w-12 h-12 transition-transform group-hover:scale-105">
                 <Image
                   src="/images/anchor-logo.png"
@@ -22,9 +22,14 @@ const Footer = () => {
                   priority
                 />
               </div>
-              <span className="text-2xl font-black tracking-tighter text-white">
-                Saleship
-              </span>
+              <div className="flex flex-col">
+                <span className="text-2xl font-black tracking-tighter text-white">
+                  Saleship
+                </span>
+                <span className="text-sm font-bold text-slate-400 tracking-tight">
+                  세일쉽
+                </span>
+              </div>
             </Link>
             <p className="text-slate-400 max-w-sm font-medium leading-relaxed text-sm md:text-base">
               운영자가 직접 선별한 최고의 할인 정보와 라이프스타일 큐레이션을 제공하는 핫딜 커뮤니티입니다. 허위 정보 없는 클린한 쇼핑 환경을 지향합니다.
