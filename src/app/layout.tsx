@@ -6,7 +6,7 @@ import Footer from '@/components/Footer/Footer'
 import { ThemeProvider } from 'next-themes'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { Toaster } from 'sonner'
-import { TabProvider } from '@/context/TabContext' // 탭 상태 관리를 위한 Provider
+import { TabProvider } from '@/context/TabContext'
 
 export const metadata = {
   title: '세일쉽(Saleship) | 취향과 가치를 담은 핫딜',
@@ -30,6 +30,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+        {/* Microsoft Clarity Script */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/vtqbgz36if";
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "vtqbgz36if");
+            `,
+          }}
+        />
       </head>
       <body className="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300">
         <GoogleAnalytics gaId="G-G00CNYVM0H" />
