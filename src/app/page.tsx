@@ -9,36 +9,9 @@ import Hero from '@/components/Hero/Hero';
 import LatestDealsClient from './LatestDealsClient';
 import TrendingDealsClient from '@/components/PopularDeals/TrendingDealsClient';
 import PopularDealsSidebar from '@/components/PopularDeals/PopularDealsSidebar';
-import { useTab } from '@/context/TabContext';
-
-// 상단 카테고리 스크롤바 컴포넌트
-const CategoryScroll = ({ activeTab }: { activeTab: string }) => {
-  const categories = {
-    deals: ['전체', '가전', '패션', '식품', '취미'],
-    community: ['자유게시판', '질문', '후기', '핫딜공유'],
-    bookmarks: ['찜한 상품', '알림설정'],
-    support: ['공지사항', '1:1문의']
-  };
-
-  const currentCategories = categories[activeTab as keyof typeof categories] || [];
-
-  return (
-    // 수정됨: md:hidden을 제거하고 md:block을 사용하여 데스크탑에서만 보이도록 설정
-    <div className="hidden md:block sticky top-[68px] z-40 bg-[#f8fafc]/90 dark:bg-slate-950/90 backdrop-blur-sm border-b border-slate-200 dark:border-slate-800 py-3">
-      <div className="flex overflow-x-auto gap-2 px-6 scrollbar-hide">
-        {currentCategories.map((cat) => (
-          <button key={cat} className="whitespace-nowrap px-4 py-1.5 bg-white dark:bg-slate-800 rounded-full text-sm font-bold shadow-sm border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300">
-            {cat}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export default function HomePage() {
   const { user, loading: authLoading } = useAuth();
-  const { activeTab } = useTab();
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [isChecking, setIsChecking] = useState(true);
 
@@ -91,8 +64,7 @@ export default function HomePage() {
         initialNickname={user?.user_metadata?.full_name || generateNickname()}
       />
 
-      {/* 이제 모바일에서 이 영역은 사라집니다 */}
-      <CategoryScroll activeTab={activeTab} />
+      {/* 메인 페이지의 깔끔함을 위해 CategoryScroll 컴포넌트 및 호출부 완전히 제거 */}
 
       <Hero />
 
