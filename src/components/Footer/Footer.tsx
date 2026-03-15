@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
 
-          {/* 브랜드 섹션 - 로고 옆 세일쉽 추가 */}
+          {/* 브랜드 섹션 - 로고 옆 세일쉽 반영 완료 */}
           <div className="col-span-1 md:col-span-2">
             <Link href="/" className="flex items-center gap-2 group mb-8 w-fit">
               <div className="relative w-12 h-12 transition-transform group-hover:scale-105">
