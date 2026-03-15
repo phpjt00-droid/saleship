@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/hooks/useAuth'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
@@ -12,18 +11,32 @@ export default function BookmarksPage() {
   const { user, loading: authLoading } = useAuth()
   const { bookmarks, isLoading: bookmarksLoading } = useBookmarks()
 
-  useEffect(() => {
-    if (!authLoading && !user) {
-      alert("로그인이 필요한 서비스입니다.");
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
-
   const isLoading = authLoading || bookmarksLoading
+
+  // 비회원 전용 로그인 안내 컴포넌트 (로그인 페이지와 일관성 유지)
+  if (!authLoading && !user) {
+    return (
+      <main className="container py-20 flex flex-col items-center justify-center min-h-[60vh]">
+        <div className="relative w-24 h-24 mb-6">
+          <Image src="/images/pingu-heart.png" alt="로그인 필요" fill className="object-contain" />
+        </div>
+        <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-3">로그인이 필요합니다</h3>
+        <p className="text-slate-500 dark:text-slate-400 font-medium mb-8 text-center">
+          북마크 기능을 이용하려면 로그인이 필요합니다.<br />
+          간편하게 로그인하고 나만의 핫딜을 관리해보세요!
+        </p>
+        <button
+          onClick={() => router.push('/login')}
+          className="px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-all"
+        >
+          로그인하러 가기
+        </button>
+      </main>
+    )
+  }
 
   return (
     <main className="container py-8 md:py-12">
-      {/* 헤더 레이아웃 통일 */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16 flex-shrink-0">
@@ -57,13 +70,11 @@ export default function BookmarksPage() {
         </div>
       ) : (
         <div className="py-20 text-center">
-          {/* 비어있을 때 이미지 컨테이너 */}
           <div className="relative w-20 h-20 mx-auto mb-6">
             <Image
               src="/images/pingu-heart.png"
               alt="북마크 없음"
               fill
-              sizes="80px"
               className="object-contain opacity-80"
             />
           </div>

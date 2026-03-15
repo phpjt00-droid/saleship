@@ -2,9 +2,12 @@
 
 import React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation' // useRouter 추가
 import { Deal, DealViewMode } from '@/types/deal'
 import { Heart, MessageCircle, Clock } from 'lucide-react'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
+import { useAuth } from '@/context/AuthContext' // AuthContext가 있다고 가정합니다 (없다면 확인 필요)
+import { toast } from 'sonner' // sonner를 사용 중이시므로 즉시 실행을 위해 추가
 
 interface DealCardProps {
   deal: Deal;
@@ -12,8 +15,29 @@ interface DealCardProps {
 }
 
 export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
+  const router = useRouter()
   const { toggleBookmark, isBookmarked } = useBookmarks()
+  const { user } = useAuth() // 로그인 상태 확인을 위한 훅
   const bookmarked = isBookmarked(deal.id)
+
+  // 북마크 클릭 핸들러 (로그인 체크 로직 포함)
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!user) {
+      toast.error('로그인이 필요한 서비스입니다.', {
+        action: {
+          label: '로그인하기',
+          onClick: () => router.push('/login'),
+        },
+      });
+      return;
+    }
+
+    // 로그인된 경우 즉시 실행
+    toggleBookmark(deal);
+  };
 
   // GA4 클릭 이벤트 핸들러
   const handleLogClick = () => {
@@ -26,7 +50,6 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
   };
 
   return (
-    // 루트 요소에 onClick 바인딩
     <div
       onClick={handleLogClick}
       className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full"
@@ -41,10 +64,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
           />
         </Link>
         <button
-          onClick={(e) => {
-            e.preventDefault(); // 이벤트 전파 방지
-            toggleBookmark(deal);
-          }}
+          onClick={handleBookmarkClick}
           className={`absolute top-6 right-6 p-3 rounded-2xl backdrop-blur-md transition-all active:scale-90 ${bookmarked
             ? 'bg-rose-500 text-white shadow-lg'
             : 'bg-white/80 dark:bg-slate-900/80 text-slate-400 hover:text-rose-500'
@@ -61,6 +81,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
 
       {/* Content */}
       <div className="p-8 flex flex-col flex-1">
+        {/* ... (기존 하단 콘텐츠 코드 동일) */}
         <div className="flex items-center gap-2 mb-4">
           <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 rounded-lg uppercase tracking-widest">
             {deal.category}
@@ -84,7 +105,6 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
               <span className="text-xs font-bold text-slate-400 line-through">{deal.price_info.originalPrice}</span>
             )}
           </div>
-
           <div className="flex items-center gap-3 text-slate-400">
             <div className="flex items-center gap-1.5 text-[11px] font-black">
               <MessageCircle size={14} /> 0
