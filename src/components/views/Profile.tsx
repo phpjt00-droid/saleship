@@ -1,14 +1,15 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link' // Link import 추가됨
 import { supabase } from '@/lib/supabaseClient'
 import { MapPin, Briefcase, Calendar, Star, Award, MessageSquare, Heart, Settings, Target, Users, RefreshCw, LogOut } from 'lucide-react'
 import './Profile.css'
 
 function Profile() {
     const [loading, setLoading] = useState(true)
-    const [user, setUser] = useState(null)
-    const [profile, setProfile] = useState(null)
+    const [user, setUser] = useState<any>(null)
+    const [profile, setProfile] = useState<any>(null)
     const [changeLoading, setChangeLoading] = useState(false)
     const router = useRouter()
 
@@ -52,15 +53,13 @@ function Profile() {
 
         setChangeLoading(true)
         try {
-            // 1. 닉네임 생성
             const modifiers = ['매우', '가장', '어느', '지치지않는', '얼음위의', '잠들지않는', '반짝이는', '자유로운', '기다려온', '신비로운']
             const adjectives = ['똑똑한', '귀여운', '멋진', '빠른', '용감한', '수줍은', '다정한', '활기찬']
             const penguins = ['황제펭귄', '아델리펭귄', '젠투펭귄', '턱끈펭귄', '마카로니펭귄', '꼬마펭귄', '바위뛰기펭귄']
-            const pick = (arr) => arr[Math.floor(Math.random() * arr.length)]
+            const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)]
 
             let newNick = `${pick(modifiers)}${pick(adjectives)}${pick(penguins)}`
 
-            // 중복 체크
             const { data: existing } = await supabase
                 .from('profiles')
                 .select('nickname')
@@ -71,7 +70,6 @@ function Profile() {
                 newNick += Math.floor(Math.random() * 9000) + 1000
             }
 
-            // 2. Metadata 업데이트 (변경 횟수 기록)
             const { error: authError } = await supabase.auth.updateUser({
                 data: {
                     nickname: newNick,
@@ -80,7 +78,6 @@ function Profile() {
             })
             if (authError) throw authError
 
-            // 3. Profiles 테이블 업데이트
             const { error: profileError } = await supabase
                 .from('profiles')
                 .update({
@@ -93,7 +90,7 @@ function Profile() {
 
             alert(`닉네임이 [${newNick}]으로 변경되었습니다!`)
             window.location.reload()
-        } catch (err) {
+        } catch (err: any) {
             alert(`변경 실패: ${err.message}`)
         } finally {
             setChangeLoading(false)
