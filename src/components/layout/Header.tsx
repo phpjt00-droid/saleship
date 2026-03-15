@@ -52,7 +52,7 @@ export default function Header() {
     <header className="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-        {/* 로고 영역: saleship-main.png 적용 및 사이즈 확대 */}
+        {/* 로고 영역 */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
             <Image
@@ -69,7 +69,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* 네비게이션 */}
+        {/* 네비게이션 (데스크탑에서만 표시) */}
         <nav className="hidden md:flex items-center gap-8">
           {[
             { name: '핫딜', href: '/deals' },
