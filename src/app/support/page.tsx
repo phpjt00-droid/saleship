@@ -25,13 +25,12 @@ export default function SupportPage() {
         <main className="container py-8 md:py-12 max-w-2xl">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div className="flex items-center gap-4">
-                    {/* 부모 컨테이너 크기 명시 및 안정성 추가 */}
                     <div className="relative w-16 h-16 flex-shrink-0">
                         <Image
                             src="/images/pingu-support.png"
                             alt="문의하기 펭귄"
                             fill
-                            priority // 중요 이미지는 우선 로딩
+                            priority
                             sizes="64px"
                             className="object-contain"
                             onError={(e) => console.error("이미지 로드 실패:", e)}
@@ -45,7 +44,7 @@ export default function SupportPage() {
             </div>
 
             <form
-                action="https://formspree.io/f/phpjt00@gmail.com"
+                action="https://formspree.io/f/xnjgpgwp"
                 method="POST"
                 onSubmit={handleSubmit}
                 className="space-y-6 bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border dark:border-slate-800 shadow-xl shadow-slate-100 dark:shadow-none"
