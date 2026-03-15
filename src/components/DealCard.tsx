@@ -2,12 +2,12 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation' // useRouter 추가
+import { useRouter } from 'next/navigation'
 import { Deal, DealViewMode } from '@/types/deal'
 import { Heart, MessageCircle, Clock } from 'lucide-react'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
-import { useAuth } from '@/context/AuthContext' // AuthContext가 있다고 가정합니다 (없다면 확인 필요)
-import { toast } from 'sonner' // sonner를 사용 중이시므로 즉시 실행을 위해 추가
+import { useAuth } from '@/hooks/useAuth' // 경로 수정 완료
+import { toast } from 'sonner'
 
 interface DealCardProps {
   deal: Deal;
@@ -17,10 +17,9 @@ interface DealCardProps {
 export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
   const router = useRouter()
   const { toggleBookmark, isBookmarked } = useBookmarks()
-  const { user } = useAuth() // 로그인 상태 확인을 위한 훅
+  const { user } = useAuth() // 이제 정상적으로 작동합니다
   const bookmarked = isBookmarked(deal.id)
 
-  // 북마크 클릭 핸들러 (로그인 체크 로직 포함)
   const handleBookmarkClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -35,11 +34,9 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
       return;
     }
 
-    // 로그인된 경우 즉시 실행
     toggleBookmark(deal);
   };
 
-  // GA4 클릭 이벤트 핸들러
   const handleLogClick = () => {
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'deal_click', {
@@ -54,7 +51,6 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
       onClick={handleLogClick}
       className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full"
     >
-      {/* Thumbnail */}
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-slate-800/50">
         <Link href={`/deals/${deal.id}`} className="block h-full">
           <img
@@ -79,9 +75,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
         )}
       </div>
 
-      {/* Content */}
       <div className="p-8 flex flex-col flex-1">
-        {/* ... (기존 하단 콘텐츠 코드 동일) */}
         <div className="flex items-center gap-2 mb-4">
           <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 rounded-lg uppercase tracking-widest">
             {deal.category}
