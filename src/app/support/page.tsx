@@ -57,7 +57,6 @@ export default function SupportPage() {
                             id="email"
                             placeholder="답변받으실 이메일을 입력하세요"
                             required
-                            {/* text-base(16px) 적용으로 iOS 줌인 방지 */}
                             className="w-full p-4 text-base md:text-sm rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                         />
                     </div>
@@ -70,7 +69,6 @@ export default function SupportPage() {
                             placeholder="문의 내용을 상세히 적어주세요"
                             required
                             rows={6}
-                            {/* text-base(16px) 적용으로 iOS 줌인 방지 */}
                             className="w-full p-4 text-base md:text-sm rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-all resize-none"
                         />
                     </div>
