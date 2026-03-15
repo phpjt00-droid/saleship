@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Deal, DealViewMode } from '@/types/deal'
 import { Heart, MessageCircle, Clock } from 'lucide-react'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
-import { useAuth } from '@/hooks/useAuth' // 절대 경로 확인 완료
+import { useAuth } from '@/hooks/useAuth'
 import { toast } from 'sonner'
 
 interface DealCardProps {
@@ -51,11 +51,13 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
       onClick={handleLogClick}
       className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full"
     >
+      {/* 썸네일 섹션 */}
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-slate-800/50">
         <Link href={`/deals/${deal.id}`} className="block h-full">
           <img
             src={deal.thumbnail}
             alt={deal.title}
+            loading="lazy"
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         </Link>
@@ -75,6 +77,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
         )}
       </div>
 
+      {/* 정보 섹션 */}
       <div className="p-8 flex flex-col flex-1">
         <div className="flex items-center gap-2 mb-4">
           <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-[10px] font-black text-slate-500 rounded-lg uppercase tracking-widest">
@@ -92,6 +95,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
           <div className="text-sm font-bold text-slate-400">{deal.brand_name}</div>
         </Link>
 
+        {/* 가격 및 액션 */}
         <div className="mt-auto pt-6 border-t dark:border-slate-800 flex items-center justify-between">
           <div className="flex items-baseline gap-2">
             <span className="text-xl font-black text-slate-900 dark:text-white">{deal.price_info?.currentPrice}</span>
