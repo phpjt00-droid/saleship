@@ -3,7 +3,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Deal, DealViewMode } from '@/types/deal'
-import { Heart, MessageCircle, Eye, ExternalLink, Clock, Tag } from 'lucide-react'
+import { Heart, MessageCircle, Clock } from 'lucide-react'
 import { useBookmarks } from '@/features/bookmarks/useBookmarks'
 
 interface DealCardProps {
@@ -15,24 +15,40 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
   const { toggleBookmark, isBookmarked } = useBookmarks()
   const bookmarked = isBookmarked(deal.id)
 
+  // GA4 클릭 이벤트 핸들러
+  const handleLogClick = () => {
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'deal_click', {
+        item_name: deal.title,
+        item_id: deal.id,
+      });
+    }
+  };
+
   return (
-    <div className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full">
+    // 루트 요소에 onClick 바인딩
+    <div
+      onClick={handleLogClick}
+      className="group relative bg-white dark:bg-slate-900 rounded-[2.5rem] border dark:border-slate-800 shadow-sm hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 overflow-hidden flex flex-col h-full"
+    >
       {/* Thumbnail */}
       <div className="relative aspect-[4/3] overflow-hidden bg-slate-50 dark:bg-slate-800/50">
         <Link href={`/deals/${deal.id}`} className="block h-full">
-          <img 
-            src={deal.thumbnail} 
+          <img
+            src={deal.thumbnail}
             alt={deal.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
           />
         </Link>
-        <button 
-          onClick={() => toggleBookmark(deal)}
-          className={`absolute top-6 right-6 p-3 rounded-2xl backdrop-blur-md transition-all active:scale-90 ${
-            bookmarked 
-              ? 'bg-rose-500 text-white shadow-lg' 
-              : 'bg-white/80 dark:bg-slate-900/80 text-slate-400 hover:text-rose-500'
-          }`}
+        <button
+          onClick={(e) => {
+            e.preventDefault(); // 이벤트 전파 방지
+            toggleBookmark(deal);
+          }}
+          className={`absolute top-6 right-6 p-3 rounded-2xl backdrop-blur-md transition-all active:scale-90 ${bookmarked
+            ? 'bg-rose-500 text-white shadow-lg'
+            : 'bg-white/80 dark:bg-slate-900/80 text-slate-400 hover:text-rose-500'
+            }`}
         >
           <Heart size={20} fill={bookmarked ? 'currentColor' : 'none'} />
         </button>
@@ -68,7 +84,7 @@ export default function DealCard({ deal, viewMode = 'grid' }: DealCardProps) {
               <span className="text-xs font-bold text-slate-400 line-through">{deal.price_info.originalPrice}</span>
             )}
           </div>
-          
+
           <div className="flex items-center gap-3 text-slate-400">
             <div className="flex items-center gap-1.5 text-[11px] font-black">
               <MessageCircle size={14} /> 0
