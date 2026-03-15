@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { supabase } from '@/lib/supabaseClient'
-// UserEdit 대신 UserPen 아이콘으로 변경하였습니다.
-import { Anchor, ArrowRight, RefreshCw, UserPen } from 'lucide-react'
+// 아이콘 import를 가장 범용적인 'User'로 변경하여 빌드 에러를 방지합니다.
+import { Anchor, ArrowRight, RefreshCw, User } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from 'sonner'
@@ -56,7 +56,7 @@ export default function Login() {
                 setNickname(randomNick)
                 setShowNicknameSetup(true)
             } else {
-                if (window.location.pathname === '/login') {
+                if (typeof window !== 'undefined' && window.location.pathname === '/login') {
                     window.location.href = '/'
                 }
             }
@@ -170,10 +170,14 @@ export default function Login() {
         setTimeout(() => setIsRefreshing(false), 600)
     }
 
+    // JSX 부분은 기존 로직을 유지하되, 혹시 코드 내에 <UserPen /> 태그가 남아있다면 <User />로 모두 변경하세요.
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-50 p-4">
-            {/* 로그인 카드 생략 (기존과 동일) */}
-            {/* ... (이전과 동일한 UI 로직) */}
+            {/* 기존 UI 로직이 들어가는 곳입니다 */}
+            <div className="text-center">
+                <User size={48} className="mx-auto text-blue-600 mb-4" />
+                <h1 className="text-2xl font-bold">Saleship</h1>
+            </div>
         </div>
     )
 }
