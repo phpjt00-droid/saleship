@@ -22,7 +22,8 @@ export default function SupportPage() {
     }
 
     return (
-        <main className="container py-8 md:py-12 max-w-2xl">
+        <main className="container py-8 md:py-12">
+            {/* 핫딜 페이지와 동일한 헤더 레이아웃 적용 */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div className="flex items-center gap-4">
                     <div className="relative w-16 h-16 flex-shrink-0">
@@ -33,7 +34,6 @@ export default function SupportPage() {
                             priority
                             sizes="64px"
                             className="object-contain"
-                            onError={(e) => console.error("이미지 로드 실패:", e)}
                         />
                     </div>
                     <div>
@@ -43,37 +43,40 @@ export default function SupportPage() {
                 </div>
             </div>
 
-            <form
-                action="https://formspree.io/f/xnjgpgwp"
-                method="POST"
-                onSubmit={handleSubmit}
-                className="space-y-6 bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border dark:border-slate-800 shadow-xl shadow-slate-100 dark:shadow-none"
-            >
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="답변받으실 이메일"
-                    required
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                />
-                <textarea
-                    name="message"
-                    placeholder="문의 내용을 입력하세요"
-                    required
-                    rows={6}
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
-                />
-                <button
-                    type="submit"
-                    disabled={status === 'submitting'}
-                    className="w-full py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all active:scale-95 shadow-lg shadow-blue-200 dark:shadow-none"
+            {/* 폼 컨테이너의 가로폭을 제한하여 정돈된 느낌 유지 */}
+            <div className="max-w-2xl">
+                <form
+                    action="https://formspree.io/f/xnjgpgwp"
+                    method="POST"
+                    onSubmit={handleSubmit}
+                    className="space-y-6 bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border dark:border-slate-800 shadow-xl shadow-slate-100 dark:shadow-none"
                 >
-                    {status === 'submitting' ? '전송 중...' : '문의 보내기'}
-                </button>
-                {status === 'success' && (
-                    <p className="text-center font-bold text-green-600 animate-in fade-in">문의가 성공적으로 접수되었습니다!</p>
-                )}
-            </form>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="답변받으실 이메일"
+                        required
+                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                    <textarea
+                        name="message"
+                        placeholder="문의 내용을 입력하세요"
+                        required
+                        rows={6}
+                        className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none"
+                    />
+                    <button
+                        type="submit"
+                        disabled={status === 'submitting'}
+                        className="w-full py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 transition-all active:scale-95 shadow-lg shadow-blue-200 dark:shadow-none"
+                    >
+                        {status === 'submitting' ? '전송 중...' : '문의 보내기'}
+                    </button>
+                    {status === 'success' && (
+                        <p className="text-center font-bold text-green-600 animate-in fade-in">문의가 성공적으로 접수되었습니다!</p>
+                    )}
+                </form>
+            </div>
         </main>
     )
 }
