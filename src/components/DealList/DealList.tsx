@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { dealService } from '@/features/deals/dealService'
-import { filterDeals } from '@/features/deals/dealUtils'
 import { Deal } from '@/types/deal'
 import DealCard from '@/components/DealCard'
 import { useSearchParams } from 'next/navigation'
@@ -19,8 +18,9 @@ export default function DealList() {
       try {
         const cat = searchParams.get('cat') || 'all'
         const sort = searchParams.get('sort') || 'latest'
-        const query = searchParams.get('q') || ''
-        
+        // 'q' 대신 모바일 검색창에서 사용하는 'search' 파라미터를 가져오도록 수정
+        const query = searchParams.get('search') || ''
+
         const data = await dealService.getDeals({ category: cat, sort, query })
         setDeals(data)
       } catch (error) {
@@ -30,7 +30,7 @@ export default function DealList() {
       }
     }
     fetchDeals()
-  }, [searchParams])
+  }, [searchParams]) // searchParams가 변경되면 자동 재실행
 
   if (loading) return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
