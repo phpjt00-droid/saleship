@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 
 function LoginForm() {
@@ -12,7 +12,6 @@ function LoginForm() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        // next 파라미터에 이전 경로를 담아 보냅니다.
         redirectTo: `${window.location.origin}/auth/callback?next=${encodeURIComponent(redirectTo)}`,
       },
     });
@@ -44,7 +43,8 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-6 bg-slate-50 dark:bg-slate-950">
+    // items-start와 pl-10을 통해 좌측 정렬 및 여백 확보
+    <div className="flex flex-col items-start justify-start min-h-screen p-6 pt-20 pl-10 bg-slate-50 dark:bg-slate-950">
       <Suspense fallback={<div>로딩 중...</div>}>
         <LoginForm />
       </Suspense>
