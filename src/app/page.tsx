@@ -9,6 +9,7 @@ import Hero from '@/components/Hero/Hero';
 import LatestDealsClient from './LatestDealsClient';
 import TrendingDealsClient from '@/components/PopularDeals/TrendingDealsClient';
 import PopularDealsSidebar from '@/components/PopularDeals/PopularDealsSidebar';
+import MobileSearchBar from '@/components/MobileSearchBar'; // 검색 컴포넌트 임포트
 
 export default function HomePage() {
   const { user, loading: authLoading } = useAuth();
@@ -58,23 +59,8 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#f8fafc] dark:bg-slate-950 pb-20">
-      {/* 모바일 상단 고정 네비게이션 (Sticky Header) */}
-      <div className="sticky top-0 z-50 bg-[#f8fafc]/90 dark:bg-slate-950/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 md:hidden px-4 py-3">
-        <div className="mb-3">
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요..."
-            className="w-full px-4 py-2 bg-slate-200 dark:bg-slate-800 rounded-xl text-sm font-bold text-slate-900 dark:text-white placeholder:text-slate-400"
-          />
-        </div>
-        <div className="flex gap-6 overflow-x-auto scrollbar-hide text-xs font-black text-slate-500 uppercase tracking-widest pb-1">
-          {['전체', '가전', '패션', '식품', '취미'].map((cat) => (
-            <button key={cat} className="whitespace-nowrap hover:text-blue-600 transition-colors">
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+      {/* 모바일 검색창: 카테고리 탭 제거 완료 */}
+      <MobileSearchBar />
 
       <OnboardingModal
         isOpen={showOnboarding}
