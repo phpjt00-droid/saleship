@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "pages:build": "npx @cloudflare/next-on-pages",
-    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static --project-name=saleship-web"
+    "pages:deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static --project-name=saleship-web",
+    "deploy": "git add . && git commit -m 'update' && npm run pages:deploy"
   },
   "dependencies": {
     "@formspree/react": "^3.0.0",
