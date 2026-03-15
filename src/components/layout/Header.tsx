@@ -69,7 +69,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* 네비게이션 (데스크탑에서만 표시) */}
+        {/* 네비게이션: 데스크탑(md)에서만 표시 */}
         <nav className="hidden md:flex items-center gap-8">
           {[
             { name: '핫딜', href: '/deals' },
