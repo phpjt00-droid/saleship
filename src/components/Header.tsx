@@ -12,7 +12,7 @@ import { Moon, Sun, User, Search } from 'lucide-react';
 export default function Header() {
     const { user, loading } = useAuth();
     const router = useRouter();
-    const pathname = usePathname(); // 현재 경로 추적
+    const pathname = usePathname();
     const [searchTerm, setSearchTerm] = useState('');
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
@@ -52,8 +52,7 @@ export default function Header() {
     return (
         <header className="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors">
             <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
-
-                {/* 로고 영역: 크기 확대 및 텍스트 변경 */}
+                {/* 로고 영역: 크기 확대 및 "세일쉽" 텍스트 적용 */}
                 <Link href="/" className="flex items-center gap-3 group">
                     <div className="relative w-12 h-12 transition-transform group-hover:scale-105">
                         <Image
@@ -94,7 +93,7 @@ export default function Header() {
                     })}
                 </nav>
 
-                {/* 우측 검색 및 유저 인터페이스 */}
+                {/* 우측 인터페이스 */}
                 <div className="flex items-center gap-3">
                     <div className="relative hidden sm:flex items-center border border-slate-200 dark:border-slate-700 rounded-full px-4 py-1.5 bg-slate-50 dark:bg-slate-800 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
                         <input
@@ -108,46 +107,23 @@ export default function Header() {
                             <Search size={16} />
                         </button>
                     </div>
-
-                    <button
-                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                        className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
-                        aria-label="테마 변경"
-                    >
+                    {/* ... (테마 및 유저 로직 동일) */}
+                    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors">
                         {mounted && theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
                     </button>
-
+                    {/* 유저 로그인/로그아웃 영역 */}
                     <div className="flex items-center border-l border-slate-200 dark:border-slate-700 ml-2 pl-4">
-                        {loading ? (
-                            <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 animate-pulse" />
-                        ) : user ? (
+                        {loading ? <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 animate-pulse" /> : user ? (
                             <div className="flex items-center gap-3">
-                                <Link
-                                    href="/profile"
-                                    className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
-                                >
-                                    <User size={20} />
-                                </Link>
+                                <Link href="/profile" className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"><User size={20} /></Link>
                                 <div className="hidden lg:flex flex-col items-start leading-tight">
                                     <span className="text-xs text-slate-500 dark:text-slate-500 font-medium">반가워요!</span>
-                                    <span className="text-sm font-bold text-slate-900 dark:text-white">
-                                        {nickname || '회원'}님
-                                    </span>
+                                    <span className="text-sm font-bold text-slate-900 dark:text-white">{nickname || '회원'}님</span>
                                 </div>
-                                <button
-                                    onClick={handleLogout}
-                                    className="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors ml-1"
-                                >
-                                    로그아웃
-                                </button>
+                                <button onClick={handleLogout} className="text-xs font-bold text-slate-400 hover:text-red-500 transition-colors ml-1">로그아웃</button>
                             </div>
                         ) : (
-                            <Link
-                                href="/login"
-                                className="px-5 py-2 text-sm bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-200 dark:shadow-none active:scale-95 transition-all"
-                            >
-                                로그인
-                            </Link>
+                            <Link href="/login" className="px-5 py-2 text-sm bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 active:scale-95 transition-all">로그인</Link>
                         )}
                     </div>
                 </div>
