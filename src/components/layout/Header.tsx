@@ -52,11 +52,11 @@ export default function Header() {
     <header className="border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 transition-colors">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
 
-        {/* 로고 영역: anchor-logo.png 적용 및 사이즈 확대 */}
+        {/* 로고 영역: saleship-main.png 적용 및 사이즈 확대 */}
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-10 h-10 transition-transform group-hover:scale-105">
             <Image
-              src="/images/anchor-logo.png"
+              src="/images/saleship-main.png"
               alt="Saleship Logo"
               fill
               priority
@@ -69,7 +69,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* 네비게이션: 디자인 시스템 반영 */}
+        {/* 네비게이션 */}
         <nav className="hidden md:flex items-center gap-8">
           {[
             { name: '핫딜', href: '/deals' },
@@ -89,7 +89,6 @@ export default function Header() {
 
         {/* 우측 검색 및 유저 인터페이스 */}
         <div className="flex items-center gap-3">
-          {/* 검색바 최적화 */}
           <div className="relative hidden sm:flex items-center border border-slate-200 dark:border-slate-700 rounded-full px-4 py-1.5 bg-slate-50 dark:bg-slate-800 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all">
             <input
               value={searchTerm}
@@ -103,7 +102,6 @@ export default function Header() {
             </button>
           </div>
 
-          {/* 테마 스위처 */}
           <button
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="p-2 text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors"
@@ -112,7 +110,6 @@ export default function Header() {
             {mounted && theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
           </button>
 
-          {/* 유저 상태 영역 */}
           <div className="flex items-center border-l border-slate-200 dark:border-slate-700 ml-2 pl-4">
             {loading ? (
               <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 animate-pulse" />
