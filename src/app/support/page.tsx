@@ -23,7 +23,7 @@ export default function SupportPage() {
 
     return (
         <main className="container py-8 md:py-12 max-w-2xl">
-            {/* 핫딜/커뮤니티와 통일된 반응형 헤더 레이아웃 */}
+            {/* 반응형 헤더 레이아웃 - 다른 페이지와 통일 */}
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
                 <div className="flex items-center gap-4">
                     <div className="relative w-16 h-16">

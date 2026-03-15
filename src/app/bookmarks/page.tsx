@@ -27,7 +27,6 @@ export default function BookmarksPage() {
         <div className="flex items-center gap-4">
           <div className="relative w-16 h-16">
             <Image
-              // public/images/pingu-heart.png 를 가리킵니다.
               src="/images/pingu-heart.png"
               alt="북마크 펭귄"
               fill
@@ -55,9 +54,13 @@ export default function BookmarksPage() {
         </div>
       ) : (
         <div className="py-20 text-center">
-          <div className="mb-6 flex justify-center">
-            {/* 이미지 파일이 안 나올 경우를 대비해 펭귄 아이콘으로 대체할 수도 있습니다 */}
-            <Image src="/images/pingu-heart.png" alt="비어있음" width={80} height={80} className="opacity-50" />
+          <div className="relative w-20 h-20 mx-auto mb-6">
+            <Image
+              src="/images/pingu-heart.png"
+              alt="북마크 없음"
+              fill
+              className="object-contain opacity-80"
+            />
           </div>
           <h3 className="text-xl font-black text-slate-900 dark:text-white mb-2">북마크가 비어있습니다.</h3>
           <p className="text-slate-500 dark:text-slate-400 font-bold">
